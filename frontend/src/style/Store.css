@@ -1,0 +1,537 @@
+/* ══════════════════════════════════════════
+   2. كروت المنتجات
+══════════════════════════════════════════ */
+.shopCard {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 22px !important;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.07);
+  transition: all 0.32s ease;
+  border: 1px solid rgba(42, 140, 74, 0.08) !important;
+  height: 100%;
+}
+
+.shopCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.1);
+  border-color: rgba(42, 140, 74, 0.22) !important;
+}
+
+.shopCard img {
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.shopCard:hover img {
+  transform: scale(1.05);
+}
+
+.shopCardTitle {
+  font-weight: 700;
+  color: #23352b !important;
+  margin-bottom: 8px;
+  font-size: 1.08rem;
+  line-height: 1.5;
+}
+
+.shopPrice {
+  color: #2e7d32;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 0.2px;
+}
+
+/* زر إضافة للسلة */
+.shopDetailsBtn {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  border-radius: 14px;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(76, 175, 80, 0.2);
+}
+
+.shopDetailsBtn:hover {
+  background: linear-gradient(135deg, #43a047, #256b2b);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(76, 175, 80, 0.28);
+}
+
+/* ══════════════════════════════════════════
+   3. فلاتر المتجر
+══════════════════════════════════════════ */
+.shopFilterGroup .shopFilterBtn {
+  border-radius: 999px !important;
+  transition: all 0.28s ease;
+  border: 1px solid rgba(25, 135, 84, 0.22) !important;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #1f4f2c;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.shopFilterGroup .shopFilterBtn:hover:not(.active) {
+  background: rgba(232, 245, 233, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(76, 175, 80, 0.1);
+}
+
+.shopFilterGroup .shopFilterBtn.active {
+  background: linear-gradient(135deg, #2e7d32, #198754) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 10px 20px rgba(25, 135, 84, 0.2);
+}
+
+/* ══════════════════════════════════════════
+   4. السلة الجانبية
+══════════════════════════════════════════ */
+.cart-sidebar {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 22px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  padding: 18px;
+  border: 1px solid rgba(42, 140, 74, 0.08);
+}
+
+.cart-header {
+  color: #2e7d32;
+  font-weight: 800;
+  font-size: 1.22rem;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(46, 125, 50, 0.08);
+}
+
+.cart-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f3f1;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-total {
+  font-weight: 800;
+  color: #2e7d32;
+  font-size: 1.12rem;
+  margin-top: 18px;
+}
+
+.checkout-btn {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  border-radius: 14px;
+  color: white;
+  padding: 12px;
+  border: none;
+  font-weight: 700;
+  margin-top: 12px;
+  width: 100%;
+  box-shadow: 0 10px 20px rgba(76, 175, 80, 0.2);
+  transition: all 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background: linear-gradient(135deg, #43a047, #256b2b);
+  transform: translateY(-2px);
+}
+
+/* السلة الثابتة */
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+}
+
+/* ══════════════════════════════════════════
+   5. مودال الدفع
+══════════════════════════════════════════ */
+#shopPaymentModal .modal-content {
+  border-radius: 24px !important;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+}
+
+#shopPayBox {
+  background: linear-gradient(135deg, #eff8ee, #f6fcf5);
+  border-right: 4px solid #4caf50;
+  border-radius: 16px;
+}
+
+.payment-modal-dialog {
+  max-width: 540px;
+  width: calc(100% - 24px);
+  margin: 1rem auto;
+}
+
+.payment-modal-content {
+  border-radius: 24px;
+  overflow: hidden;
+  max-height: 90vh;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.payment-modal-body {
+  overflow-y: auto;
+  max-height: calc(90vh - 85px);
+  padding-bottom: 20px;
+}
+
+/* ══════════════════════════════════════════
+   6. وسائل الدفع
+══════════════════════════════════════════ */
+.shopPayOption {
+  border: 1px solid rgba(42, 140, 74, 0.12);
+  cursor: pointer;
+  transition: all 0.28s ease;
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.shopPayOption:hover {
+  background: #f8fdf8;
+  border-color: #9ed3a1;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(76, 175, 80, 0.08);
+}
+
+.shopPayOption.active {
+  border-color: #4caf50 !important;
+  background: linear-gradient(135deg, #eef8ee, #e8f5e9) !important;
+  box-shadow: 0 10px 18px rgba(76, 175, 80, 0.12);
+}
+
+.payment-method-card {
+  min-height: 104px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.25s ease;
+  background: transparent;
+  cursor: pointer;
+  text-align: center;
+}
+
+.payment-method-card:hover {
+  transform: translateY(-3px);
+}
+
+.payment-method-card strong,
+.payment-method-card span,
+.payment-method-card p {
+  text-align: center;
+}
+
+/* زر تأكيد الدفع */
+#shopConfirmPay {
+  background: linear-gradient(135deg, #4caf50, #2e7d32) !important;
+  border-radius: 14px;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 12px;
+  font-weight: 700;
+  box-shadow: 0 10px 20px rgba(76, 175, 80, 0.18);
+}
+
+#shopConfirmPay:hover {
+  background: linear-gradient(135deg, #43a047, #256b2b) !important;
+  transform: translateY(-2px);
+}
+
+/* ══════════════════════════════════════════
+   7. Message Box (تنبيه مخصص)
+══════════════════════════════════════════ */
+.custom-message-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.custom-message-box {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(12px);
+  width: 100%;
+  max-width: 440px;
+  border-radius: 28px;
+  padding: 34px 24px;
+  text-align: center;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
+  animation: messagePop 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.message-icon-wrapper {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+}
+
+.message-icon-wrapper.success {
+  background: rgba(25, 135, 84, 0.12);
+  color: #198754;
+}
+
+.message-icon-wrapper.warning {
+  background: rgba(255, 193, 7, 0.18);
+  color: #d39e00;
+}
+
+.message-title {
+  font-weight: 800;
+  color: #198754;
+  margin-bottom: 12px;
+  font-size: 1.55rem;
+}
+
+.message-text {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+@keyframes messagePop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ══════════════════════════════════════════
+   8. متفرقات
+══════════════════════════════════════════ */
+
+/* إزالة الحدود من العناوين */
+.title-txt,
+.card-title,
+h3,
+h4,
+h5,
+h6 {
+  border: none !important;
+  text-decoration: none !important;
+}
+
+.title-txt {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+}
+
+.text-purple {
+  color: #6f42c1 !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.badge {
+  font-size: 0.72rem;
+  padding: 0.42em 0.72em;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* ══════════════════════════════════════════
+   8.5 مودال الدفع — خلفية وصندوق التفاصيل
+   مدموجان من inline style في PaymentModal
+══════════════════════════════════════════ */
+
+/* خلفية المودال — كانت: style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} */
+.modal-backdrop-custom {
+  background-color: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(4px);
+}
+
+/* صندوق تفاصيل المشتريات — كانت: style={{ background: '#e3f8e3' }} */
+.payment-summary-box {
+  background: linear-gradient(135deg, #e8f7e8, #f3fbf3);
+  border-radius: 16px;
+  border: 1px solid rgba(76, 175, 80, 0.08);
+}
+
+/* صورة وسيلة الدفع — كانت: style={{ height: '50px', objectFit: 'contain' }} */
+.payment-method-img {
+  height: 52px;
+  object-fit: contain;
+}
+
+/* ══════════════════════════════════════════
+   9. Responsive
+══════════════════════════════════════════ */
+@media (max-width: 576px) {
+  .payment-modal-dialog {
+    width: calc(100% - 16px);
+    margin: 0.5rem auto;
+  }
+
+  .payment-modal-content {
+    max-height: 92vh;
+    border-radius: 18px;
+  }
+
+  .payment-modal-body {
+    max-height: calc(92vh - 85px);
+  }
+}
+
+/* Tablet (<= 992px) */
+@media (max-width: 992px) {
+  .shopCard img {
+    height: 190px;
+  }
+
+  .shopCard {
+    border-radius: 18px !important;
+  }
+
+  .shopCardTitle {
+    font-size: 1rem;
+  }
+
+  .shopPrice {
+    font-size: 15px;
+  }
+
+  .shopFilterGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .shopFilterGroup .shopFilterBtn {
+    padding: 9px 15px;
+    font-size: 0.92rem;
+  }
+
+  .cart-sidebar {
+    padding: 14px;
+  }
+
+  .cart-header {
+    font-size: 1.1rem;
+  }
+
+  .cart-total {
+    font-size: 1rem;
+  }
+
+  .checkout-btn {
+    padding: 10px;
+  }
+
+  .payment-method-card {
+    min-height: 88px;
+  }
+}
+
+/* Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .shopCard img {
+    height: 160px;
+  }
+
+  .shopCard {
+    border-radius: 16px !important;
+  }
+
+  .shopCardTitle {
+    font-size: 0.95rem;
+  }
+
+  .shopPrice {
+    font-size: 14px;
+  }
+
+  .shopDetailsBtn {
+    width: 100%;
+    padding: 9px;
+    font-size: 0.88rem;
+    border-radius: 12px;
+  }
+
+  .shopFilterGroup {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .shopFilterGroup .shopFilterBtn {
+    width: 100%;
+    font-size: 0.88rem;
+    padding: 9px;
+  }
+
+  .cart-sidebar {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .cart-header {
+    font-size: 1rem;
+  }
+
+  .cart-item {
+    font-size: 0.92rem;
+  }
+
+  .cart-total {
+    font-size: 0.96rem;
+  }
+
+  .checkout-btn {
+    font-size: 0.92rem;
+    padding: 9px;
+  }
+
+  .payment-modal-content {
+    border-radius: 18px;
+  }
+
+  .payment-method-card {
+    min-height: 78px;
+    font-size: 0.85rem;
+  }
+
+  .custom-message-box {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+
+  .message-title {
+    font-size: 1.25rem;
+  }
+
+  .message-text {
+    font-size: 0.92rem;
+  }
+}

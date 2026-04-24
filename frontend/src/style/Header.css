@@ -1,0 +1,342 @@
+/* ============================================
+   Header.css — النسخة الكاملة مع notification badges
+   ============================================ */
+
+:root {
+  --primary-color: #2a8c4a;
+  --secondary-color: #4caf50;
+  --accent-color: #8bc34a;
+  --text-color: #333;
+  --light-bg: #dbf2db;
+  --white: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ══════════════════════════════════════════
+   1. الهيدر
+══════════════════════════════════════════ */
+.header {
+  padding: 14px 0;
+  background: #2a8c4a;
+  box-shadow: var(--box-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 30px;
+  width: 100%;
+  min-height: 70px;
+}
+
+/* ══════════════════════════════════════════
+   2. اللوجو
+══════════════════════════════════════════ */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.logo-section h1 {
+  margin: 0;
+  color: var(--white);
+  font-size: 1.5rem;
+}
+
+.header-logo-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.header-logo-image:hover { transform: scale(1.1); }
+
+/* ══════════════════════════════════════════
+   3. قائمة التنقل
+══════════════════════════════════════════ */
+.nav-menu {
+  flex: 1;
+  margin: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-menu ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.nav-menu a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--white);
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible; /* مهم عشان الـ badge ميتقطعش */
+}
+
+.nav-menu a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--white);
+  transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::before,
+.nav-menu a.active::before { width: 100%; }
+
+.nav-menu a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.nav-menu a.active { background: rgba(255, 255, 255, 0.15); }
+.nav-menu a:active, .nav-menu a.active { color: #ffffff !important; }
+.nav-menu a.requires-auth { opacity: 0.9; }
+
+/* ══════════════════════════════════════════
+   3-B. Icon Wrapper + Notification Badge (هيدر)
+══════════════════════════════════════════ */
+.nav-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.nav-notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+
+  background: #ef4444;
+  color: #ffffff;
+  border: 2px solid #2a8c4a; /* نفس لون الهيدر = ring effect */
+
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 14px;
+  text-align: center;
+  white-space: nowrap;
+
+  pointer-events: none;
+  z-index: 2;
+
+  animation: badge-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes badge-pop {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+
+/* ══════════════════════════════════════════
+   4. منطقة المستخدم
+══════════════════════════════════════════ */
+.user-actions {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lang-toggle-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--white);
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.lang-toggle-btn:hover { background: rgba(255, 255, 255, 0.15); }
+
+.login-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 10px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--white);
+  border: 1px solid var(--white);
+  background: transparent;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background: var(--white);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--white);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.user-menu-btn:hover { background: rgba(255, 255, 255, 0.1); }
+.user-menu-btn .chevron-icon { font-size: 12px; }
+
+/* ══════════════════════════════════════════
+   5. الـ Dropdown
+══════════════════════════════════════════ */
+.user-dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: var(--white);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  min-width: 170px;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+[dir="ltr"] .user-dropdown { right: auto; left: 0; }
+
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-color);
+  transition: background 0.2s ease;
+}
+
+.logout-btn:hover { background: #fff5f5; color: #e53935; }
+
+/* ══════════════════════════════════════════
+   6. بيانات المستخدم
+══════════════════════════════════════════ */
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  color: var(--white);
+}
+
+.user-badge:hover { background: rgba(255, 255, 255, 0.1); }
+.user-icon  { font-size: 1.2rem; color: var(--white); }
+.user-details { display: flex; flex-direction: column; }
+.user-name  { font-weight: 500; color: var(--white); }
+.user-type  { font-size: 0.8rem; color: rgba(255, 255, 255, 0.8); }
+
+/* ══════════════════════════════════════════
+   7. Responsive
+══════════════════════════════════════════ */
+@media (max-width: 992px) {
+  .header .container { padding: 0 20px; gap: 15px; }
+  .logo-section h1   { font-size: 1.3rem; }
+  .nav-menu ul       { gap: 15px; }
+  .nav-menu a        { font-size: 15px; padding: 8px 10px; }
+  .user-menu-btn, .login-btn { padding: 8px 12px; font-size: 0.9rem; }
+  .lang-toggle-btn   { padding: 8px 10px; font-size: 0.85rem; }
+}
+
+@media (max-width: 768px) {
+  .header .container {
+    flex-direction: column;
+    padding: 10px 16px;
+    min-height: unset;
+    gap: 10px;
+  }
+
+  .nav-menu { margin: 0; width: 100%; }
+  .nav-menu ul { flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .nav-menu a  { font-size: 14px; padding: 8px 10px; }
+
+  .user-actions { width: 100%; justify-content: center; }
+
+  .user-badge { flex-direction: column; text-align: center; gap: 5px; }
+  .user-details { align-items: center; }
+
+  .user-dropdown { right: 50%; transform: translateX(50%); top: 44px; }
+  [dir="ltr"] .user-dropdown { right: 50%; left: auto; transform: translateX(50%); }
+
+  .nav-notification-badge { min-width: 16px; height: 16px; font-size: 9px; line-height: 12px; top: -6px; right: -8px; }
+}
+
+@media (max-width: 480px) {
+  .header { padding: 10px 0; }
+  .header .container { padding: 8px 10px; }
+  .logo-section { gap: 10px; }
+  .header-logo-image { width: 40px; height: 40px; }
+  .logo-section h1 { font-size: 1.1rem; }
+  .nav-menu ul { gap: 6px; }
+  .nav-menu a  { font-size: 13px; padding: 6px 8px; }
+  .user-actions { gap: 6px; }
+  .login-btn, .user-menu-btn, .lang-toggle-btn { padding: 6px 8px; font-size: 0.8rem; }
+  .user-badge { padding: 6px 10px; }
+  .user-name  { font-size: 0.85rem; }
+  .user-type  { font-size: 0.7rem; }
+  .user-dropdown { min-width: 140px; top: 40px; }
+}

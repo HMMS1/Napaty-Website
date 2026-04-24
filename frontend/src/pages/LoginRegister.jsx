@@ -1,0 +1,581 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginRequest, registerRequest } from "../api/auth";
+
+import {
+  FaUser,
+  FaLock,
+  FaUserTie,
+  FaEye,
+  FaEyeSlash,
+  FaEnvelope,
+  FaCalendarAlt,
+  FaBriefcase,
+} from "react-icons/fa";
+import "../style/LoginRegister.css";
+
+const emptyForm = {
+  email: "",
+  password: "",
+  name: "",
+  phone: "",
+  location: "",
+  experience: "",
+  field: "",
+};
+
+const Login = ({ setUser, language = "ar" }) => {
+  const navigate = useNavigate();
+  const isArabic = language === "ar";
+
+  const [activeTab, setActiveTab] = useState("login");
+  const [userType, setUserType] = useState("user");
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ ...emptyForm });
+
+  const [showMessageBox, setShowMessageBox] = useState(false);
+  const [messageBoxType, setMessageBoxType] = useState("success");
+  const [messageBoxTitle, setMessageBoxTitle] = useState("");
+  const [messageBoxText, setMessageBoxText] = useState("");
+
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [displayTab, setDisplayTab] = useState("login");
+
+  useEffect(() => {
+    setFormData({ ...emptyForm });
+    setShowPassword(false);
+  }, [displayTab]);
+
+  useEffect(() => {
+    if (activeTab === displayTab) return;
+
+    setIsAnimating(true);
+    const timer = setTimeout(() => {
+      setDisplayTab(activeTab);
+      setIsAnimating(false);
+    }, 180);
+
+    return () => clearTimeout(timer);
+  }, [activeTab, displayTab]);
+
+  const userTypes = [
+    {
+      value: "user",
+      label: isArabic ? "مستخدم" : "User",
+      icon: <FaUser />,
+      color: "#4CAF50",
+    },
+    {
+      value: "expert",
+      label: isArabic ? "خبير زراعي" : "Agricultural Expert",
+      icon: <FaUserTie />,
+      color: "#2196F3",
+    },
+  ];
+
+  const openMessageBox = (type, title, text) => {
+    setMessageBoxType(type);
+    setMessageBoxTitle(title);
+    setMessageBoxText(text);
+    setShowMessageBox(true);
+  };
+
+  const closeMessageBox = () => {
+    setShowMessageBox(false);
+  };
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const switchTab = (tab) => {
+    if (tab === activeTab) return;
+    setActiveTab(tab);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (displayTab === "login") {
+        if (!formData.email || !formData.password) {
+          openMessageBox(
+            "warning",
+            isArabic ? "تنبيه" : "Warning",
+            isArabic
+              ? "يرجى إدخال البريد وكلمة المرور"
+              : "Please enter email and password"
+          );
+          return;
+        }
+
+        const data = await loginRequest({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (data.access) localStorage.setItem("access", data.access);
+        if (data.refresh) localStorage.setItem("refresh", data.refresh);
+        if (data.token) localStorage.setItem("access", data.token);
+
+        const savedUserType =
+          data.user_type ||
+          data.user?.user_type ||
+          data.user?.type ||
+          "user";
+
+        const userData = {
+          ...(data.user || {}),
+          full_name: data.user?.full_name || data.user?.name || "",
+          name: data.user?.name || data.user?.full_name || "",
+          user_type: savedUserType,
+          isAuthenticated: true,
+        };
+
+        localStorage.setItem("user_type", savedUserType);
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        setUser(userData);
+
+        setFormData({ ...emptyForm });
+        navigate("/", { replace: true });
+        return;
+      }
+
+      if (
+        !formData.name ||
+        !formData.email ||
+        !formData.password ||
+        !formData.phone
+      ) {
+        openMessageBox(
+          "warning",
+          isArabic ? "تنبيه" : "Warning",
+          isArabic
+            ? "يرجى ملء جميع الحقول المطلوبة"
+            : "Please fill all required fields"
+        );
+        return;
+      }
+
+      if (userType === "expert") {
+        if (!formData.experience || !formData.field) {
+          openMessageBox(
+            "warning",
+            isArabic ? "تنبيه" : "Warning",
+            isArabic
+              ? "يرجى ملء مدة الخبرة والمجال للخبير الزراعي"
+              : "Please enter experience years and specialization for the agricultural expert"
+          );
+          return;
+        }
+      }
+
+      const payload = {
+        full_name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone || "",
+        location: formData.location || "",
+        user_type: userType,
+        ...(userType === "expert" && {
+          experience_years: Number(formData.experience),
+          specialization: formData.field,
+        }),
+      };
+
+      await registerRequest(payload);
+
+      openMessageBox(
+        "success",
+        isArabic ? "تم بنجاح" : "Success",
+        isArabic
+          ? "تم إنشاء الحساب بنجاح "
+          : "Account created successfully "
+      );
+
+      setFormData({ ...emptyForm });
+      setUserType("user");
+      setShowPassword(false);
+      setActiveTab("login");
+    } catch (err) {
+      const data = err?.response?.data;
+      const msg =
+        data?.detail ||
+        data?.message ||
+        (data && typeof data === "object" ? JSON.stringify(data) : null) ||
+        (isArabic
+          ? "حصل خطأ.. تأكد من البيانات أو من السيرفر"
+          : "Something went wrong.. check your data or the server");
+
+      openMessageBox("warning", isArabic ? "خطأ" : "Error", msg);
+      console.error(err);
+    }
+  };
+
+  return (
+    <div className="login-page">
+      <div className="login-container login-container-proper">
+        <div className="login-header premium-header">
+          <div className="logo-wrapper">
+            <img
+              src="/images/Capture.png"
+              alt="App Logo"
+              className="header-image"
+            />
+          </div>
+
+          <div className="app-title">
+            <div className="app-title-text">
+              <h1>{isArabic ? "نباتي" : "Napaty"}</h1>
+              <p className="app-subtitle">
+              
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="welcome-section">
+          <h2>{isArabic ? "مرحباً بعودتك" : "Welcome Back"}</h2>
+          <p>
+            {displayTab === "login"
+              ? isArabic
+                ? "سجل الدخول لمواصلة رحلتك مع النباتات"
+                : "Log in to continue your journey with plants"
+              : isArabic
+              ? "أنشئ حسابك وابدأ رحلتك مع نباتي"
+              : "Create your account and start your journey with Napaty"}
+          </p>
+        </div>
+
+        <div className="login-content-proper">
+          <div className="tabs-container">
+            <div
+              className={`tab-slider ${activeTab === "register" ? "right" : "left"}`}
+            ></div>
+
+            <button
+              type="button"
+              className={`tab-btn ${activeTab === "login" ? "active" : ""}`}
+              onClick={() => switchTab("login")}
+            >
+              {isArabic ? "تسجيل الدخول" : "Login"}
+            </button>
+
+            <button
+              type="button"
+              className={`tab-btn ${activeTab === "register" ? "active" : ""}`}
+              onClick={() => switchTab("register")}
+            >
+              {isArabic ? "إنشاء حساب" : "Create Account"}
+            </button>
+          </div>
+
+          <div
+            className={`auth-panel ${
+              isAnimating ? "switch-out" : "switch-in"
+            }`}
+            key={displayTab}
+          >
+            {displayTab === "register" && (
+              <div className="user-type-section smooth-block">
+                <h3>{isArabic ? "نوع الحساب" : "Account Type"}</h3>
+                <div className="user-types">
+                  {userTypes.map((type) => (
+                    <div
+                      key={type.value}
+                      className={`user-type-card ${
+                        userType === type.value ? "selected" : ""
+                      }`}
+                      onClick={() => setUserType(type.value)}
+                      style={{
+                        borderColor: userType === type.value ? type.color : "",
+                      }}
+                    >
+                      <div className="type-icon" style={{ color: type.color }}>
+                        {type.icon}
+                      </div>
+                      <span>{type.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <form
+              onSubmit={handleSubmit}
+              className="login-form login-form-proper"
+            >
+              {displayTab === "register" ? (
+                <>
+                  <div className="form-section smooth-block delay-1">
+                    <h4 className="section-mini-title">
+                      {isArabic ? "بيانات الحساب" : "Account Information"}
+                    </h4>
+
+                    <div className="form-single-column">
+                      <div className="form-group">
+                        <label>{isArabic ? "الاسم الكامل" : "Full Name"}</label>
+                        <div className="input-with-icon">
+                          <FaUser className="input-icon" />
+                          <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder={
+                              isArabic
+                                ? "أدخل اسمك الكامل"
+                                : "Enter your full name"
+                            }
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
+                        <div className="input-with-icon">
+                          <FaEnvelope className="input-icon" />
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder={
+                              isArabic
+                                ? "أدخل بريدك الإلكتروني"
+                                : "Enter your email"
+                            }
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>{isArabic ? "رقم الهاتف" : "Phone Number"}</label>
+                        <div className="input-with-icon">
+                          <FaUser className="input-icon" />
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder={
+                              isArabic
+                                ? "أدخل رقم هاتفك"
+                                : "Enter your phone number"
+                            }
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      {userType === "expert" && (
+                        <>
+                          <div className="form-group smooth-block delay-2">
+                            <label>
+                              {isArabic
+                                ? "مدة الخبرة (سنوات)"
+                                : "Experience (Years)"}
+                            </label>
+                            <div className="input-with-icon">
+                              <FaCalendarAlt className="input-icon" />
+                              <input
+                                type="number"
+                                name="experience"
+                                value={formData.experience}
+                                onChange={handleChange}
+                                placeholder={
+                                  isArabic
+                                    ? "عدد سنوات الخبرة"
+                                    : "Number of years of experience"
+                                }
+                                min="0"
+                                max="50"
+                                required
+                              />
+                            </div>
+                          </div>
+
+                          <div className="form-group smooth-block delay-3">
+                            <label>
+                              {isArabic ? "المجال التخصصي" : "Specialization"}
+                            </label>
+                            <div className="input-with-icon">
+                              <FaBriefcase className="input-icon" />
+                              <input
+                                type="text"
+                                name="field"
+                                value={formData.field}
+                                onChange={handleChange}
+                                placeholder={
+                                  isArabic
+                                    ? "مثال: نباتات زينة، أشجار فاكهة، خضروات"
+                                    : "Example: Ornamental plants, fruit trees, vegetables"
+                                }
+                                required
+                              />
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="form-section smooth-block delay-2">
+                    <h4 className="section-mini-title">
+                      {isArabic ? "الأمان" : "Security"}
+                    </h4>
+
+                    <div className="form-group">
+                      <label>{isArabic ? "كلمة المرور" : "Password"}</label>
+                      <div className="input-with-icon">
+                        <FaLock className="input-icon" />
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          placeholder={
+                            isArabic ? "أدخل كلمة المرور" : "Enter password"
+                          }
+                          required
+                          minLength="6"
+                        />
+                        <button
+                          type="button"
+                          className="password-toggle"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="form-section smooth-block delay-1">
+                    <h4 className="section-mini-title">
+                      {isArabic ? "تسجيل الدخول" : "Sign In"}
+                    </h4>
+
+                    <div className="form-single-column">
+                      <div className="form-group">
+                        <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
+                        <div className="input-with-icon">
+                          <FaEnvelope className="input-icon" />
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder={
+                              isArabic
+                                ? "أدخل بريدك الإلكتروني"
+                                : "Enter your email"
+                            }
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>{isArabic ? "كلمة المرور" : "Password"}</label>
+                        <div className="input-with-icon">
+                          <FaLock className="input-icon" />
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder={
+                              isArabic ? "أدخل كلمة المرور" : "Enter password"
+                            }
+                            required
+                          />
+                          <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <button
+                type="submit"
+                className={`submit-btn ${
+                  displayTab === "login" ? "" : "submit-btn-proper"
+                } smooth-submit`}
+              >
+                {displayTab === "login"
+                  ? isArabic
+                    ? "تسجيل الدخول"
+                    : "Login"
+                  : isArabic
+                  ? "إنشاء الحساب"
+                  : "Create Account"}
+              </button>
+            </form>
+          </div>
+
+          <div className="auth-footer">
+            {displayTab === "login" ? (
+              <p>
+                {isArabic ? "ليس لديك حساب؟" : "Don't have an account?"}{" "}
+                <span onClick={() => switchTab("register")}>
+                  {isArabic ? "سجل الآن" : "Register now"}
+                </span>
+              </p>
+            ) : (
+              <p>
+                {isArabic ? "لديك حساب بالفعل؟" : "Already have an account?"}{" "}
+                <span onClick={() => switchTab("login")}>
+                  {isArabic ? "سجل الدخول" : "Log in"}
+                </span>
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {showMessageBox && (
+        <div className="custom-message-overlay">
+          <div className="custom-message-box">
+            <div className={`message-icon-wrapper ${messageBoxType}`}>
+              <i
+                className={`fas ${
+                  messageBoxType === "success"
+                    ? "fa-check-circle"
+                    : "fa-exclamation-triangle"
+                }`}
+              ></i>
+            </div>
+
+            <h4 className={`message-title ${messageBoxType}`}>
+              {messageBoxTitle}
+            </h4>
+
+            <p className="message-text">{messageBoxText}</p>
+
+            <button
+              className={`message-btn ${messageBoxType}`}
+              onClick={closeMessageBox}
+            >
+              {isArabic ? "حسناً" : "OK"}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Login;

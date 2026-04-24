@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #2a8c4a;
+  --secondary-color: #4caf50;
+  --accent-color: #8bc34a;
+  --text-color: #333;
+  --white: #ffffff;
+  --app-bg: linear-gradient(135deg, #f6fbf4 0%, #dff1df 55%, #eef7e8 100%);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: var(--app-bg);
+}
+
+.App {
+  min-height: 100vh;
+  background: transparent;
+}
+
+body {
+  font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.7;
+  color: var(--text-color);
+  direction: rtl;
+  background: var(--app-bg) !important;
+  background-attachment: fixed;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Main Content */
+.main-content {
+  min-height: calc(100vh - 140px);
+  background: transparent !important;
+}
+
+/* Page Container */
+.page-container {
+  padding: 2rem 0;
+  background: transparent !important;
+}
+
+/* wrappers الصفحات */
+.welcome-page,
+.login-page,
+.store-page,
+.consultation-page,
+.soil-analysis-page,
+.disease-diagnosis-page,
+.plants-seasons-page,
+.chat-page {
+  background: transparent !important;
+}
+
+/* Page Header */
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  background: transparent !important;
+}
+
+.page-header h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: #666;
+  font-size: 1.1rem;
+}

@@ -1,0 +1,422 @@
+/* ============================================
+   Footer.css — ملف الستايل الكامل للفوتر
+   يدمج: inline styles من Footer.jsx + App.css
+   ============================================ */
+
+/* ══════════════════════════════════════════
+   1. الفوتر الرئيسي
+══════════════════════════════════════════ */
+.footer {
+  background: #2a8c4a;
+  color: #ffffff;
+  margin-top: 60px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ── الدوائر الزخرفية في الخلفية ── */
+.footer-blob-top {
+  position: absolute;
+  top: -80px;
+  width: 220px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* RTL: يسار | LTR: يمين */
+[dir="rtl"] .footer-blob-top  { left: -80px; }
+[dir="ltr"] .footer-blob-top  { right: -80px; }
+
+.footer-blob-bottom {
+  position: absolute;
+  bottom: -100px;
+  width: 260px;
+  height: 260px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+[dir="rtl"] .footer-blob-bottom { right: -100px; }
+[dir="ltr"] .footer-blob-bottom { left: -100px; }
+
+/* ══════════════════════════════════════════
+   2. الحاوية الداخلية
+══════════════════════════════════════════ */
+.footer .container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 55px 25px 25px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ══════════════════════════════════════════
+   3. شبكة الأقسام (Grid)
+══════════════════════════════════════════ */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+/* ── كارت القسم العام ── */
+.footer-section {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 28px 24px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+/* ══════════════════════════════════════════
+   4. قسم اللوجو والوصف
+══════════════════════════════════════════ */
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.footer-brand-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #d4f5dd 0%, #86efac 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #14532d;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.footer-brand-name {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.footer-brand-slogan {
+  margin: 5px 0 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+}
+
+.footer-description {
+  margin: 0;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.98rem;
+}
+
+/* ══════════════════════════════════════════
+   5. عنوان الأقسام الثانوية
+══════════════════════════════════════════ */
+.footer-section h4 {
+  margin: 0 0 18px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #d1fae5;
+  border: none !important;
+  text-decoration: none !important;
+}
+
+/* ══════════════════════════════════════════
+   6. الروابط السريعة
+══════════════════════════════════════════ */
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex-grow: 1;
+}
+
+.footer-link-item {
+  display: flex;
+}
+
+.footer-link-item a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  text-decoration: none;
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-link-item a:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.footer-link-arrow {
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════
+   7. الخدمات
+══════════════════════════════════════════ */
+.footer-services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex-grow: 1;
+}
+
+.footer-service-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-service-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(209, 250, 229, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d1fae5;
+  flex-shrink: 0;
+}
+
+.footer-service-label {
+  color: #ffffff;
+  font-weight: 600;
+  flex: 1;
+}
+
+/* ══════════════════════════════════════════
+   8. التواصل
+══════════════════════════════════════════ */
+.footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex-grow: 1;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 72px;
+}
+
+.footer-contact-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(209, 250, 229, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d1fae5;
+  flex-shrink: 0;
+}
+
+.footer-contact-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.footer-contact-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.footer-contact-info a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  word-break: break-word;
+  transition: color 0.3s ease;
+}
+
+.footer-contact-info a:hover {
+  color: #d1fae5;
+}
+
+/* ══════════════════════════════════════════
+   9. الشريط السفلي
+══════════════════════════════════════════ */
+.footer-bottom {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════
+   10. Responsive
+══════════════════════════════════════════ */
+@media (max-width: 992px) {
+  .footer .container {
+    padding: 45px 20px 20px;
+  }
+
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .footer-section {
+    padding: 24px 20px;
+  }
+
+  .footer-brand-name {
+    font-size: 1.6rem;
+  }
+
+  .footer-description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+
+  .footer .container {
+    padding: 35px 16px 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .footer-brand-name {
+    font-size: 1.5rem;
+  }
+
+  .footer-link-item a,
+  .footer-service-item {
+    min-height: 52px;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    margin-top: 40px;
+  }
+
+  .footer .container {
+    padding: 30px 12px 16px;
+  }
+
+  .footer-section {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .footer-brand-header {
+    gap: 10px;
+  }
+
+  .footer-brand-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .footer-brand-name {
+    font-size: 1.3rem;
+  }
+
+  .footer-brand-slogan {
+    font-size: 0.85rem;
+  }
+
+  .footer-description {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .footer-section h4 {
+    font-size: 1rem;
+  }
+
+  .footer-link-item a {
+    padding: 10px 12px;
+    font-size: 0.92rem;
+    min-height: 48px;
+    border-radius: 14px;
+  }
+
+  .footer-service-item,
+  .footer-contact-item {
+    padding: 10px 12px;
+  }
+
+  .footer-service-item {
+    min-height: 48px;
+    border-radius: 14px;
+  }
+
+  .footer-service-icon,
+  .footer-contact-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .footer-bottom {
+    font-size: 0.85rem;
+  }
+}
