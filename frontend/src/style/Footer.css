@@ -1,11 +1,4 @@
-/* ============================================
-   Footer.css — ملف الستايل الكامل للفوتر
-   يدمج: inline styles من Footer.jsx + App.css
-   ============================================ */
 
-/* ══════════════════════════════════════════
-   1. الفوتر الرئيسي
-══════════════════════════════════════════ */
 .footer {
   background: #2a8c4a;
   color: #ffffff;
@@ -15,7 +8,6 @@
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* ── الدوائر الزخرفية في الخلفية ── */
 .footer-blob-top {
   position: absolute;
   top: -80px;
@@ -27,7 +19,6 @@
   pointer-events: none;
 }
 
-/* RTL: يسار | LTR: يمين */
 [dir="rtl"] .footer-blob-top  { left: -80px; }
 [dir="ltr"] .footer-blob-top  { right: -80px; }
 
@@ -45,9 +36,6 @@
 [dir="rtl"] .footer-blob-bottom { right: -100px; }
 [dir="ltr"] .footer-blob-bottom { left: -100px; }
 
-/* ══════════════════════════════════════════
-   2. الحاوية الداخلية
-══════════════════════════════════════════ */
 .footer .container {
   max-width: 1300px;
   margin: 0 auto;
@@ -56,9 +44,7 @@
   z-index: 2;
 }
 
-/* ══════════════════════════════════════════
-   3. شبكة الأقسام (Grid)
-══════════════════════════════════════════ */
+
 .footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -67,7 +53,6 @@
   margin-bottom: 0;
 }
 
-/* ── كارت القسم العام ── */
 .footer-section {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -81,9 +66,6 @@
   height: 100%;
 }
 
-/* ══════════════════════════════════════════
-   4. قسم اللوجو والوصف
-══════════════════════════════════════════ */
 .footer-brand-header {
   display: flex;
   align-items: center;
@@ -125,9 +107,7 @@
   font-size: 0.98rem;
 }
 
-/* ══════════════════════════════════════════
-   5. عنوان الأقسام الثانوية
-══════════════════════════════════════════ */
+
 .footer-section h4 {
   margin: 0 0 18px;
   font-size: 1.2rem;
@@ -137,9 +117,7 @@
   text-decoration: none !important;
 }
 
-/* ══════════════════════════════════════════
-   6. الروابط السريعة
-══════════════════════════════════════════ */
+
 .footer-links-list {
   list-style: none;
   padding: 0;
@@ -183,9 +161,7 @@
   flex-shrink: 0;
 }
 
-/* ══════════════════════════════════════════
-   7. الخدمات
-══════════════════════════════════════════ */
+
 .footer-services-list {
   display: flex;
   flex-direction: column;
@@ -223,9 +199,7 @@
   flex: 1;
 }
 
-/* ══════════════════════════════════════════
-   8. التواصل
-══════════════════════════════════════════ */
+
 .footer-contact-list {
   display: flex;
   flex-direction: column;
@@ -280,9 +254,7 @@
   color: #d1fae5;
 }
 
-/* ══════════════════════════════════════════
-   9. الشريط السفلي
-══════════════════════════════════════════ */
+
 .footer-bottom {
   margin-top: 28px;
   padding-top: 20px;
@@ -301,9 +273,7 @@
   margin: 0;
 }
 
-/* ══════════════════════════════════════════
-   10. Responsive
-══════════════════════════════════════════ */
+
 @media (max-width: 992px) {
   .footer .container {
     padding: 45px 20px 20px;
