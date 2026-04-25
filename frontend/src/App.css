@@ -46,19 +46,16 @@ body {
   padding: 0 20px;
 }
 
-/* Main Content */
 .main-content {
   min-height: calc(100vh - 140px);
   background: transparent !important;
 }
 
-/* Page Container */
 .page-container {
   padding: 2rem 0;
   background: transparent !important;
 }
 
-/* wrappers الصفحات */
 .welcome-page,
 .login-page,
 .store-page,
@@ -70,7 +67,6 @@ body {
   background: transparent !important;
 }
 
-/* Page Header */
 .page-header {
   text-align: center;
   margin-bottom: 2rem;
