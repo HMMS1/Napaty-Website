@@ -1,6 +1,7 @@
 import os
 import joblib
 import numpy as np
+import pandas as pd
 import requests
 from decouple import config
 
@@ -261,6 +262,7 @@ def crop_recommendation_view(request):
             {"error": f"Weather API connection error: {str(e)}"},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
     except Exception as e:
         return Response(
             {"error": str(e)},
@@ -278,6 +280,15 @@ def crop_recommendation_advanced(request):
         model, encoder = load_advanced_model()
         data = request.data
 
+        required_fields = ["N", "P", "K", "temperature", "humidity", "rainfall", "ph"]
+
+        for field in required_fields:
+            if data.get(field) is None:
+                return Response(
+                    {"error": f"{field} is required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
         N = float(data.get("N"))
         P = float(data.get("P"))
         K = float(data.get("K"))
@@ -286,9 +297,28 @@ def crop_recommendation_advanced(request):
         rainfall = float(data.get("rainfall"))
         ph = float(data.get("ph"))
 
-        features = np.array([[
-            N, P, K, temperature, humidity, rainfall, ph
-        ]], dtype=float)
+        # =========================
+        # Feature Engineering زي التدريب
+        # =========================
+        temp_hum = temperature * humidity / 100
+        np_ratio = N / (P + 1)
+        nk_ratio = N / (K + 1)
+        rain_temp = rainfall * temperature / 100
+
+        # نفس ترتيب وأسماء الـ features اللي اتدرب عليها الموديل
+        features = pd.DataFrame([{
+            "N": N,
+            "P": P,
+            "K": K,
+            "temperature": temperature,
+            "humidity": humidity,
+            "rainfall": rainfall,
+            "ph": ph,
+            "temp_hum": temp_hum,
+            "np_ratio": np_ratio,
+            "nk_ratio": nk_ratio,
+            "rain_temp": rain_temp,
+        }])
 
         top_predictions = get_top_predictions(model, encoder, features, top_n=3)
         best_crop = top_predictions[0]["crop"] if top_predictions else None
@@ -305,9 +335,19 @@ def crop_recommendation_advanced(request):
                     "humidity": humidity,
                     "rainfall": rainfall,
                     "ph": ph,
+                    "temp_hum": round(temp_hum, 4),
+                    "np_ratio": round(np_ratio, 4),
+                    "nk_ratio": round(nk_ratio, 4),
+                    "rain_temp": round(rain_temp, 4),
                 },
             },
             status=status.HTTP_200_OK,
+        )
+
+    except ValueError as e:
+        return Response(
+            {"error": f"Invalid input value: {str(e)}"},
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
     except Exception as e:
@@ -432,6 +472,7 @@ def agri_chat_view(request):
             {"error": f"Groq API connection error: {str(e)}"},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
     except Exception as e:
         return Response(
             {"error": str(e)},
