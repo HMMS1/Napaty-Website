@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaSeedling, FaCheckCircle, FaLeaf } from 'react-icons/fa';
 import "../style/SoilAnalysis.css";
 
+const API = process.env.REACT_APP_API_URL;
 
 const SoilAnalysis = ({ language = 'ar' }) => {
   const isArabic = language === 'ar';
@@ -49,7 +50,7 @@ const SoilAnalysis = ({ language = 'ar' }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/soil/analyze/', {
+      const response = await fetch(`${API}/api/soil/analyze/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
