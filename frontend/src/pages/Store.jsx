@@ -8,7 +8,8 @@ const ShoppingPage = ({ language = 'ar' }) => {
 
   // بيانات المنتجات
   const productsData = useMemo(() => ([
-    {
+   
+{
       id: 1,
       name: isArabic ? "سماد عضوي طبيعي" : "Natural Organic Fertilizer",
       img: "images/Organic.jpg",
@@ -24,7 +25,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     {
       id: 2,
       name: isArabic ? "مبيد حشري قوي" : "Powerful Insecticide",
-      img: "images/مبيد حشاائش.jpg",
+      img: "images/Herbicide.webp",
       type: "pest",
       price: 90,
       description: isArabic
@@ -37,7 +38,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     {
       id: 3,
       name: isArabic ? "أداة حرث زراعية" : "Agricultural Tilling Tool",
-      img: "images/الجرار.jpg",
+      img: "images/Tractor.jpg",
       type: "tools",
       price: 350,
       description: isArabic
@@ -63,7 +64,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     {
       id: 5,
       name: isArabic ? "بذور طماطم عالية الجودة" : "High-Quality Tomato Seeds",
-      img: "images/tomato3.jpg",
+      img: "images/Tomato.jpg",
       type: "seeds",
       price: 45,
       description: isArabic
@@ -76,7 +77,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     {
       id: 6,
       name: isArabic ? "أداة زراعة متعددة الاستخدام" : "Multi-Purpose Farming Tool",
-      img: "images/فاس.jpg",
+      img: "images/Axe.jpg",
       type: "tools",
       price: 120,
       description: isArabic
@@ -102,7 +103,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     {
       id: 8,
       name: isArabic ? "بذور قمح ممتازة" : "Premium Wheat Seeds",
-      img: "images/قمح.jpg",
+      img: "images/Wheat.jpg",
       type: "seeds",
       price: 80,
       description: isArabic
@@ -115,7 +116,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     {
       id: 9,
       name: isArabic ? "مجرفة يد صغيرة" : "Small Hand Shovel",
-      img: "images/اداة للزراعة.jpeg",
+      img: "images/plantTool.jpeg",
       type: "tools",
       price: 65,
       description: isArabic
@@ -141,7 +142,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     {
       id: 11,
       name: isArabic ? "مبيد نيماتودا قوي" : "Powerful Nematode Pesticide",
-      img: "images/مبيد نيماتودا.jpg",
+      img: "images/Nematode pesticide.jpg",
       type: "pest",
       price: 120,
       description: isArabic
@@ -163,7 +164,263 @@ const ShoppingPage = ({ language = 'ar' }) => {
       details: isArabic
         ? "يساعد على امتصاص العناصر – مناسب لجميع المحاصيل."
         : "Helps absorb nutrients – suitable for all crops."
-    }
+    },
+
+{ 
+  id: 13, 
+  name: isArabic ? "سماد NPK مركب 20-20-20" : "NPK Compound Fertilizer 20-20-20", 
+  img: "images/NPKFertilizer.jpg", 
+  type: "fert", 
+  price: 180, 
+  description: isArabic ? "سماد متوازن لتعزيز نمو النبات." : "Balanced fertilizer to boost plant growth.", 
+  details: isArabic ? "مناسب لجميع المحاصيل؛ يحتوي على نسب متساوية من N,P,K." : "Suitable for all crops; equal N,P,K formulation." 
+},
+{ 
+  id: 14, 
+  name: isArabic ? " سماد كالسيوم بورون 1 لتر" : "Calcium Boron Fertilizer 1L", 
+  img: "images/calsuam.webp", 
+  type: "fert", 
+  price: 225, 
+  description: isArabic ? "يدعم صلابة الثمار ويمنع العيوب." : "Supports fruit firmness and prevents disorders.", 
+  details: isArabic ? "مصمم لتعويض الكالسيوم والبورون في التربة والنبات." : "Formulated to replenish calcium and boron in soil and plants." 
+},
+{ 
+  id: 15, 
+  name: isArabic ? "وصلة حرف T - 50/50/50" : "T Connector - 50/50/50", 
+  img: "images/T-TOOL.jpg", 
+  type: "tools", 
+  price: 150, 
+  description: isArabic ? "وصلة تي للري والتوصيلات." : "T connector for irrigation and piping.", 
+  details: isArabic ? "مصنوعة من مواد متينة للاستخدام الخارجي والداخلي." : "Made from durable materials for indoor and outdoor use." 
+},
+{ 
+  id: 16, 
+  name: isArabic ? "ماكينة تقطيع الخشب" : "Wood Cutting Machine", 
+  img: "images/Wood cutting machine.jpg", 
+  type: "tools", 
+  price: 741000, 
+  description: isArabic ? "ماكينة قوية لتقطيع الأخشاب." : "Powerful machine for wood cutting.", 
+  details: isArabic ? "مناسبة للأعمال الصناعية والورش الكبيرة؛ قدرة عالية ودقة." : "Suitable for industrial workshops; high power and precision." 
+},
+{ 
+  id: 17, 
+  name: isArabic ? "ببلر عادى بالمسمار CRB" : "Standard Bubbler with Screw CRB", 
+  img: "images/buubler.jpg", 
+  type: "tools", 
+  price: 35, 
+  description: isArabic ? "ببلر للري بالتنقيط مع مسمار تثبيت." : "Bubbler for drip irrigation with fixing screw.", 
+  details: isArabic ? "سهل التركيب ومناسب للحدائق الصغيرة والبيوت المحمية." : "Easy to install; ideal for small gardens and greenhouses." 
+},
+{ 
+  id: 18, 
+  name: isArabic ? "وصلة خلخلة 16 / 16" : "16/16 Flushing Connector", 
+  img: "images/Anklet Link.jpg", 
+  type: "tools", 
+  price: 50, 
+  description: isArabic ? "وصلة صغيرة للأنابيب 16 مم." : "Small connector for 16 mm pipes.", 
+  details: isArabic ? "تستخدم لتنظيف أو تفريغ خطوط الري بسهولة." : "Used for flushing or draining irrigation lines easily." 
+},
+{ 
+  id: 19, 
+  name: isArabic ? "كوع دوار نحاس-1 أكوا" : "Rotary Brass Elbow - 1 Aqua", 
+  img: "images/Copper elbow.jpg", 
+  type: "tools", 
+  price: 5500, 
+  description: isArabic ? "كوع نحاس دوار لتوصيلات المياه." : "Rotary brass elbow for water fittings.", 
+  details: isArabic ? "مقاوم للتآكل ومناسب للأنظمة ذات الضغط العالي." : "Corrosion-resistant; suitable for high-pressure systems." 
+},
+{ 
+  id: 20, 
+  name: isArabic ? "طحالب" : "Algae", 
+  img: "images/Fertilizer algae.jpg", 
+  type: "fert", 
+  price: 95, 
+  description: isArabic ? "سماد عضوي من الطحالب البحرية." : "Organic fertilizer from seaweed.", 
+  details: isArabic ? "يعزز صحة التربة ويزيد مقاومة النباتات للإجهاد." : "Improves soil health and increases plant stress resistance." 
+},
+{ 
+  id: 21, 
+  name: isArabic ? "قطعة وصلة اتصال للخرطيم الفلات (كيس 100 قطعة)" : "Flat Hose Connector Piece (Pack of 100)", 
+  img: "images/Hose connector piece.jpg", 
+  type: "tools", 
+  price: 200, 
+  description: isArabic ? "قطع توصيل للخرطوم الفلات بكيس 100." : "Flat hose connectors, pack of 100.", 
+  details: isArabic ? "مناسبة للتركيبات السريعة في أنظمة الري." : "Suitable for quick fittings in irrigation systems." 
+},
+{ 
+  id: 22, 
+  name: isArabic ? "قناع النحال" : "Beekeeper Mask", 
+  img: "images/Beekeeper's mask.jpg", 
+  type: "tools", 
+  price: 350, 
+  description: isArabic ? "قناع حماية للنحالين." : "Protective mask for beekeepers.", 
+  details: isArabic ? "شبك جيد التهوية مع غطاء واقٍ للوجه." : "Well-ventilated mesh with full face protection." 
+},
+{ 
+  id: 23, 
+  name: isArabic ? "شجرة نبق" : "Jujube Tree", 
+  img: "images/Jujube Tree .jpg", 
+  type: "seeds", 
+  price: 350, 
+  description: isArabic ? "شجرة نبق جاهزة للزراعة." : "Jujube tree ready for planting.", 
+  details: isArabic ? "مناسبة للزراعة في الحدائق والمزارع الصغيرة." : "Suitable for gardens and small farms." 
+},
+{ 
+  id: 24, 
+  name: isArabic ? "بذور جزر" : "Carrot Seeds", 
+  img: "images/CarrotSeed.jpg", 
+  type: "seeds", 
+  price: 350, 
+  description: isArabic ? "بذور جزر عالية الإنبات." : "High-germination carrot seeds.", 
+  details: isArabic ? "تعطي محصولاً متجانساً ومقاوماً للأمراض الشائعة." : "Produces uniform crop; resistant to common diseases." 
+},
+{ 
+  id: 25, 
+  name: isArabic ? "بذور ريحان" : "Basil Seeds", 
+  img: "images/Basilseed.jpg", 
+  type: "seeds", 
+  price: 350, 
+  description: isArabic ? "بذور ريحان عطرية." : "Aromatic basil seeds.", 
+  details: isArabic ? "مناسبة للزراعة في الأوعية والحدائق المنزلية." : "Suitable for pots and home gardens." 
+},
+{ 
+  id: 26, 
+  name: isArabic ? "بذور كوسة" : "Zucchini Seeds", 
+  img: "images/Zucchini.jpg", 
+  type: "seeds", 
+  price: 350, 
+  description: isArabic ? "بذور كوسة منتجة وسهلة العناية." : "Productive and easy-care zucchini seeds.", 
+  details: isArabic ? "تعطي ثماراً كبيرة ومستمرة عبر الموسم." : "Yields large fruits continuously through the season." 
+},
+{ 
+  id: 27, 
+  name: isArabic ? "شجرة التوت الأحمر" : "Red Mulberry Tree", 
+  img: "images/Red mulberry tree.jpg", 
+  type: "seeds", 
+  price: 350, 
+  description: isArabic ? "شجرة توت أحمر مثمرة." : "Fruitful red mulberry tree.", 
+  details: isArabic ? "مناسبة للزراعة في المناخ المحلي وتتحمل الجفاف الجزئي." : "Adapted to local climate; tolerates partial drought." 
+},
+{ 
+  id: 28, 
+  name: isArabic ? "بذور فراولة" : "Strawberry Seeds", 
+  img: "images/StrawberrySeed.jpg", 
+  type: "seeds", 
+  price: 350, 
+  description: isArabic ? "بذور فراولة عالية الجودة." : "High-quality strawberry seeds.", 
+  details: isArabic ? "تعطي نباتات منتجة وثمار ذات طعم ممتاز." : "Produces productive plants and flavorful berries." 
+},
+{ 
+  id: 29, 
+  name: isArabic ? "بذور كزبرة" : "Coriander Seeds", 
+  img: "images/CorianderSeed.jpg", 
+  type: "seeds", 
+  price: 350, 
+  description: isArabic ? "بذور كزبرة طازجة." : "Fresh coriander seeds.", 
+  details: isArabic ? "مناسبة للزراعة الموسمية وتستخدم للأوراق والبذور." : "Good for seasonal planting; used for leaves and seeds." 
+},
+{ 
+  id: 30, 
+  name: isArabic ? "مبيد حشري داستر - 500 ملليلتر" : "Duster Insecticide - 500 ml", 
+  img: "images/Duster Insecticide.jpg", 
+  type: "pest", 
+  price: 325, 
+  description: isArabic ? "مبيد حشري للاستخدام العام." : "General-purpose insecticide.", 
+  details: isArabic ? "فعّال ضد مجموعة واسعة من الحشرات؛ اتبع تعليمات الاستخدام." : "Effective against many insects; follow usage instructions." 
+},
+{ 
+  id: 31, 
+  name: isArabic ? "مبيد حشري شالنجر سوبر 24% مركز معلق - 0.5 لتر" : "Challenger Super Insecticide 24% SC - 0.5 L", 
+  img: "images/Challenger Insecticide.jpg", 
+  type: "pest", 
+  price: 450, 
+  description: isArabic ? "مبيد مركز لمعالجة الحشرات." : "Concentrated insecticide for pest control.", 
+  details: isArabic ? "مركز معلق 24%؛ يستخدم بتركيزات محددة حسب المحصول." : "24% suspension concentrate; use specified rates per crop." 
+},
+{ 
+  id: 32, 
+  name: isArabic ? "مبيد حشرى بيرمكتين - 500 مل" : "Permectin Insecticide - 500 ml", 
+  img: "images/Permectin pesticide.jpg", 
+  type: "pest", 
+  price: 300, 
+  description: isArabic ? "مبيد حشري فعال سريع المفعول." : "Fast-acting insecticide.", 
+  details: isArabic ? "مناسب لمكافحة الحشرات القارضة والزاحفة؛ اتبع إرشادات السلامة." : "Good for chewing and crawling pests; follow safety guidelines." 
+},
+{ 
+  id: 33, 
+  name: isArabic ? "مبيد فطرى ميستيك برو - 250 مل" : "Mystic Pro Fungicide - 250 ml", 
+  img: "images/Mystic fungicide.jpg", 
+  type: "pest", 
+  price: 550, 
+  description: isArabic ? "مبيد فطري لحماية المحاصيل." : "Fungicide to protect crops.", 
+  details: isArabic ? "يقي من الأمراض الفطرية الشائعة عند تطبيقه بانتظام." : "Protects against common fungal diseases when applied regularly." 
+},
+{ 
+  id: 34, 
+  name: isArabic ? "مبيد فطري كوليز 30% مركز معلق - 0.25 لتر" : "Colise Fungicide 30% SC - 0.25 L", 
+  img: "images/Fungicide Coliz.jpg", 
+  type: "pest", 
+  price: 350, 
+  description: isArabic ? "مبيد فطري مركز عالي الفعالية." : "High-efficiency concentrated fungicide.", 
+  details: isArabic ? "مركز معلق 30%؛ يستخدم للوقاية والعلاج حسب التعليمات." : "30% SC; used for prevention and treatment per label." 
+},
+{ 
+  id: 35, 
+  name: isArabic ? "مبيد فطري البركة - 500 جرام" : "Al-Birka Fungicide - 500 g", 
+  img: "images/Al-Barakah Fungicide.jpg", 
+  type: "pest", 
+  price: 350, 
+  description: isArabic ? "مبيد فطري مسحوق للرش." : "Powder fungicide for spraying.", 
+  details: isArabic ? "يستخدم لمعالجة الأمراض الفطرية في الحقول والبساتين." : "Used to treat fungal diseases in fields and orchards." 
+},
+{ 
+  id: 37, 
+  name: isArabic ? "سماد يوريا 5 ك" : "Urea Fertilizer 5 kg", 
+  img: "images/Urea fertilizer .jpg", 
+  type: "fert", 
+  price: 300, 
+  description: isArabic ? "سماد نيتروجيني عالي التركيز." : "High-nitrogen fertilizer.", 
+  details: isArabic ? "مثالي لتعزيز النمو الخضري وزيادة محتوى النيتروجين في التربة." : "Ideal for promoting vegetative growth and boosting soil nitrogen." 
+},
+{ 
+  id: 38, 
+  name: isArabic ? "اسمدة مالتي فيد" : "Multi Feed Fertilizers", 
+  img: "images/maltiFertilizer.png", 
+  type: "fert", 
+  price: 250, 
+  description: isArabic ? "مزيج أسمدة متعدد العناصر." : "Multi-nutrient fertilizer blend.", 
+  details: isArabic ? "يوفر عناصر دقيقة ومغذيات أساسية لتحسين صحة النبات." : "Provides micronutrients and essential nutrients to improve plant health." 
+},
+{ 
+  id: 39, 
+  name: isArabic ? "سيتوكينين - 5 جرام" : "Cytokinin - 5 g", 
+  img: "images/Cytokinin Fertilizer.jpg", 
+  type: "fert", 
+  price: 200, 
+  description: isArabic ? "هرمون نباتي لتحفيز النمو." : "Plant hormone to stimulate growth.", 
+  details: isArabic ? "يستخدم بجرعات صغيرة لتحسين التفرع والإزهار." : "Used in small doses to enhance branching and flowering." 
+},
+{ 
+  id: 40, 
+  name: isArabic ? "سماد نيترو ماكس - 0.5 لتر" : "Nitro Max Fertilizer - 0.5 L", 
+  img: "images/Nitera Max Fertilizer.png", 
+  type: "fert", 
+  price: 500, 
+  description: isArabic ? "مغذٍ سائل غني بالنيتروجين." : "Liquid nutrient rich in nitrogen.", 
+  details: isArabic ? "مصمم لتعزيز النمو السريع ورفع إنتاجية المحصول." : "Designed to boost rapid growth and increase crop yield." 
+},
+{ 
+  id: 41, 
+  name: isArabic ? "سماد مركب بورتراك 150 - 100 مللي" : "Portrak 150 Compound Fertilizer - 100 ml", 
+  img: "images/Portrak compound fertilizer.jpg", 
+  type: "fert", 
+  price: 250, 
+  description: isArabic ? "مكمل مغذي مركّز للنبات." : "Concentrated nutritional supplement for plants.", 
+  details: isArabic ? "يحتوي على عناصر متوازنة لتعزيز الصحة العامة للنبات." : "Contains balanced elements to enhance overall plant health." 
+},
+
+
+    
   ]), [isArabic]);
 
   // States
