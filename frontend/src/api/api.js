@@ -1,12 +1,16 @@
 // src/api/api.js
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000";
+// 🔥 بدل localhost → استخدم env
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 const api = axios.create({
   baseURL: BASE_URL,
 });
 
+// =========================
+// Request Interceptor
+// =========================
 api.interceptors.request.use(
   (config) => {
     const token =
@@ -21,13 +25,18 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// =========================
+// Response Interceptor
+// =========================
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
     const isUnauthorized = error?.response?.status === 401;
-    const isRefreshRequest = originalRequest?.url?.includes("/api/token/refresh/");
+    const isRefreshRequest = originalRequest?.url?.includes(
+      "/api/token/refresh/"
+    );
 
     if (isUnauthorized && !originalRequest?._retry && !isRefreshRequest) {
       originalRequest._retry = true;
@@ -39,9 +48,10 @@ api.interceptors.response.use(
       }
 
       try {
-        const res = await axios.post(`${BASE_URL}/api/token/refresh/`, {
-          refresh,
-        });
+        const res = await axios.post(
+          `${BASE_URL}/api/token/refresh/`,
+          { refresh }
+        );
 
         const newAccess = res?.data?.access;
 
@@ -49,14 +59,17 @@ api.interceptors.response.use(
           return Promise.reject(error);
         }
 
+        // 🔥 خزّن التوكن الجديد
         localStorage.setItem("access", newAccess);
         localStorage.setItem("token", newAccess);
 
+        // 🔥 عدّل الهيدر
         originalRequest.headers = originalRequest.headers || {};
         originalRequest.headers.Authorization = `Bearer ${newAccess}`;
 
         return api(originalRequest);
       } catch (refreshError) {
+        // 🔥 لو الريفريش فشل
         localStorage.removeItem("access");
         localStorage.removeItem("token");
         localStorage.removeItem("refresh");
