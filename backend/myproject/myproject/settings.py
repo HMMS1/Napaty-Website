@@ -8,29 +8,31 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# =========================
+# Security
+# =========================
 
-SECRET_KEY = os.getenv(
-    "SECRET_KEY",
-    "django-insecure-local-dev-key-change-this-in-production"
-)
+SECRET_KEY = "django-insecure-local-dev-key-change-this-in-production"
 
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = False
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "127.0.0.1,localhost"
-).split(",")
-
-
-
-
-AI_PREDICT_URL = os.getenv(
-    "AI_PREDICT_URL",
-    "https://katyy20-aii.hf.space/predict"
-)
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "hamzamostafa20.pythonanywhere.com"
+]
 
 
+# =========================
+# AI URL
+# =========================
 
+AI_PREDICT_URL = "https://katyy20-aii.hf.space/predict"
+
+
+# =========================
+# Apps
+# =========================
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -50,7 +52,9 @@ INSTALLED_APPS = [
 ]
 
 
-
+# =========================
+# Middleware
+# =========================
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -70,7 +74,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = "myproject.urls"
 
 
-
+# =========================
+# Templates
+# =========================
 
 TEMPLATES = [
     {
@@ -91,7 +97,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "myproject.wsgi.application"
 
 
-
+# =========================
+# Database
+# =========================
 
 DATABASES = {
     "default": {
@@ -101,7 +109,9 @@ DATABASES = {
 }
 
 
-
+# =========================
+# Password Validation
+# =========================
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,7 +129,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
+# =========================
+# Internationalization
+# =========================
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Africa/Cairo"
@@ -128,6 +140,10 @@ USE_I18N = True
 USE_TZ = True
 
 
+# =========================
+# Static / Media
+# =========================
+
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -135,7 +151,9 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
-
+# =========================
+# REST Framework
+# =========================
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -144,19 +162,22 @@ REST_FRAMEWORK = {
 }
 
 
+# =========================
+# CORS
+# =========================
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 
-CORS_ALLOWED_ORIGINS = os.getenv(
-    "CORS_ALLOWED_ORIGINS",
-    "http://localhost:3000"
-).split(",")
-
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS",
-    "http://localhost:3000"
-).split(",")
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 
-
+# =========================
+# Default ID
+# =========================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
