@@ -14,10 +14,15 @@ import "../style/AgriChat.css";
 const AgriChat = ({ language = "ar" }) => {
   const isArabic = language === "ar";
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
   const [message, setMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isSending, setIsSending] = useState(false);
+
+  // 🔥 API URL
+  const API = process.env.REACT_APP_API_URL;
+
   const [chatMessages, setChatMessages] = useState([
     {
       id: 1,
@@ -40,17 +45,15 @@ const AgriChat = ({ language = "ar" }) => {
     scrollToBottom();
   }, [chatMessages, isTyping]);
 
-const messagesContainerRef = useRef(null);
+  const scrollToBottom = () => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
 
-const scrollToBottom = () => {
-  const container = messagesContainerRef.current;
-  if (!container) return;
-
-  container.scrollTo({
-    top: container.scrollHeight,
-    behavior: "smooth",
-  });
-};
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: "smooth",
+    });
+  };
 
   const quickQuestions = isArabic
     ? [
@@ -122,7 +125,7 @@ const scrollToBottom = () => {
     setIsSending(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/agri-chat/", {
+      const response = await fetch(`${API}/api/agri-chat/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
