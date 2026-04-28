@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FaCloudUploadAlt, FaImage, FaSpinner, FaCheckCircle } from "react-icons/fa";
 import api from "../api/api";
 import "../style/DiseaseDiagnosis.css";
-
+const API = process.env.REACT_APP_API_URL;
 const DiseaseDiagnosis = ({ language = "ar" }) => {
   const isArabic = language === "ar";
 
@@ -315,7 +315,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                   </p>
 
                   <img
-                    src={`http://127.0.0.1:8000${uploadedImagePath}`}
+                    src={`${API}${uploadedImagePath}`}
                     alt="Uploaded"
                     style={{
                       maxWidth: "100%",
