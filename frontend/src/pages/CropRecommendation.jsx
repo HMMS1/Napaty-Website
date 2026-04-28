@@ -13,6 +13,8 @@ import { GiWheat, GiChemicalTank } from "react-icons/gi";
 import { BsCalendar2WeekFill } from "react-icons/bs";
 import "../style/CropRecommendation.css";
 
+const API = process.env.REACT_APP_API_URL;
+
 const CropRecommendation = ({ language = "ar" }) => {
   const isArabic = language === "ar";
 
@@ -189,8 +191,19 @@ const CropRecommendation = ({ language = "ar" }) => {
   };
 
   const validateAdvanced = () => {
-    const requiredFields = ["N", "P", "K", "temperature", "humidity", "rainfall", "ph"];
-    const hasEmptyField = requiredFields.some((field) => advancedForm[field] === "");
+    const requiredFields = [
+      "N",
+      "P",
+      "K",
+      "temperature",
+      "humidity",
+      "rainfall",
+      "ph",
+    ];
+
+    const hasEmptyField = requiredFields.some(
+      (field) => advancedForm[field] === ""
+    );
 
     if (hasEmptyField) {
       setError(
@@ -200,6 +213,7 @@ const CropRecommendation = ({ language = "ar" }) => {
       );
       return false;
     }
+
     return true;
   };
 
@@ -216,8 +230,8 @@ const CropRecommendation = ({ language = "ar" }) => {
     try {
       const url =
         mode === "basic"
-          ? "http://127.0.0.1:8000/api/crop-recommendation/"
-          : "http://127.0.0.1:8000/api/crop-recommendation-advanced/";
+          ? `${API}/api/crop-recommendation/`
+          : `${API}/api/crop-recommendation-advanced/`;
 
       const payload =
         mode === "basic"
@@ -315,7 +329,9 @@ const CropRecommendation = ({ language = "ar" }) => {
               <>
                 <div className="crop-field">
                   <label htmlFor="crop-governorate">
-                    <span className="field-icon"><FaMapMarkerAlt /></span>
+                    <span className="field-icon">
+                      <FaMapMarkerAlt />
+                    </span>
                     {isArabic ? "المحافظة" : "Governorate"}
                   </label>
                   <select
@@ -326,7 +342,9 @@ const CropRecommendation = ({ language = "ar" }) => {
                     disabled={loading}
                   >
                     <option value="">
-                      {isArabic ? "-- اختر المحافظة --" : "-- Select Governorate --"}
+                      {isArabic
+                        ? "-- اختر المحافظة --"
+                        : "-- Select Governorate --"}
                     </option>
                     {governorates.map((g) => (
                       <option key={g.value} value={g.value}>
@@ -338,7 +356,9 @@ const CropRecommendation = ({ language = "ar" }) => {
 
                 <div className="crop-field">
                   <label htmlFor="crop-soil">
-                    <span className="field-icon"><FaSeedling /></span>
+                    <span className="field-icon">
+                      <FaSeedling />
+                    </span>
                     {isArabic ? "نوع التربة" : "Soil Type"}
                   </label>
                   <select
@@ -349,7 +369,9 @@ const CropRecommendation = ({ language = "ar" }) => {
                     disabled={loading}
                   >
                     <option value="">
-                      {isArabic ? "-- اختر نوع التربة --" : "-- Select Soil Type --"}
+                      {isArabic
+                        ? "-- اختر نوع التربة --"
+                        : "-- Select Soil Type --"}
                     </option>
                     {soilTypes.map((s) => (
                       <option key={s.value} value={s.value}>
@@ -361,7 +383,9 @@ const CropRecommendation = ({ language = "ar" }) => {
 
                 <div className="crop-field">
                   <label htmlFor="crop-season">
-                    <span className="field-icon"><BsCalendar2WeekFill /></span>
+                    <span className="field-icon">
+                      <BsCalendar2WeekFill />
+                    </span>
                     {isArabic ? "الفصل" : "Season"}
                   </label>
                   <select
@@ -386,7 +410,9 @@ const CropRecommendation = ({ language = "ar" }) => {
               <>
                 <div className="crop-field">
                   <label htmlFor="advanced-n">
-                    <span className="field-icon"><GiChemicalTank /></span>
+                    <span className="field-icon">
+                      <GiChemicalTank />
+                    </span>
                     {isArabic ? "النيتروجين (N)" : "Nitrogen (N)"}
                   </label>
                   <input
@@ -402,7 +428,9 @@ const CropRecommendation = ({ language = "ar" }) => {
 
                 <div className="crop-field">
                   <label htmlFor="advanced-p">
-                    <span className="field-icon"><GiChemicalTank /></span>
+                    <span className="field-icon">
+                      <GiChemicalTank />
+                    </span>
                     {isArabic ? "الفوسفور (P)" : "Phosphorus (P)"}
                   </label>
                   <input
@@ -418,7 +446,9 @@ const CropRecommendation = ({ language = "ar" }) => {
 
                 <div className="crop-field">
                   <label htmlFor="advanced-k">
-                    <span className="field-icon"><GiChemicalTank /></span>
+                    <span className="field-icon">
+                      <GiChemicalTank />
+                    </span>
                     {isArabic ? "البوتاسيوم (K)" : "Potassium (K)"}
                   </label>
                   <input
@@ -434,7 +464,9 @@ const CropRecommendation = ({ language = "ar" }) => {
 
                 <div className="crop-field">
                   <label htmlFor="advanced-temp">
-                    <span className="field-icon"><FaTemperatureHigh /></span>
+                    <span className="field-icon">
+                      <FaTemperatureHigh />
+                    </span>
                     {isArabic ? "درجة الحرارة" : "Temperature"}
                   </label>
                   <input
@@ -443,15 +475,21 @@ const CropRecommendation = ({ language = "ar" }) => {
                     step="0.1"
                     className="crop-input"
                     value={advancedForm.temperature}
-                    onChange={(e) => handleAdvancedChange("temperature", e.target.value)}
+                    onChange={(e) =>
+                      handleAdvancedChange("temperature", e.target.value)
+                    }
                     disabled={loading}
-                    placeholder={isArabic ? "أدخل درجة الحرارة" : "Enter temperature"}
+                    placeholder={
+                      isArabic ? "أدخل درجة الحرارة" : "Enter temperature"
+                    }
                   />
                 </div>
 
                 <div className="crop-field">
                   <label htmlFor="advanced-humidity">
-                    <span className="field-icon"><FaTint /></span>
+                    <span className="field-icon">
+                      <FaTint />
+                    </span>
                     {isArabic ? "الرطوبة" : "Humidity"}
                   </label>
                   <input
@@ -460,7 +498,9 @@ const CropRecommendation = ({ language = "ar" }) => {
                     step="0.1"
                     className="crop-input"
                     value={advancedForm.humidity}
-                    onChange={(e) => handleAdvancedChange("humidity", e.target.value)}
+                    onChange={(e) =>
+                      handleAdvancedChange("humidity", e.target.value)
+                    }
                     disabled={loading}
                     placeholder={isArabic ? "أدخل الرطوبة" : "Enter humidity"}
                   />
@@ -468,7 +508,9 @@ const CropRecommendation = ({ language = "ar" }) => {
 
                 <div className="crop-field">
                   <label htmlFor="advanced-rainfall">
-                    <span className="field-icon"><FaCloudRain /></span>
+                    <span className="field-icon">
+                      <FaCloudRain />
+                    </span>
                     {isArabic ? "الأمطار" : "Rainfall"}
                   </label>
                   <input
@@ -477,7 +519,9 @@ const CropRecommendation = ({ language = "ar" }) => {
                     step="0.1"
                     className="crop-input"
                     value={advancedForm.rainfall}
-                    onChange={(e) => handleAdvancedChange("rainfall", e.target.value)}
+                    onChange={(e) =>
+                      handleAdvancedChange("rainfall", e.target.value)
+                    }
                     disabled={loading}
                     placeholder={isArabic ? "أدخل الأمطار" : "Enter rainfall"}
                   />
@@ -485,7 +529,9 @@ const CropRecommendation = ({ language = "ar" }) => {
 
                 <div className="crop-field crop-field-wide">
                   <label htmlFor="advanced-ph">
-                    <span className="field-icon"><GiChemicalTank /></span>
+                    <span className="field-icon">
+                      <GiChemicalTank />
+                    </span>
                     {isArabic ? "درجة الحموضة pH" : "pH"}
                   </label>
                   <input
@@ -509,11 +555,7 @@ const CropRecommendation = ({ language = "ar" }) => {
               </div>
             )}
 
-            <button
-              type="submit"
-              className="crop-submit-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="crop-submit-btn" disabled={loading}>
               {loading ? (
                 <>
                   <span
@@ -588,24 +630,35 @@ const CropRecommendation = ({ language = "ar" }) => {
               </div>
             )}
 
-            {result.recommended_crops && result.recommended_crops.length > 0 && (
-              <div className="crop-result-extra">
-                <h4>{isArabic ? "أفضل البدائل المناسبة" : "Top Suitable Alternatives"}</h4>
-                <div className="crop-top-list">
-                  {result.recommended_crops.map((item, index) => (
-                    <div className="crop-top-card" key={`${item.crop}-${index}`}>
-                      <div className="crop-top-rank">#{index + 1}</div>
-                      <div className="crop-top-info">
-                        <div className="crop-top-name">{getCropLabel(item.crop)}</div>
-                        <div className="crop-top-probability">
-                          {isArabic ? "نسبة التوافق" : "Match"}: {item.probability}%
+            {result.recommended_crops &&
+              result.recommended_crops.length > 0 && (
+                <div className="crop-result-extra">
+                  <h4>
+                    {isArabic
+                      ? "أفضل البدائل المناسبة"
+                      : "Top Suitable Alternatives"}
+                  </h4>
+                  <div className="crop-top-list">
+                    {result.recommended_crops.map((item, index) => (
+                      <div
+                        className="crop-top-card"
+                        key={`${item.crop}-${index}`}
+                      >
+                        <div className="crop-top-rank">#{index + 1}</div>
+                        <div className="crop-top-info">
+                          <div className="crop-top-name">
+                            {getCropLabel(item.crop)}
+                          </div>
+                          <div className="crop-top-probability">
+                            {isArabic ? "نسبة التوافق" : "Match"}:{" "}
+                            {item.probability}%
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {result.input_used && (
               <div className="crop-result-extra">
@@ -640,21 +693,24 @@ const CropRecommendation = ({ language = "ar" }) => {
                   {result.input_used.temperature !== undefined && (
                     <span className="crop-result-tag">
                       <FaTemperatureHigh />
-                      {isArabic ? "الحرارة" : "Temperature"}: {result.input_used.temperature}
+                      {isArabic ? "الحرارة" : "Temperature"}:{" "}
+                      {result.input_used.temperature}
                     </span>
                   )}
 
                   {result.input_used.humidity !== undefined && (
                     <span className="crop-result-tag">
                       <FaTint />
-                      {isArabic ? "الرطوبة" : "Humidity"}: {result.input_used.humidity}
+                      {isArabic ? "الرطوبة" : "Humidity"}:{" "}
+                      {result.input_used.humidity}
                     </span>
                   )}
 
                   {result.input_used.rainfall !== undefined && (
                     <span className="crop-result-tag">
                       <FaCloudRain />
-                      {isArabic ? "الأمطار" : "Rainfall"}: {result.input_used.rainfall}
+                      {isArabic ? "الأمطار" : "Rainfall"}:{" "}
+                      {result.input_used.rainfall}
                     </span>
                   )}
 
@@ -668,7 +724,8 @@ const CropRecommendation = ({ language = "ar" }) => {
                   {result.input_used.sunlight !== undefined && (
                     <span className="crop-result-tag">
                       <FaSun />
-                      {isArabic ? "ساعات الشمس" : "Sunlight"}: {result.input_used.sunlight}
+                      {isArabic ? "ساعات الشمس" : "Sunlight"}:{" "}
+                      {result.input_used.sunlight}
                     </span>
                   )}
                 </div>
