@@ -120,8 +120,8 @@ const SoilAnalysis = ({ language = 'ar' }) => {
       console.error(error);
       alert(
         isArabic
-          ? 'حصل خطأ في الاتصال بالسيرفر. تأكد أن Django يعمل على بورت 8000'
-          : 'A server connection error occurred. Make sure Django is running on port 8000'
+          ? 'حصل خطأ في الاتصال بالسيرفر.  Django   '
+          : 'A server connection error occurred.'
       );
     } finally {
       setIsLoading(false);
