@@ -54,9 +54,10 @@ const SoilAnalysis = ({ language = 'ar' }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          soil_type: selectedSoilType
-        }),
+       body: JSON.stringify({
+  soil_type: selectedSoilType,
+  language: language
+}),
       });
 
       if (response.status === 401) {
