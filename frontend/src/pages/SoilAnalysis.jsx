@@ -11,26 +11,17 @@ const SoilAnalysis = ({ language = 'ar' }) => {
   const [analysisResult, setAnalysisResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 🔥 NEW: states للترجمة
   const [translatedPlants, setTranslatedPlants] = useState([]);
   const [translatedFertilizers, setTranslatedFertilizers] = useState([]);
   const [translatedSoil, setTranslatedSoil] = useState('');
 
-  // 🔥 NEW: cache
-  const cache = {};
-
   const translateText = async (text, targetLang) => {
-    const key = text + targetLang;
-    if (cache[key]) return cache[key];
-
     try {
       const res = await fetch(
         `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ar|${targetLang}`
       );
       const data = await res.json();
-      const translated = data.responseData.translatedText;
-      cache[key] = translated;
-      return translated;
+      return data.responseData.translatedText || text;
     } catch {
       return text;
     }
@@ -98,7 +89,6 @@ const SoilAnalysis = ({ language = 'ar' }) => {
       }
 
       const data = await response.json();
-      console.log("API Response:", data);
 
       const result = {
         soilType: data.soil_type || data.soilType || (isArabic ? 'غير معروف' : 'Unknown'),
@@ -116,19 +106,17 @@ const SoilAnalysis = ({ language = 'ar' }) => {
 
       setAnalysisResult(result);
 
-    } catch (error) {
-      console.error(error);
+    } catch {
       alert(
         isArabic
-          ? 'حصل خطأ في الاتصال بالسيرفر.  Django   '
-          : 'A server connection error occurred.'
+          ? 'حصل خطأ في الاتصال بالسيرفر'
+          : 'A server connection error occurred'
       );
     } finally {
       setIsLoading(false);
     }
   };
 
-  // 🔥 NEW: ترجمة النتائج لما اللغة EN
   useEffect(() => {
     const translateAll = async () => {
       if (!analysisResult) return;
