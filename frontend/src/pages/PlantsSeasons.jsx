@@ -49,7 +49,7 @@ const CropsPage = ({ language = 'ar' }) => {
       img: "/images/Cucumber.jpg",
       season: "Spring",
       seasonText: isArabic ? "فبراير - أكتوبر" : "February - October",
-      modalImg: "/images/cucumber.jpg",
+      modalImg: "/images/Cucumber.jpg",
       growth: isArabic ? "45 - 60 يوم" : "45 - 60 days",
       fertilizer: isArabic ? "سماد عضوي + نيتروجين + بوتاسيوم" : "Organic manure + nitrogen + potassium",
       totalCost: 105000,
