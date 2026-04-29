@@ -54,10 +54,10 @@ const SoilAnalysis = ({ language = 'ar' }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          soil_type: selectedSoilType,
-          language: language
-        }),
+       body: JSON.stringify({
+  soil_type: selectedSoilType,
+  language: language
+}),
       });
 
       if (response.status === 401) {
@@ -74,11 +74,20 @@ const SoilAnalysis = ({ language = 'ar' }) => {
       }
 
       const data = await response.json();
+      console.log("API Response:", data);
 
       setAnalysisResult({
         soilType: data.soil_type || data.soilType || (isArabic ? 'غير معروف' : 'Unknown'),
-        plants: Array.isArray(data.plants) ? data.plants : [],
-        fertilizers: Array.isArray(data.fertilizers) ? data.fertilizers : []
+        plants: Array.isArray(data.plants)
+          ? data.plants
+          : typeof data.plants === 'string'
+          ? data.plants.split(/،|,/)
+          : [],
+        fertilizers: Array.isArray(data.fertilizers)
+          ? data.fertilizers
+          : typeof data.fertilizers === 'string'
+          ? data.fertilizers.split(/،|,/)
+          : []
       });
 
     } catch (error) {
