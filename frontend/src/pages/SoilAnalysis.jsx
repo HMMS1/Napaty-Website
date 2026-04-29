@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaSeedling, FaCheckCircle, FaLeaf } from 'react-icons/fa';
 import "../style/SoilAnalysis.css";
 
@@ -10,22 +10,6 @@ const SoilAnalysis = ({ language = 'ar' }) => {
   const [selectedSoilType, setSelectedSoilType] = useState('');
   const [analysisResult, setAnalysisResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [translatedPlants, setTranslatedPlants] = useState([]);
-  const [translatedFertilizers, setTranslatedFertilizers] = useState([]);
-  const [translatedSoil, setTranslatedSoil] = useState('');
-
-  const translateText = async (text, targetLang) => {
-    try {
-      const res = await fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ar|${targetLang}`
-      );
-      const data = await res.json();
-      return data.responseData.translatedText || text;
-    } catch {
-      return text;
-    }
-  };
 
   const soilTypes = [
     {
@@ -89,8 +73,9 @@ const SoilAnalysis = ({ language = 'ar' }) => {
       }
 
       const data = await response.json();
+      console.log("API Response:", data);
 
-      const result = {
+      setAnalysisResult({
         soilType: data.soil_type || data.soilType || (isArabic ? 'غير معروف' : 'Unknown'),
         plants: Array.isArray(data.plants)
           ? data.plants
@@ -102,48 +87,19 @@ const SoilAnalysis = ({ language = 'ar' }) => {
           : typeof data.fertilizers === 'string'
           ? data.fertilizers.split(/،|,/)
           : []
-      };
+      });
 
-      setAnalysisResult(result);
-
-    } catch {
+    } catch (error) {
+      console.error(error);
       alert(
         isArabic
-          ? 'حصل خطأ في الاتصال بالسيرفر'
-          : 'A server connection error occurred'
+          ? 'حصل خطأ في الاتصال بالسيرفر. تأكد أن Django يعمل على بورت 8000'
+          : 'A server connection error occurred. Make sure Django is running on port 8000'
       );
     } finally {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    const translateAll = async () => {
-      if (!analysisResult) return;
-
-      if (language === 'en') {
-        const plants = await Promise.all(
-          analysisResult.plants.map(p => translateText(p, 'en'))
-        );
-
-        const fertilizers = await Promise.all(
-          analysisResult.fertilizers.map(f => translateText(f, 'en'))
-        );
-
-        const soil = await translateText(analysisResult.soilType, 'en');
-
-        setTranslatedPlants(plants);
-        setTranslatedFertilizers(fertilizers);
-        setTranslatedSoil(soil);
-      } else {
-        setTranslatedPlants(analysisResult.plants);
-        setTranslatedFertilizers(analysisResult.fertilizers);
-        setTranslatedSoil(analysisResult.soilType);
-      }
-    };
-
-    translateAll();
-  }, [analysisResult, language]);
 
   return (
     <div className="page-container">
@@ -219,7 +175,7 @@ const SoilAnalysis = ({ language = 'ar' }) => {
             <div className="soil-result-card">
               <div className="soil-type-banner">
                 <h4>
-                  {isArabic ? 'نوع التربة:' : 'Soil Type:'} {translatedSoil}
+                  {isArabic ? 'نوع التربة:' : 'Soil Type:'} {analysisResult.soilType}
                 </h4>
               </div>
 
@@ -227,8 +183,8 @@ const SoilAnalysis = ({ language = 'ar' }) => {
                 <div className="recommendation-card">
                   <h5><FaLeaf /> {isArabic ? 'المحاصيل المناسبة' : 'Suitable Crops'}</h5>
                   <div className="list">
-                    {translatedPlants.length > 0 ? (
-                      translatedPlants.map((plant, idx) => (
+                    {analysisResult.plants.length > 0 ? (
+                      analysisResult.plants.map((plant, idx) => (
                         <div key={idx} className="list-item">
                           <span>•</span> {plant}
                         </div>
@@ -242,8 +198,8 @@ const SoilAnalysis = ({ language = 'ar' }) => {
                 <div className="recommendation-card">
                   <h5>{isArabic ? 'الأسمدة المناسبة' : 'Suitable Fertilizers'}</h5>
                   <div className="list">
-                    {translatedFertilizers.length > 0 ? (
-                      translatedFertilizers.map((fertilizer, idx) => (
+                    {analysisResult.fertilizers.length > 0 ? (
+                      analysisResult.fertilizers.map((fertilizer, idx) => (
                         <div key={idx} className="list-item">
                           <span>•</span> {fertilizer}
                         </div>
