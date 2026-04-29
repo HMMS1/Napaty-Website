@@ -46,7 +46,7 @@ const CropsPage = ({ language = 'ar' }) => {
     {
       id: 2,
       name: isArabic ? "الخيار" : "Cucumber",
-      img: "/images/cucumber.jpg",
+      img: "/images/Cucumber.jpg",
       season: "Spring",
       seasonText: isArabic ? "فبراير - أكتوبر" : "February - October",
       modalImg: "/images/cucumber.jpg",
