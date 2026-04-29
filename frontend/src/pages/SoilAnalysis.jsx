@@ -11,6 +11,14 @@ const SoilAnalysis = ({ language = 'ar' }) => {
   const [analysisResult, setAnalysisResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const currentResult = analysisResult?.translations?.[language]
+    ? {
+        soilType: analysisResult.translations[language].soil_type,
+        plants: analysisResult.translations[language].plants,
+        fertilizers: analysisResult.translations[language].fertilizers,
+      }
+    : analysisResult;
+
   const soilTypes = [
     {
       id: 'sandy',
@@ -54,10 +62,10 @@ const SoilAnalysis = ({ language = 'ar' }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-       body: JSON.stringify({
-  soil_type: selectedSoilType,
-  language: language
-}),
+        body: JSON.stringify({
+          soil_type: selectedSoilType,
+          language: language
+        }),
       });
 
       if (response.status === 401) {
@@ -74,20 +82,12 @@ const SoilAnalysis = ({ language = 'ar' }) => {
       }
 
       const data = await response.json();
-      console.log("API Response:", data);
 
       setAnalysisResult({
         soilType: data.soil_type || data.soilType || (isArabic ? 'غير معروف' : 'Unknown'),
-        plants: Array.isArray(data.plants)
-          ? data.plants
-          : typeof data.plants === 'string'
-          ? data.plants.split(/،|,/)
-          : [],
-        fertilizers: Array.isArray(data.fertilizers)
-          ? data.fertilizers
-          : typeof data.fertilizers === 'string'
-          ? data.fertilizers.split(/،|,/)
-          : []
+        plants: Array.isArray(data.plants) ? data.plants : [],
+        fertilizers: Array.isArray(data.fertilizers) ? data.fertilizers : [],
+        translations: data.translations || null
       });
 
     } catch (error) {
@@ -166,7 +166,7 @@ const SoilAnalysis = ({ language = 'ar' }) => {
           </div>
         </div>
 
-        {analysisResult && (
+        {currentResult && (
           <div className="result-section">
             <div className="result-header">
               <FaCheckCircle className="success-icon" />
@@ -176,7 +176,7 @@ const SoilAnalysis = ({ language = 'ar' }) => {
             <div className="soil-result-card">
               <div className="soil-type-banner">
                 <h4>
-                  {isArabic ? 'نوع التربة:' : 'Soil Type:'} {analysisResult.soilType}
+                  {isArabic ? 'نوع التربة:' : 'Soil Type:'} {currentResult.soilType}
                 </h4>
               </div>
 
@@ -184,8 +184,8 @@ const SoilAnalysis = ({ language = 'ar' }) => {
                 <div className="recommendation-card">
                   <h5><FaLeaf /> {isArabic ? 'المحاصيل المناسبة' : 'Suitable Crops'}</h5>
                   <div className="list">
-                    {analysisResult.plants.length > 0 ? (
-                      analysisResult.plants.map((plant, idx) => (
+                    {currentResult.plants.length > 0 ? (
+                      currentResult.plants.map((plant, idx) => (
                         <div key={idx} className="list-item">
                           <span>•</span> {plant}
                         </div>
@@ -199,8 +199,8 @@ const SoilAnalysis = ({ language = 'ar' }) => {
                 <div className="recommendation-card">
                   <h5>{isArabic ? 'الأسمدة المناسبة' : 'Suitable Fertilizers'}</h5>
                   <div className="list">
-                    {analysisResult.fertilizers.length > 0 ? (
-                      analysisResult.fertilizers.map((fertilizer, idx) => (
+                    {currentResult.fertilizers.length > 0 ? (
+                      currentResult.fertilizers.map((fertilizer, idx) => (
                         <div key={idx} className="list-item">
                           <span>•</span> {fertilizer}
                         </div>
