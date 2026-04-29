@@ -450,9 +450,9 @@ const ShoppingPage = ({ language = 'ar' }) => {
   const paymentMethods = useMemo(() => ([
     { id: 'vodafone', namee: 'Vodafone Cash', image: '/images/vodafone.png',  color: 'text-danger' },
     { id: 'We',       namee: 'WePay',         image: '/images/we.png',        color: 'text-danger' },
-    { id: 'bank',     namee: 'Visa',          image: '/images/visaa.PNG',     color: 'text-primary' },
-    { id: 'instapay', namee: 'InstaPay',      image: '/images/instapay.PNG',  color: 'text-purple' },
-    { id: 'visa',     namee: 'FawryPay',      image: '/images/fawry.PNG',     color: 'text-info' },
+    { id: 'bank',     namee: 'Visa',          image: '/images/visaa.png',     color: 'text-primary' },
+    { id: 'instapay', namee: 'InstaPay',      image: '/images/instapay.png',  color: 'text-purple' },
+    { id: 'visa',     namee: 'FawryPay',      image: '/images/fawry.png',     color: 'text-info' },
     { id: 'etisalat', namee: 'etisalat cash', image: '/images/etisalat.png',  color: 'text-danger' },
   ]), []);
 
