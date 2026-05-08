@@ -170,30 +170,21 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
 
       <div className="diagnosis-container">
         <div className="upload-section">
-          <div className="model-switcher">
-            <span className="model-switcher-label">Model</span>
+       <div className="model-select-wrapper">
+  <label htmlFor="model_version">Model</label>
 
-            <div className="model-tabs">
-              <button
-                type="button"
-                className={`model-tab ${selectedModel === "7.1" ? "active" : ""}`}
-                onClick={() => setSelectedModel("7.1")}
-                disabled={isLoading}
-              >
-                7.1
-              </button>
-
-              <button
-                type="button"
-                className={`model-tab ${selectedModel === "7.2" ? "active" : ""}`}
-                onClick={() => setSelectedModel("7.2")}
-                disabled={isLoading}
-              >
-                7.2
-              </button>
-            </div>
-          </div>
-
+  <div className="model-select-control">
+    <select
+      id="model_version"
+      value={selectedModel}
+      onChange={(e) => setSelectedModel(e.target.value)}
+      disabled={isLoading}
+    >
+      <option value="7.1">7.1</option>
+      <option value="7.2">7.2</option>
+    </select>
+  </div>
+</div>
           <div
             className={`upload-area ${isDragging ? "dragging" : ""} ${
               selectedImage ? "has-image" : ""
