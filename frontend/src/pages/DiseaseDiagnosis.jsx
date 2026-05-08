@@ -1,4 +1,3 @@
-// src/pages/DiseaseDiagnosis.jsx
 import React, { useState } from "react";
 import { FaCloudUploadAlt, FaImage, FaSpinner, FaCheckCircle } from "react-icons/fa";
 import api from "../api/api";
@@ -172,17 +171,27 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
       <div className="diagnosis-container">
         <div className="upload-section">
           <div className="model-switcher">
-            <label htmlFor="model_version">Model</label>
+            <span className="model-switcher-label">Model</span>
 
-            <select
-              id="model_version"
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              disabled={isLoading}
-            >
-              <option value="7.1">7.1</option>
-              <option value="7.2">7.2</option>
-            </select>
+            <div className="model-tabs">
+              <button
+                type="button"
+                className={`model-tab ${selectedModel === "7.1" ? "active" : ""}`}
+                onClick={() => setSelectedModel("7.1")}
+                disabled={isLoading}
+              >
+                7.1
+              </button>
+
+              <button
+                type="button"
+                className={`model-tab ${selectedModel === "7.2" ? "active" : ""}`}
+                onClick={() => setSelectedModel("7.2")}
+                disabled={isLoading}
+              >
+                7.2
+              </button>
+            </div>
           </div>
 
           <div
