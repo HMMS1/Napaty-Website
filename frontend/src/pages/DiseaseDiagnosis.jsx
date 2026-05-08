@@ -11,9 +11,12 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedModel, setSelectedModel] = useState("7.1");
+  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+
+  const modelOptions = ["7.1", "7.2"];
 
   const getLocalizedMessage = (message) => {
     if (!message) {
@@ -92,6 +95,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
 
     setIsLoading(true);
     setResult(null);
+    setIsModelDropdownOpen(false);
 
     try {
       const formData = new FormData();
@@ -156,6 +160,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
       : result?.data?.prediction?.en || result?.data?.prediction;
 
   const aiResult = result?.data?.ai_result;
+  const topResults = aiResult?.raw_response?.top5?.slice(0, 4) || [];
 
   return (
     <div className="page-container">
@@ -170,21 +175,42 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
 
       <div className="diagnosis-container">
         <div className="upload-section">
-       <div className="model-select-wrapper">
-  <label htmlFor="model_version">Model</label>
+          <div className="model-select-wrapper">
+            <span className="model-select-label">Model</span>
 
-  <div className="model-select-control">
-    <select
-      id="model_version"
-      value={selectedModel}
-      onChange={(e) => setSelectedModel(e.target.value)}
-      disabled={isLoading}
-    >
-      <option value="7.1">7.1</option>
-      <option value="7.2">7.2</option>
-    </select>
-  </div>
-</div>
+            <div className={`custom-model-select ${isModelDropdownOpen ? "open" : ""}`}>
+              <button
+                type="button"
+                className="custom-model-trigger"
+                onClick={() => !isLoading && setIsModelDropdownOpen((prev) => !prev)}
+                disabled={isLoading}
+              >
+                <span>{selectedModel}</span>
+                <span className="custom-model-arrow">⌄</span>
+              </button>
+
+              {isModelDropdownOpen && (
+                <div className="custom-model-menu">
+                  {modelOptions.map((model) => (
+                    <button
+                      key={model}
+                      type="button"
+                      className={`custom-model-option ${
+                        selectedModel === model ? "active" : ""
+                      }`}
+                      onClick={() => {
+                        setSelectedModel(model);
+                        setIsModelDropdownOpen(false);
+                      }}
+                    >
+                      {model}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
           <div
             className={`upload-area ${isDragging ? "dragging" : ""} ${
               selectedImage ? "has-image" : ""
@@ -327,6 +353,36 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                       <b>{isArabic ? "نسبة الثقة:" : "Confidence:"}</b>{" "}
                       {aiResult.confidence_percent}%
                     </p>
+                  )}
+
+                  {selectedModel === "7.2" && topResults.length > 0 && (
+                    <div className="top-predictions-box">
+                      <h4>
+                        {isArabic
+                          ? "أقوى 4 نتائج من الموديل المتقدم"
+                          : "Top 4 Advanced Model Results"}
+                      </h4>
+
+                      <div className="top-predictions-list">
+                        {topResults.map((item, index) => (
+                          <div className="top-prediction-item" key={index}>
+                            <span className="top-prediction-rank">
+                              #{index + 1}
+                            </span>
+
+                            <div className="top-prediction-content">
+                              <strong>
+                                {item?.label?.plant} - {item?.label?.disease}
+                              </strong>
+                              <small>
+                                {isArabic ? "نسبة الثقة" : "Confidence"}:{" "}
+                                {item?.confidence}%
+                              </small>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </>
               )}
