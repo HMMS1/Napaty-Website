@@ -170,7 +170,7 @@ const SoilAnalysis = ({ language = 'ar' }) => {
           <div className="result-section">
             <div className="result-header">
               <FaCheckCircle className="success-icon" />
-              <h3>{isArabic ? 'النتائج =' : 'Results'}</h3>
+              <h3>{isArabic ? 'النتائج ' : 'Results'}</h3>
             </div>
 
             <div className="soil-result-card">
