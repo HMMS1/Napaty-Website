@@ -393,8 +393,8 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     <div className="top-predictions-box">
                       <h4>
                         {isArabic
-                          ? "أقوى 4 نتائج من الموديل المتقدم"
-                          : "Top 4 Advanced Model Results"}
+                          ? "أقوى 4 نتائج من موديل 7.2"
+                          : "Top 4 results from Model 7.2"}
                       </h4>
 
                       <div className="top-predictions-list">
