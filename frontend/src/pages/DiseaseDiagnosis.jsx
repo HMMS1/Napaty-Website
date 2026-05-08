@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaCloudUploadAlt, FaImage, FaSpinner, FaCheckCircle } from "react-icons/fa";
 import api from "../api/api";
 import "../style/DiseaseDiagnosis.css";
+
 const API = process.env.REACT_APP_API_URL;
 
 const DiseaseDiagnosis = ({ language = "ar" }) => {
@@ -170,10 +171,8 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
 
       <div className="diagnosis-container">
         <div className="upload-section">
-          <div className="model-select-box">
-            <label htmlFor="model_version">
-              {isArabic ? "اختر إصدار نموذج الذكاء الاصطناعي" : "Choose AI Model Version"}
-            </label>
+          <div className="model-switcher">
+            <label htmlFor="model_version">Model</label>
 
             <select
               id="model_version"
@@ -181,12 +180,8 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
               onChange={(e) => setSelectedModel(e.target.value)}
               disabled={isLoading}
             >
-              <option value="7.1">
-                {isArabic ? "Model v7.1 - النموذج الحالي" : "Model v7.1 - Current Model"}
-              </option>
-              <option value="7.2">
-                {isArabic ? "Model v7.2 - النموذج المتقدم" : "Model v7.2 - Advanced Model"}
-              </option>
+              <option value="7.1">7.1</option>
+              <option value="7.2">7.2</option>
             </select>
           </div>
 
