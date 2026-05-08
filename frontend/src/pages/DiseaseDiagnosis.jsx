@@ -4,11 +4,13 @@ import { FaCloudUploadAlt, FaImage, FaSpinner, FaCheckCircle } from "react-icons
 import api from "../api/api";
 import "../style/DiseaseDiagnosis.css";
 const API = process.env.REACT_APP_API_URL;
+
 const DiseaseDiagnosis = ({ language = "ar" }) => {
   const isArabic = language === "ar";
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedModel, setSelectedModel] = useState("7.1");
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -94,6 +96,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
     try {
       const formData = new FormData();
       formData.append("image", selectedFile);
+      formData.append("model_version", selectedModel);
 
       const res = await api.post("/api/diagnosis/upload/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -167,6 +170,26 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
 
       <div className="diagnosis-container">
         <div className="upload-section">
+          <div className="model-select-box">
+            <label htmlFor="model_version">
+              {isArabic ? "اختر إصدار نموذج الذكاء الاصطناعي" : "Choose AI Model Version"}
+            </label>
+
+            <select
+              id="model_version"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              disabled={isLoading}
+            >
+              <option value="7.1">
+                {isArabic ? "Model v7.1 - النموذج الحالي" : "Model v7.1 - Current Model"}
+              </option>
+              <option value="7.2">
+                {isArabic ? "Model v7.2 - النموذج المتقدم" : "Model v7.2 - Advanced Model"}
+              </option>
+            </select>
+          </div>
+
           <div
             className={`upload-area ${isDragging ? "dragging" : ""} ${
               selectedImage ? "has-image" : ""
@@ -276,6 +299,11 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
               {prediction && (
                 <>
                   <hr />
+
+                  <p>
+                    <b>{isArabic ? "الموديل المستخدم:" : "Used Model:"}</b>{" "}
+                    {selectedModel}
+                  </p>
 
                   <p>
                     <b>{isArabic ? "النبات:" : "Plant:"}</b>{" "}
