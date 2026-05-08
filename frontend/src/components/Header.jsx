@@ -106,7 +106,7 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     {
       path: "/soil-analysis",
       icon: <FaFlask />,
-      label: isArabic ? "تحليل التربة" : "Soil Analysis",
+      label: isArabic ? "انواع التربة" : "Soil Types",
       requiresAuth: false,
     },
     {
