@@ -107,7 +107,7 @@ const SoilAnalysis = ({ language = 'ar' }) => {
       <div className="page-header">
         <h2>
           {isArabic
-            ? 'تحليل التربة وتوصية المحاصيل'
+            ? 'انواع التربة وتوصية المحاصيل'
             : 'Soil Analysis and Crop Recommendation'}
         </h2>
         <p>
@@ -170,7 +170,7 @@ const SoilAnalysis = ({ language = 'ar' }) => {
           <div className="result-section">
             <div className="result-header">
               <FaCheckCircle className="success-icon" />
-              <h3>{isArabic ? 'نتائج التحليل' : 'Analysis Results'}</h3>
+              <h3>{isArabic ? 'النتائج =' : 'Results'}</h3>
             </div>
 
             <div className="soil-result-card">
