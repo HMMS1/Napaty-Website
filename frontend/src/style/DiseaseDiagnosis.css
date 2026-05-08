@@ -542,61 +542,50 @@
   }
 }
 
-.model-select-box {
-  max-width: 520px;
-  margin: 0 auto 1.5rem;
-  text-align: start;
-  background: rgba(250, 252, 250, 0.92);
-  border: 1px solid rgba(42, 140, 74, 0.1);
-  border-radius: 18px;
-  padding: 1.2rem;
-  box-shadow: 0 8px 20px rgba(42, 140, 74, 0.06);
+.model-switcher {
+  width: fit-content;
+  margin: 0 0 1.2rem auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(42, 140, 74, 0.14);
+  border-radius: 999px;
+  padding: 8px 10px 8px 14px;
+  box-shadow: 0 8px 18px rgba(42, 140, 74, 0.08);
 }
 
-.model-select-box label {
-  display: block;
+.model-switcher label {
   color: var(--primary-color);
-  font-weight: 700;
-  margin-bottom: 0.7rem;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 0.9rem;
 }
 
-.model-select-box select {
-  width: 100%;
+.model-switcher select {
+  min-width: 74px;
   border: 1px solid rgba(42, 140, 74, 0.18);
-  border-radius: 14px;
-  padding: 13px 14px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #444;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: #fff;
+  color: #2b2b2b;
+  font-size: 0.9rem;
+  font-weight: 800;
   outline: none;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.model-select-box select:focus {
+.model-switcher select:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(42, 140, 74, 0.08);
+  box-shadow: 0 0 0 3px rgba(42, 140, 74, 0.08);
 }
 
-.model-select-box select:disabled {
+.model-switcher select:disabled {
   opacity: 0.65;
   cursor: not-allowed;
 }
 
 @media (max-width: 480px) {
-  .model-select-box {
-    padding: 1rem;
-    border-radius: 16px;
-  }
-
-  .model-select-box label {
-    font-size: 0.92rem;
-  }
-
-  .model-select-box select {
-    font-size: 0.9rem;
-    padding: 12px;
+  .model-switcher {
+    margin: 0 0 1rem auto;
   }
 }
