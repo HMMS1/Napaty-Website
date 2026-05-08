@@ -546,9 +546,6 @@
   position: relative;
 }
 
-.upload-section {
-  position: relative;
-}
 
 .model-switcher {
   position: absolute;
@@ -631,3 +628,6 @@
     font-size: 0.82rem;
   }
 }
+
+
+
