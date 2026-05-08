@@ -546,88 +546,88 @@
   position: relative;
 }
 
+.upload-section {
+  position: relative;
+}
+
 .model-switcher {
   position: absolute;
   top: 18px;
   left: 18px;
+  z-index: 20;
 
   display: flex;
   align-items: center;
   gap: 10px;
-
-  z-index: 20;
 }
 
-.model-switcher label {
+.model-switcher-label {
   color: var(--primary-color);
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 
-.model-switcher select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+.model-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 
-  min-width: 90px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(42, 140, 74, 0.16);
+  border-radius: 999px;
+  padding: 4px;
 
+  box-shadow: 0 8px 18px rgba(42, 140, 74, 0.08);
+}
+
+.model-tab {
   border: none;
   outline: none;
+  background: transparent;
 
-  border-radius: 16px;
-
-  padding: 10px 38px 10px 16px;
-
-  background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
-  color: white;
-
-  font-size: 0.95rem;
+  color: #2e7d32;
   font-weight: 800;
+  font-size: 0.9rem;
+
+  padding: 8px 16px;
+  border-radius: 999px;
 
   cursor: pointer;
-
-  box-shadow: 0 8px 20px rgba(42, 140, 74, 0.22);
-
   transition: all 0.25s ease;
-
-  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' viewBox='0 0 20 20' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M5.5 7l4.5 4.5L14.5 7'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
 }
 
-.model-switcher select:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(42, 140, 74, 0.3);
+.model-tab.active {
+  background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+  color: white;
+  box-shadow: 0 6px 14px rgba(42, 140, 74, 0.22);
 }
 
-.model-switcher select:focus {
-  box-shadow: 0 0 0 4px rgba(67, 160, 71, 0.15);
+.model-tab:hover:not(:disabled) {
+  background: rgba(42, 140, 74, 0.08);
 }
 
-.model-switcher select:disabled {
-  opacity: 0.7;
+.model-tab.active:hover:not(:disabled) {
+  background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+}
+
+.model-tab:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
-}
-
-.model-switcher select option {
-  background: #ffffff;
-  color: #222;
-  font-weight: 700;
 }
 
 @media (max-width: 480px) {
   .model-switcher {
     top: 12px;
     left: 12px;
+    gap: 7px;
   }
 
-  .model-switcher select {
-    min-width: 78px;
-    font-size: 0.85rem;
-    padding: 8px 34px 8px 14px;
+  .model-tab {
+    padding: 7px 13px;
+    font-size: 0.82rem;
   }
 
-  .model-switcher label {
-    font-size: 0.85rem;
+  .model-switcher-label {
+    font-size: 0.82rem;
   }
 }
