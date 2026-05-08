@@ -18,6 +18,40 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
 
   const modelOptions = ["7.1", "7.2"];
 
+  const translateTopResult = (text) => {
+    if (!text) return "";
+
+    const map = {
+      Potato: "بطاطس",
+      Tomato: "طماطم",
+      Grape: "عنب",
+      Apple: "تفاح",
+      Corn: "ذرة",
+      BellPepper: "فلفل",
+      Pepper: "فلفل",
+
+      Healthy: "سليم",
+      "Late Blight": "اللفحة المتأخرة",
+      "Early Blight": "اللفحة المبكرة",
+      "Bacterial Spot": "تبقع بكتيري",
+      "Leaf Mold": "عفن الأوراق",
+      "Septoria Leaf Spot": "تبقع أوراق السبتوريا",
+      "Mosaic Virus": "فيروس الموزايك",
+      "Yellow Leaf Curl Virus": "فيروس تجعد واصفرار الأوراق",
+      Scab: "الجرب",
+      "Cedar Rust": "صدأ الأرز",
+      "Black Rot": "العفن الأسود",
+      "Gray Leaf Spot": "تبقع الأوراق الرمادي",
+      "Common Rust": "الصدأ الشائع",
+      "Northern Leaf Blight": "لفحة الأوراق الشمالية",
+      "Target Spot": "تبقع الهدف",
+      Rust: "الصدأ",
+      Mildew: "البياض الدقيقي",
+    };
+
+    return map[text] || text;
+  };
+
   const getLocalizedMessage = (message) => {
     if (!message) {
       return isArabic ? "تم تشخيص الصورة بنجاح" : "Image diagnosed successfully";
@@ -348,7 +382,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     </p>
                   )}
 
-                  {aiResult?.confidence_percent && (
+                  {selectedModel === "7.2" && aiResult?.confidence_percent && (
                     <p>
                       <b>{isArabic ? "نسبة الثقة:" : "Confidence:"}</b>{" "}
                       {aiResult.confidence_percent}%
@@ -364,23 +398,31 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                       </h4>
 
                       <div className="top-predictions-list">
-                        {topResults.map((item, index) => (
-                          <div className="top-prediction-item" key={index}>
-                            <span className="top-prediction-rank">
-                              #{index + 1}
-                            </span>
+                        {topResults.map((item, index) => {
+                          const plant = item?.label?.plant || "";
+                          const disease = item?.label?.disease || "";
 
-                            <div className="top-prediction-content">
-                              <strong>
-                                {item?.label?.plant} - {item?.label?.disease}
-                              </strong>
-                              <small>
-                                {isArabic ? "نسبة الثقة" : "Confidence"}:{" "}
-                                {item?.confidence}%
-                              </small>
+                          return (
+                            <div className="top-prediction-item" key={index}>
+                              <span className="top-prediction-rank">
+                                #{index + 1}
+                              </span>
+
+                              <div className="top-prediction-content">
+                                <strong>
+                                  {isArabic
+                                    ? `${translateTopResult(plant)} - ${translateTopResult(disease)}`
+                                    : `${plant} - ${disease}`}
+                                </strong>
+
+                                <small>
+                                  {isArabic ? "نسبة الثقة" : "Confidence"}:{" "}
+                                  {item?.confidence}%
+                                </small>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
