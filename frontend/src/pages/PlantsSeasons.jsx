@@ -2071,7 +2071,14 @@ const CropsPage = ({ language = 'ar' }) => {
           {filteredPlants.map(plant => (
             <div key={plant.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
               <div className="card plantCard pb-4" onClick={() => handleCardClick(plant)} style={{ cursor: 'pointer' }}>
-                <img src={plant.img} className="card-img-top h-50" alt={plant.name} />
+                <img
+                  src={plant.img}
+                  className="card-img-top h-50"
+                  alt={plant.name}
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                />
                 <div className="card-body text-end text-success mt-2">
                   <h5 className="card-title">{plant.name}</h5>
                   <i className="far fa-calendar ms-2"></i>
@@ -2093,7 +2100,14 @@ const CropsPage = ({ language = 'ar' }) => {
                   <button type="button" className="premium-close-btn" onClick={handleCloseModal} aria-label="Close">
                     <i className="fas fa-times"></i>
                   </button>
-                  <img src={selectedPlant.modalImg} alt={selectedPlant.name} className="premium-hero-img" />
+                  <img
+                    src={selectedPlant.modalImg}
+                    alt={selectedPlant.name}
+                    className="premium-hero-img"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                  />
                   <div className="premium-hero-overlay">
                     <span className="premium-season-pill"><i className="far fa-calendar ms-2"></i>{selectedPlant.seasonText}</span>
                     <h2>{selectedPlant.name}</h2>
