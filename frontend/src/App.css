@@ -84,8 +84,8 @@ body {
 }
 
 /* =========================================
-   MOBILE + TABLET PERFORMANCE OPTIMIZATION
-   Keeps the same design, only reduces heavy effects
+   MOBILE + TABLET FINAL PERFORMANCE OPTIMIZATION
+   For Napaty - keeps desktop untouched
 ========================================= */
 
 /* Tablets */
@@ -113,36 +113,31 @@ body {
   .statCard,
   .floatingCardTop,
   .floatingCardBottom {
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-  }
-
-  .shopCard,
-  .plant-card,
-  .expert-card,
-  .chat-bubble,
-  .crop-form-card,
-  .crop-result-card,
-  .footer-section,
-  .login-container,
-  .heroText,
-  .featureCard,
-  .stepCard,
-  .statCard,
-  .heroImage,
-  .floatingCardTop,
-  .floatingCardBottom {
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07) !important;
   }
 
   .heroGlowOne,
   .heroGlowTwo {
-    filter: blur(45px) !important;
+    display: none !important;
   }
 }
 
-/* Phones */
+/* Phones + tablets */
 @media (max-width: 768px) {
+  html,
+  body {
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    background-attachment: scroll !important;
+  }
+
+  body {
+    background-attachment: scroll !important;
+  }
+
+  /* Kill heavy blur on mobile */
   .crop-form-card,
   .crop-result-card,
   .crop-loading,
@@ -165,11 +160,15 @@ body {
   .stepCard,
   .statCard,
   .floatingCardTop,
-  .floatingCardBottom {
-    backdrop-filter: blur(5px) !important;
-    -webkit-backdrop-filter: blur(5px) !important;
+  .floatingCardBottom,
+  .payment-modal-content,
+  .custom-message-box,
+  .custom-message-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
+  /* Lighter shadows */
   .shopCard,
   .plant-card,
   .expert-card,
@@ -184,41 +183,74 @@ body {
   .statCard,
   .heroImage,
   .floatingCardTop,
-  .floatingCardBottom {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07) !important;
+  .floatingCardBottom,
+  .cart-sidebar,
+  .chat-panel,
+  .agri-chat-header {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   }
 
+  /* Stop hover movement on touch screens */
   .shopCard:hover,
+  .shopCard:hover img,
   .plant-card:hover,
+  .plant-card:hover img,
   .expert-card:hover,
+  .expert-card:hover img,
   .season-card:hover,
   .crop-mode-btn:hover,
   .chat-bubble:hover,
   .diagnose-btn:hover,
   .analyze-btn:hover,
   .upload-placeholder:hover,
+  .upload-placeholder:hover .upload-icon,
   .change-image-btn:hover,
   .featureCard:hover,
   .stepCard:hover,
   .statCard:hover,
   .primaryBtn:hover,
-  .secondaryBtn:hover {
+  .secondaryBtn:hover,
+  .shopDetailsBtn:hover,
+  .checkout-btn:hover,
+  .shopFilterGroup .shopFilterBtn:hover,
+  .payment-method-card:hover,
+  .shopPayOption:hover,
+  .header-logo-image:hover,
+  .nav-menu a:hover,
+  .lang-toggle-btn:hover,
+  .user-menu-btn:hover,
+  .logout-btn:hover {
     transform: none !important;
   }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.2s !important;
-    transition-duration: 0.2s !important;
+  /* Header performance fix */
+  .header {
+    will-change: auto !important;
+    transform: translateZ(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10) !important;
   }
 
-  html,
-  body {
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
+  .header *,
+  .nav-menu *,
+  .user-actions * {
+    transition-duration: 0.12s !important;
+    animation-duration: 0.12s !important;
   }
 
+  .nav-menu a::before {
+    display: none !important;
+  }
+
+  .nav-menu a:hover,
+  .nav-menu a.active {
+    transform: none !important;
+  }
+
+  .nav-notification-badge {
+    animation: none !important;
+  }
+
+  /* Stop decorative heavy layers */
   .login-page::before,
   .login-page::after,
   .crop-page::before,
@@ -226,40 +258,30 @@ body {
   .footer-blob-top,
   .footer-blob-bottom,
   .heroGlowOne,
-  .heroGlowTwo {
+  .heroGlowTwo,
+  .crop-form-card::before,
+  .crop-result-card::before,
+  .expert-card::before,
+  .season-card::before,
+  .featureCard::before,
+  .chat-bubble::before,
+  .agri-chat-header::before {
     display: none !important;
+  }
+
+  /* Safer animation reduction */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.15s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.15s !important;
+    scroll-behavior: auto !important;
   }
 }
 
 /* Small phones */
 @media (max-width: 480px) {
-  .crop-form-card,
-  .crop-result-card,
-  .crop-loading,
-  .agri-chat-header,
-  .agri-chat-side-card,
-  .chat-panel,
-  .expert-card,
-  .booking-details,
-  .diagnosis-container,
-  .upload-section,
-  .analysis-container,
-  .plants-seasons-container,
-  .seasons-plants-container,
-  .shopCard,
-  .cart-sidebar,
-  .footer-section,
-  .login-container,
-  .heroText,
-  .featureCard,
-  .stepCard,
-  .statCard,
-  .floatingCardTop,
-  .floatingCardBottom {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
   .shopCard,
   .plant-card,
   .expert-card,
@@ -272,9 +294,13 @@ body {
   .featureCard,
   .stepCard,
   .statCard,
-  .heroImage,
-  .floatingCardTop,
-  .floatingCardBottom {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  .cart-sidebar,
+  .chat-panel,
+  .agri-chat-header {
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .header {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08) !important;
   }
 }
