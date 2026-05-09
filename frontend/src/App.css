@@ -106,7 +106,13 @@ body {
   .shopCard,
   .cart-sidebar,
   .footer-section,
-  .login-container {
+  .login-container,
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard,
+  .floatingCardTop,
+  .floatingCardBottom {
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
   }
@@ -118,8 +124,20 @@ body {
   .crop-form-card,
   .crop-result-card,
   .footer-section,
-  .login-container {
-    box-shadow: 0 8px 22px rgba(0,0,0,0.08) !important;
+  .login-container,
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard,
+  .heroImage,
+  .floatingCardTop,
+  .floatingCardBottom {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .heroGlowOne,
+  .heroGlowTwo {
+    filter: blur(45px) !important;
   }
 }
 
@@ -141,7 +159,13 @@ body {
   .shopCard,
   .cart-sidebar,
   .footer-section,
-  .login-container {
+  .login-container,
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard,
+  .floatingCardTop,
+  .floatingCardBottom {
     backdrop-filter: blur(5px) !important;
     -webkit-backdrop-filter: blur(5px) !important;
   }
@@ -153,8 +177,15 @@ body {
   .crop-form-card,
   .crop-result-card,
   .footer-section,
-  .login-container {
-    box-shadow: 0 6px 16px rgba(0,0,0,0.07) !important;
+  .login-container,
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard,
+  .heroImage,
+  .floatingCardTop,
+  .floatingCardBottom {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07) !important;
   }
 
   .shopCard:hover,
@@ -166,7 +197,12 @@ body {
   .diagnose-btn:hover,
   .analyze-btn:hover,
   .upload-placeholder:hover,
-  .change-image-btn:hover {
+  .change-image-btn:hover,
+  .featureCard:hover,
+  .stepCard:hover,
+  .statCard:hover,
+  .primaryBtn:hover,
+  .secondaryBtn:hover {
     transform: none !important;
   }
 
@@ -188,7 +224,9 @@ body {
   .crop-page::before,
   .crop-page::after,
   .footer-blob-top,
-  .footer-blob-bottom {
+  .footer-blob-bottom,
+  .heroGlowOne,
+  .heroGlowTwo {
     display: none !important;
   }
 }
@@ -211,7 +249,13 @@ body {
   .shopCard,
   .cart-sidebar,
   .footer-section,
-  .login-container {
+  .login-container,
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard,
+  .floatingCardTop,
+  .floatingCardBottom {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -223,7 +267,14 @@ body {
   .crop-form-card,
   .crop-result-card,
   .footer-section,
-  .login-container {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+  .login-container,
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard,
+  .heroImage,
+  .floatingCardTop,
+  .floatingCardBottom {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   }
 }
