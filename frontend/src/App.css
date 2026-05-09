@@ -82,3 +82,148 @@ body {
   color: #666;
   font-size: 1.1rem;
 }
+
+/* =========================================
+   MOBILE + TABLET PERFORMANCE OPTIMIZATION
+   Keeps the same design, only reduces heavy effects
+========================================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .crop-form-card,
+  .crop-result-card,
+  .crop-loading,
+  .agri-chat-header,
+  .agri-chat-side-card,
+  .chat-panel,
+  .expert-card,
+  .booking-details,
+  .diagnosis-container,
+  .upload-section,
+  .analysis-container,
+  .plants-seasons-container,
+  .seasons-plants-container,
+  .shopCard,
+  .cart-sidebar,
+  .footer-section,
+  .login-container {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+
+  .shopCard,
+  .plant-card,
+  .expert-card,
+  .chat-bubble,
+  .crop-form-card,
+  .crop-result-card,
+  .footer-section,
+  .login-container {
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08) !important;
+  }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+  .crop-form-card,
+  .crop-result-card,
+  .crop-loading,
+  .agri-chat-header,
+  .agri-chat-side-card,
+  .chat-panel,
+  .expert-card,
+  .booking-details,
+  .diagnosis-container,
+  .upload-section,
+  .analysis-container,
+  .plants-seasons-container,
+  .seasons-plants-container,
+  .shopCard,
+  .cart-sidebar,
+  .footer-section,
+  .login-container {
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+  }
+
+  .shopCard,
+  .plant-card,
+  .expert-card,
+  .chat-bubble,
+  .crop-form-card,
+  .crop-result-card,
+  .footer-section,
+  .login-container {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.07) !important;
+  }
+
+  .shopCard:hover,
+  .plant-card:hover,
+  .expert-card:hover,
+  .season-card:hover,
+  .crop-mode-btn:hover,
+  .chat-bubble:hover,
+  .diagnose-btn:hover,
+  .analyze-btn:hover,
+  .upload-placeholder:hover,
+  .change-image-btn:hover {
+    transform: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .login-page::before,
+  .login-page::after,
+  .crop-page::before,
+  .crop-page::after,
+  .footer-blob-top,
+  .footer-blob-bottom {
+    display: none !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .crop-form-card,
+  .crop-result-card,
+  .crop-loading,
+  .agri-chat-header,
+  .agri-chat-side-card,
+  .chat-panel,
+  .expert-card,
+  .booking-details,
+  .diagnosis-container,
+  .upload-section,
+  .analysis-container,
+  .plants-seasons-container,
+  .seasons-plants-container,
+  .shopCard,
+  .cart-sidebar,
+  .footer-section,
+  .login-container {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .shopCard,
+  .plant-card,
+  .expert-card,
+  .chat-bubble,
+  .crop-form-card,
+  .crop-result-card,
+  .footer-section,
+  .login-container {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+  }
+}
