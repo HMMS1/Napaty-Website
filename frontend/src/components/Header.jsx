@@ -31,7 +31,13 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
   const [showMenu, setShowMenu] = useState(false);
   const isArabic = language === "ar";
 
-  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+  let storedUser = {};
+
+  try {
+    storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+  } catch (error) {
+    storedUser = {};
+  }
 
   const displayName =
     user?.full_name ||
@@ -64,7 +70,11 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     );
 
     setShowMenu(false);
-    setUser(null);
+
+    if (typeof setUser === "function") {
+      setUser(null);
+    }
+
     navigate("/login", { replace: true });
   };
 
@@ -76,7 +86,11 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     }
 
     if (path === "/consultation" && isLoggedIn) {
-      await markAllAsSeen();
+      try {
+        await markAllAsSeen();
+      } catch (error) {
+        console.error("Failed to mark notifications as seen:", error);
+      }
     }
   };
 
@@ -138,6 +152,8 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
             src="/images/Capture.png"
             alt={isArabic ? "نباتي" : "Napaty"}
             className="header-logo-image"
+            loading="eager"
+            decoding="async"
           />
           <h1>{isArabic ? "نباتي" : "Napaty"}</h1>
         </div>
@@ -171,13 +187,14 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
         </nav>
 
         <div className="user-actions">
-          <button className="lang-toggle-btn" onClick={toggleLanguage}>
+          <button type="button" className="lang-toggle-btn" onClick={toggleLanguage}>
             {isArabic ? "EN" : "AR"}
           </button>
 
           {isLoggedIn ? (
             <>
               <button
+                type="button"
                 className="user-menu-btn"
                 onClick={() => setShowMenu((p) => !p)}
               >
@@ -190,7 +207,7 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
 
               {showMenu && (
                 <div className="user-dropdown">
-                  <button className="logout-btn" onClick={handleLogout}>
+                  <button type="button" className="logout-btn" onClick={handleLogout}>
                     <FaSignOutAlt />
                     {isArabic ? "تسجيل الخروج" : "Logout"}
                   </button>
