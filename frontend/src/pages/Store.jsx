@@ -518,9 +518,9 @@ const ShoppingPage = ({ language = 'ar' }) => {
       return [...prevItems, { ...product, quantity: 1 }];
     });
 
-    if (isMobileOrTablet()) {
-      setShowMobileCart(true);
-    }
+    // On mobile/tablet we keep only the floating cart icon visible.
+    // The cart drawer opens only when the user taps the cart icon.
+    setShowMobileCart(false);
   };
 
   // إزالة منتج من السلة
@@ -863,9 +863,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     >
       <span className="mobile-cart-floating-icon">
         <i className="fas fa-shopping-cart"></i>
-      </span>
-      <span className="mobile-cart-floating-text">
-        {isArabic ? 'السلة' : 'Cart'}
       </span>
       {cartItems.length > 0 && (
         <span className="mobile-cart-floating-count">{getCartCount()}</span>
