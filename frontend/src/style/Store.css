@@ -1,3 +1,4 @@
+
 .shopCard {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
@@ -81,6 +82,7 @@
   box-shadow: 0 10px 20px rgba(25, 135, 84, 0.2);
 }
 
+
 .cart-sidebar {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
@@ -139,6 +141,7 @@
   top: 20px;
 }
 
+
 #shopPaymentModal .modal-content {
   border-radius: 24px !important;
   overflow: hidden;
@@ -171,6 +174,7 @@
   max-height: calc(90vh - 85px);
   padding-bottom: 20px;
 }
+
 
 .shopPayOption {
   border: 1px solid rgba(42, 140, 74, 0.12);
@@ -302,6 +306,7 @@
   }
 }
 
+
 .title-txt,
 .card-title,
 h3,
@@ -336,6 +341,7 @@ h6 {
   font-weight: 700;
 }
 
+
 .modal-backdrop-custom {
   background-color: rgba(0, 0, 0, 0.52);
   backdrop-filter: blur(4px);
@@ -352,9 +358,6 @@ h6 {
   object-fit: contain;
 }
 
-/* =========================
-   PAYMENT MODAL - SMALL
-========================= */
 @media (max-width: 576px) {
   .payment-modal-dialog {
     width: calc(100% - 16px);
@@ -371,9 +374,6 @@ h6 {
   }
 }
 
-/* =========================
-   TABLET + MOBILE STORE
-========================= */
 @media (max-width: 992px) {
   .shopCard img {
     height: 190px;
@@ -406,14 +406,6 @@ h6 {
     padding: 14px;
   }
 
-  .cart-sidebar,
-  .cart-sidebar.sticky-top,
-  .sticky-top .cart-sidebar {
-    position: sticky !important;
-    top: 85px !important;
-    z-index: 900;
-  }
-
   .cart-header {
     font-size: 1.1rem;
   }
@@ -431,22 +423,6 @@ h6 {
   }
 }
 
-/* =========================
-   MOBILE STORE
-========================= */
-@media (max-width: 768px) {
-  .cart-sidebar,
-  .cart-sidebar.sticky-top,
-  .sticky-top .cart-sidebar {
-    position: sticky !important;
-    top: 75px !important;
-    z-index: 900;
-  }
-}
-
-/* =========================
-   SMALL MOBILE STORE
-========================= */
 @media (max-width: 480px) {
   .shopCard img {
     height: 160px;
@@ -487,14 +463,6 @@ h6 {
     border-radius: 16px;
   }
 
-  .cart-sidebar,
-  .cart-sidebar.sticky-top,
-  .sticky-top .cart-sidebar {
-    position: sticky !important;
-    top: 65px !important;
-    z-index: 900;
-  }
-
   .cart-header {
     font-size: 1rem;
   }
@@ -532,5 +500,224 @@ h6 {
 
   .message-text {
     font-size: 0.92rem;
+  }
+}
+
+/* =========================================
+   MOBILE CART DRAWER + STORE PERFORMANCE
+   Desktop layout stays untouched
+========================================= */
+
+.mobile-cart-floating,
+.mobile-cart-overlay {
+  display: none;
+}
+
+.mobile-cart-close-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+
+.mobile-cart-close-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+@media (max-width: 992px) {
+  body.mobile-cart-open {
+    overflow: hidden;
+  }
+
+  .store-desktop-cart {
+    display: none !important;
+  }
+
+  .mobile-cart-floating {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2400;
+    min-width: 118px;
+    height: 52px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #2e7d32, #198754);
+    color: #ffffff;
+    box-shadow: 0 14px 30px rgba(25, 135, 84, 0.28);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  [dir="ltr"] .mobile-cart-floating {
+    right: auto;
+    left: 16px;
+  }
+
+  .mobile-cart-floating.has-items {
+    animation: mobileCartPulse 0.35s ease both;
+  }
+
+  .mobile-cart-floating-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  .mobile-cart-floating-text {
+    font-size: 0.95rem;
+  }
+
+  .mobile-cart-floating-count {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #198754;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    line-height: 1;
+  }
+
+  .mobile-cart-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2600;
+    background: rgba(15, 23, 42, 0.46);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .mobile-cart-drawer {
+    width: min(100%, 560px);
+    max-height: 82vh;
+    overflow-y: auto;
+    border-radius: 26px 26px 18px 18px;
+    animation: mobileCartDrawerIn 0.2s ease both;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-cart-drawer .card {
+    margin: 0;
+    border-radius: 24px !important;
+    overflow: hidden;
+  }
+
+  .mobile-cart-drawer .sticky-top {
+    position: static !important;
+    top: auto !important;
+  }
+
+  .mobile-cart-drawer .card-body {
+    max-height: calc(82vh - 70px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .shopCard,
+  .cart-sidebar,
+  .payment-modal-content,
+  .custom-message-box,
+  .custom-message-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .shopCard,
+  .payment-modal-content,
+  .custom-message-box,
+  .mobile-cart-drawer .card {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .shopCard:hover,
+  .shopCard:hover img,
+  .shopDetailsBtn:hover,
+  .shopFilterGroup .shopFilterBtn:hover,
+  .shopPayOption:hover,
+  .payment-method-card:hover,
+  #shopConfirmPay:hover,
+  .checkout-btn:hover {
+    transform: none !important;
+  }
+
+  .shopCard,
+  .shopCard img,
+  .shopDetailsBtn,
+  .shopFilterGroup .shopFilterBtn,
+  .checkout-btn,
+  .shopPayOption,
+  .payment-method-card,
+  #shopConfirmPay {
+    transition-duration: 0.14s !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .mobile-cart-floating {
+    right: 12px;
+    bottom: 12px;
+    min-width: 104px;
+    height: 48px;
+    padding: 0 13px;
+  }
+
+  [dir="ltr"] .mobile-cart-floating {
+    right: auto;
+    left: 12px;
+  }
+
+  .mobile-cart-floating-text {
+    font-size: 0.88rem;
+  }
+
+  .mobile-cart-overlay {
+    padding: 8px;
+  }
+
+  .mobile-cart-drawer {
+    max-height: 86vh;
+    border-radius: 22px 22px 16px 16px;
+  }
+
+  .mobile-cart-drawer .card-body {
+    max-height: calc(86vh - 64px);
+  }
+}
+
+@keyframes mobileCartDrawerIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mobileCartPulse {
+  from {
+    transform: scale(0.96);
+  }
+  to {
+    transform: scale(1);
   }
 }
