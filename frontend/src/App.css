@@ -85,7 +85,7 @@ body {
 
 /* =========================================
    MOBILE + TABLET FINAL PERFORMANCE OPTIMIZATION
-   For Napaty - keeps desktop untouched
+   Keeps desktop untouched and reduces mobile lag
 ========================================= */
 
 /* Tablets */
@@ -124,20 +124,24 @@ body {
   }
 }
 
-/* Phones + tablets */
+/* Phones */
 @media (max-width: 768px) {
   html,
   body {
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch;
     background-attachment: scroll !important;
+    scroll-behavior: auto !important;
   }
 
   body {
     background-attachment: scroll !important;
   }
 
-  /* Kill heavy blur on mobile */
+  img {
+    content-visibility: auto;
+  }
+
   .crop-form-card,
   .crop-result-card,
   .crop-loading,
@@ -168,7 +172,6 @@ body {
     -webkit-backdrop-filter: none !important;
   }
 
-  /* Lighter shadows */
   .shopCard,
   .plant-card,
   .expert-card,
@@ -190,7 +193,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   }
 
-  /* Stop hover movement on touch screens */
   .shopCard:hover,
   .shopCard:hover img,
   .plant-card:hover,
@@ -219,11 +221,11 @@ body {
   .nav-menu a:hover,
   .lang-toggle-btn:hover,
   .user-menu-btn:hover,
+  .login-btn:hover,
   .logout-btn:hover {
     transform: none !important;
   }
 
-  /* Header performance fix */
   .header {
     will-change: auto !important;
     transform: translateZ(0);
@@ -241,16 +243,11 @@ body {
     display: none !important;
   }
 
-  .nav-menu a:hover,
-  .nav-menu a.active {
-    transform: none !important;
-  }
-
-  .nav-notification-badge {
+  .nav-notification-badge,
+  .user-dropdown {
     animation: none !important;
   }
 
-  /* Stop decorative heavy layers */
   .login-page::before,
   .login-page::after,
   .crop-page::before,
@@ -269,7 +266,6 @@ body {
     display: none !important;
   }
 
-  /* Safer animation reduction */
   *,
   *::before,
   *::after {
