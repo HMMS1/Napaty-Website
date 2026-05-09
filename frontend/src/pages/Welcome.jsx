@@ -32,7 +32,9 @@ function Welcome({ language = "ar" }) {
     explore: isArabic ? "اكتشف خدماتنا" : "Explore Services",
     services: isArabic ? "خدمات مصممة لخدمتك" : "Services Designed for You",
     steps: isArabic ? "ابدأ في 3 خطوات فقط" : "Start in Just 3 Steps",
-    cta: isArabic ? "جاهز لنقلة نوعية في رحلتك الزراعية؟" : "Ready to transform your agricultural journey?",
+    cta: isArabic
+      ? "جاهز لنقلة نوعية في رحلتك الزراعية؟"
+      : "Ready to transform your agricultural journey?",
     ctaDesc: isArabic
       ? "ابدأ الآن واستفد من أدوات ذكية وتجربة استخدام راقية تساعدك في اتخاذ قرارات زراعية أفضل."
       : "Start now and benefit from smart tools and a refined experience that helps you make better agricultural decisions.",
@@ -128,7 +130,8 @@ function Welcome({ language = "ar" }) {
             </span>
 
             <h1 className={styles.title}>
-              {text.heroTitle} <span className={styles.highlight}>{text.brand}</span>
+              {text.heroTitle}{" "}
+              <span className={styles.highlight}>{text.brand}</span>
             </h1>
 
             <h2 className={styles.subtitle}>{text.platformTitle}</h2>
@@ -136,14 +139,14 @@ function Welcome({ language = "ar" }) {
             <p className={styles.description}>{text.description}</p>
 
             <div className={styles.heroButtons}>
-              <button type="button" className={styles.primaryBtn} onClick={handleGetStarted}>
+              <button className={styles.primaryBtn} onClick={handleGetStarted}>
                 {text.start}
                 <span className={styles.btnIcon}>
                   <FaArrowLeft />
                 </span>
               </button>
 
-              <button type="button" className={styles.secondaryBtn}>
+              <button className={styles.secondaryBtn}>
                 {text.explore}
               </button>
             </div>
@@ -161,19 +164,22 @@ function Welcome({ language = "ar" }) {
           <div className={styles.heroVisual}>
             <div className={styles.imageWrapper}>
               <div className={styles.imageRing}></div>
+
               <img
-                src="/images/Capture.png"
-                alt={isArabic ? "شعار نباتي" : "Napaty logo"}
+                src="/images/Capture.webp"
+                alt={isArabic ? "نباتي" : "Napaty"}
                 className={styles.heroImage}
-                width="470"
-                height="470"
                 loading="eager"
                 decoding="async"
                 fetchPriority="high"
+                width="470"
+                height="470"
               />
+
               <div className={styles.floatingCardTop}>
-                <span>{isArabic ? "  تشخيص ذكي" : "Intelligent diagnosis"}</span>
+                <span>{isArabic ? "تشخيص ذكي" : "Intelligent diagnosis"}</span>
               </div>
+
               <div className={styles.floatingCardBottom}>
                 <span>{isArabic ? "نتائج أدق" : "Better Results"}</span>
               </div>
@@ -235,7 +241,7 @@ function Welcome({ language = "ar" }) {
         <div className={styles.ctaCard}>
           <h2 className={styles.ctaTitle}>{text.cta}</h2>
           <p className={styles.ctaDesc}>{text.ctaDesc}</p>
-          <button type="button" className={styles.primaryBtn} onClick={handleGetStarted}>
+          <button className={styles.primaryBtn} onClick={handleGetStarted}>
             {text.loginNow}
             <span className={styles.btnIcon}>
               <FaArrowLeft />
