@@ -49,7 +49,8 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.12s ease;
+  will-change: auto;
 }
 
 .header-logo-image:hover { transform: scale(1.1); }
@@ -85,7 +86,7 @@
   color: var(--white);
   padding: 10px 15px;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: background-color 0.12s ease, color 0.12s ease;
   position: relative;
   overflow: visible; 
 }
@@ -98,7 +99,7 @@
   width: 0;
   height: 2px;
   background: var(--white);
-  transition: width 0.3s ease;
+  transition: width 0.12s ease;
 }
 
 .nav-menu a:hover::before,
@@ -106,7 +107,6 @@
 
 .nav-menu a:hover {
   background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
 }
 
 .nav-menu a.active { background: rgba(255, 255, 255, 0.15); }
@@ -319,4 +319,66 @@
   .user-name  { font-size: 0.85rem; }
   .user-type  { font-size: 0.7rem; }
   .user-dropdown { min-width: 140px; top: 40px; }
+}
+
+/* =========================================
+   MOBILE HEADER PERFORMANCE OPTIMIZATION
+   Keeps the same design, only reduces lag on touch screens
+========================================= */
+@media (max-width: 1024px) {
+  .header {
+    will-change: auto !important;
+    transform: translateZ(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10) !important;
+  }
+
+  .header-logo-image,
+  .nav-menu a,
+  .login-btn,
+  .user-menu-btn,
+  .lang-toggle-btn,
+  .logout-btn,
+  .user-badge {
+    transition-duration: 0.12s !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .header,
+  .header * {
+    backface-visibility: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .header-logo-image:hover,
+  .nav-menu a:hover,
+  .login-btn:hover,
+  .user-menu-btn:hover,
+  .lang-toggle-btn:hover,
+  .logout-btn:hover,
+  .user-badge:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .nav-menu a::before {
+    display: none !important;
+  }
+
+  .nav-notification-badge {
+    animation: none !important;
+  }
+
+  .user-dropdown {
+    animation: none !important;
+  }
+
+  .nav-menu a,
+  .login-btn,
+  .user-menu-btn,
+  .lang-toggle-btn,
+  .logout-btn,
+  .user-badge {
+    transition: background-color 0.1s ease, color 0.1s ease !important;
+  }
 }
