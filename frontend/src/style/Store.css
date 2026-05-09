@@ -721,3 +721,367 @@ h6 {
     transform: scale(1);
   }
 }
+
+/* =========================================
+   FINAL MOBILE STORE UX + PERFORMANCE
+   Icon-only cart button + compact mobile cards
+   Desktop stays untouched
+========================================= */
+
+@media (max-width: 1200px) {
+  .shopping-page .container.py-5 {
+    padding-top: 2.25rem !important;
+    padding-bottom: 4.25rem !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .shopping-page .container.py-5 {
+    padding-top: 1.75rem !important;
+    padding-bottom: 5.25rem !important;
+  }
+
+  .shopping-page .row.g-4 {
+    --bs-gutter-y: 1rem;
+  }
+
+  .shopCard {
+    padding-bottom: 0.75rem !important;
+    border-radius: 18px !important;
+  }
+
+  .shopCard img {
+    height: 175px !important;
+  }
+
+  .shopCard .card-body {
+    padding: 0.9rem 0.95rem 0.65rem !important;
+    margin-top: 0.35rem !important;
+  }
+
+  .shopCard .card-title,
+  .shopCardTitle {
+    font-size: 1rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .shopCard small,
+  .shopPrice {
+    font-size: 1rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .shopCard .card-text {
+    font-size: 0.88rem !important;
+    line-height: 1.65 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .shopCard .btn,
+  .shopDetailsBtn {
+    min-height: 42px !important;
+    padding: 0.55rem 0.8rem !important;
+    font-size: 0.95rem !important;
+    border-radius: 12px !important;
+  }
+
+  .shopFilterGroup {
+    margin-bottom: 1.25rem !important;
+    gap: 0.55rem !important;
+  }
+
+  .shopFilterGroup .shopFilterBtn {
+    padding: 0.55rem 0.8rem !important;
+    font-size: 0.92rem !important;
+    min-height: 40px !important;
+  }
+
+  .title-txt.text-success.mb-4 {
+    margin-bottom: 0.7rem !important;
+    font-size: 1.35rem !important;
+  }
+
+  .title-txt.text-success.mb-5 {
+    margin-bottom: 1.2rem !important;
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+  }
+
+  /* Icon-only floating cart */
+  .mobile-cart-floating {
+    right: 16px !important;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+    width: 56px !important;
+    min-width: 56px !important;
+    height: 56px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    gap: 0 !important;
+    box-shadow: 0 12px 26px rgba(25, 135, 84, 0.28) !important;
+  }
+
+  [dir="ltr"] .mobile-cart-floating {
+    right: auto !important;
+    left: 16px !important;
+  }
+
+  .mobile-cart-floating-text {
+    display: none !important;
+  }
+
+  .mobile-cart-floating-icon {
+    font-size: 1.45rem !important;
+    line-height: 1 !important;
+  }
+
+  .mobile-cart-floating-count {
+    position: absolute !important;
+    top: -5px !important;
+    right: -5px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    padding: 0 5px !important;
+    border: 2px solid #198754 !important;
+    font-size: 0.74rem !important;
+    font-weight: 900 !important;
+  }
+
+  [dir="ltr"] .mobile-cart-floating-count {
+    right: auto !important;
+    left: -5px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .shopping-page .container.py-5 {
+    padding-top: 1.25rem !important;
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+    padding-bottom: 5.4rem !important;
+  }
+
+  .shopping-page .row.g-4 {
+    --bs-gutter-y: 0.95rem;
+  }
+
+  .shopCard {
+    border-radius: 17px !important;
+  }
+
+  .shopCard img {
+    height: 155px !important;
+  }
+
+  .shopCard .card-body {
+    padding: 0.78rem 0.85rem 0.55rem !important;
+  }
+
+  .shopCard .card-title,
+  .shopCardTitle {
+    font-size: 0.96rem !important;
+  }
+
+  .shopCard small,
+  .shopPrice {
+    font-size: 0.95rem !important;
+  }
+
+  .shopCard .card-text {
+    font-size: 0.84rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .shopCard .btn,
+  .shopDetailsBtn {
+    min-height: 40px !important;
+    font-size: 0.92rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .shopping-page .container.py-5 {
+    padding-top: 1rem !important;
+    padding-left: 0.7rem !important;
+    padding-right: 0.7rem !important;
+    padding-bottom: 5.2rem !important;
+  }
+
+  .shopping-page .row.g-4 {
+    --bs-gutter-y: 0.85rem;
+  }
+
+  .shopCard {
+    border-radius: 16px !important;
+  }
+
+  .shopCard img {
+    height: 142px !important;
+  }
+
+  .shopCard .card-body {
+    padding: 0.7rem 0.75rem 0.5rem !important;
+    margin-top: 0.2rem !important;
+  }
+
+  .shopCard .card-title,
+  .shopCardTitle {
+    font-size: 0.92rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .shopCard small,
+  .shopPrice {
+    font-size: 0.9rem !important;
+  }
+
+  .shopCard .card-text {
+    font-size: 0.8rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .shopCard .btn,
+  .shopDetailsBtn {
+    min-height: 38px !important;
+    padding: 0.48rem 0.7rem !important;
+    font-size: 0.88rem !important;
+  }
+
+  .mobile-cart-floating {
+    right: 14px !important;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    width: 52px !important;
+    min-width: 52px !important;
+    height: 52px !important;
+  }
+
+  [dir="ltr"] .mobile-cart-floating {
+    right: auto !important;
+    left: 14px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .shopping-page .container.py-5 {
+    padding-top: 0.8rem !important;
+    padding-left: 0.58rem !important;
+    padding-right: 0.58rem !important;
+    padding-bottom: 4.9rem !important;
+  }
+
+  .title-txt.text-success.mb-4 {
+    font-size: 1.18rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .title-txt.text-success.mb-5 {
+    font-size: 0.88rem !important;
+    margin-bottom: 0.85rem !important;
+  }
+
+  .shopFilterGroup {
+    gap: 0.42rem !important;
+    margin-bottom: 0.9rem !important;
+  }
+
+  .shopFilterGroup .shopFilterBtn {
+    padding: 0.46rem 0.62rem !important;
+    font-size: 0.82rem !important;
+    min-height: 36px !important;
+  }
+
+  .shopCard img {
+    height: 130px !important;
+  }
+
+  .shopCard .card-body {
+    padding: 0.62rem 0.68rem 0.48rem !important;
+  }
+
+  .shopCard .card-title,
+  .shopCardTitle {
+    font-size: 0.88rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .shopCard small,
+  .shopPrice {
+    font-size: 0.86rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .shopCard .card-text {
+    font-size: 0.76rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0.55rem !important;
+  }
+
+  .shopCard .btn,
+  .shopDetailsBtn {
+    min-height: 36px !important;
+    font-size: 0.84rem !important;
+    border-radius: 10px !important;
+  }
+
+  .mobile-cart-floating {
+    right: 12px !important;
+    width: 50px !important;
+    min-width: 50px !important;
+    height: 50px !important;
+  }
+
+  [dir="ltr"] .mobile-cart-floating {
+    right: auto !important;
+    left: 12px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .shopCard img {
+    height: 118px !important;
+  }
+
+  .shopCard .card-title,
+  .shopCardTitle {
+    font-size: 0.84rem !important;
+  }
+
+  .shopCard .card-text {
+    font-size: 0.73rem !important;
+  }
+
+  .shopCard .btn,
+  .shopDetailsBtn {
+    min-height: 34px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .mobile-cart-floating {
+    width: 48px !important;
+    min-width: 48px !important;
+    height: 48px !important;
+  }
+
+  .mobile-cart-floating-icon {
+    font-size: 1.28rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .shopping-page .container.py-5 {
+    padding-left: 0.45rem !important;
+    padding-right: 0.45rem !important;
+  }
+
+  .shopCard img {
+    height: 108px !important;
+  }
+
+  .shopCard .card-body {
+    padding: 0.55rem 0.58rem 0.42rem !important;
+  }
+
+  .shopFilterGroup .shopFilterBtn {
+    font-size: 0.78rem !important;
+  }
+}
