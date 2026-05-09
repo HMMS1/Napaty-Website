@@ -136,14 +136,14 @@ function Welcome({ language = "ar" }) {
             <p className={styles.description}>{text.description}</p>
 
             <div className={styles.heroButtons}>
-              <button className={styles.primaryBtn} onClick={handleGetStarted}>
+              <button type="button" className={styles.primaryBtn} onClick={handleGetStarted}>
                 {text.start}
                 <span className={styles.btnIcon}>
                   <FaArrowLeft />
                 </span>
               </button>
 
-              <button className={styles.secondaryBtn}>
+              <button type="button" className={styles.secondaryBtn}>
                 {text.explore}
               </button>
             </div>
@@ -163,8 +163,13 @@ function Welcome({ language = "ar" }) {
               <div className={styles.imageRing}></div>
               <img
                 src="/images/Capture.png"
-                alt="hero"
+                alt={isArabic ? "شعار نباتي" : "Napaty logo"}
                 className={styles.heroImage}
+                width="470"
+                height="470"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
               />
               <div className={styles.floatingCardTop}>
                 <span>{isArabic ? "  تشخيص ذكي" : "Intelligent diagnosis"}</span>
@@ -230,7 +235,7 @@ function Welcome({ language = "ar" }) {
         <div className={styles.ctaCard}>
           <h2 className={styles.ctaTitle}>{text.cta}</h2>
           <p className={styles.ctaDesc}>{text.ctaDesc}</p>
-          <button className={styles.primaryBtn} onClick={handleGetStarted}>
+          <button type="button" className={styles.primaryBtn} onClick={handleGetStarted}>
             {text.loginNow}
             <span className={styles.btnIcon}>
               <FaArrowLeft />
