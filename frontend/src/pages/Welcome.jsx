@@ -161,16 +161,24 @@ function Welcome({ language = "ar" }) {
           <div className={styles.heroVisual}>
             <div className={styles.imageWrapper}>
               <div className={styles.imageRing}></div>
-              <img
-                src="/images/Capture.webp"
-                alt={isArabic ? "نباتي" : "Napaty"}
-                className={styles.heroImage}
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-                width="470"
-                height="470"
-              />
+              <picture>
+                <source
+                  media="(max-width: 768px)"
+                  srcSet="/images/Capture-mobile.webp"
+                  type="image/webp"
+                />
+
+                <img
+                  src="/images/Capture.webp"
+                  alt={isArabic ? "نباتي" : "Napaty"}
+                  className={styles.heroImage}
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
+                  width="470"
+                  height="470"
+                />
+              </picture>
               <div className={styles.floatingCardTop}>
                 <span>{isArabic ? "  تشخيص ذكي" : "Intelligent diagnosis"}</span>
               </div>
