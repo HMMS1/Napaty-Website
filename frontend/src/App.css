@@ -299,3 +299,202 @@ body {
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08) !important;
   }
 }
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    background-attachment: scroll !important;
+  }
+
+  .App {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 960px !important;
+    margin-inline: auto !important;
+    padding-inline: 18px !important;
+  }
+
+  .main-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  .page-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+    padding-inline: 16px !important;
+  }
+
+  /* Header tablet fix */
+  .header .container {
+    max-width: 100% !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 12px 18px !important;
+    gap: 12px !important;
+    min-height: unset !important;
+  }
+
+  .logo-section {
+    justify-content: center !important;
+  }
+
+  .nav-menu {
+    width: 100% !important;
+    margin: 0 !important;
+    justify-content: center !important;
+  }
+
+  .nav-menu ul {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    white-space: normal !important;
+  }
+
+  .nav-menu a {
+    font-size: 14px !important;
+    padding: 8px 11px !important;
+  }
+
+  .user-actions {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .user-menu-btn,
+  .login-btn,
+  .lang-toggle-btn {
+    font-size: 0.88rem !important;
+    padding: 8px 12px !important;
+  }
+
+  /* Welcome / Hero tablet fix */
+  .hero,
+  [class*="hero"] {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  [class*="heroContent"] {
+    width: 100% !important;
+    max-width: 760px !important;
+    margin-inline: auto !important;
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+    justify-items: center !important;
+    text-align: center !important;
+  }
+
+  [class*="heroVisual"] {
+    width: 100% !important;
+    justify-content: center !important;
+    order: 1 !important;
+  }
+
+  [class*="heroText"] {
+    width: 100% !important;
+    max-width: 720px !important;
+    order: 2 !important;
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+
+  [class*="imageWrapper"] {
+    width: min(100%, 360px) !important;
+    max-width: 360px !important;
+    margin-inline: auto !important;
+  }
+
+  [class*="heroImage"] {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  [class*="description"] {
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+
+  [class*="heroButtons"] {
+    justify-content: center !important;
+  }
+
+  /* Cards / grids tablet fix */
+  .experts-grid,
+  .featuresGrid,
+  .stepsGrid,
+  .statsGrid,
+  .plants-grid,
+  .seasons-grid,
+  .products-grid,
+  .soil-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .experts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  [class*="featuresGrid"],
+  [class*="statsGrid"],
+  [class*="plantsGrid"],
+  [class*="seasonsGrid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  [class*="stepsGrid"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Store tablet fix */
+  .shopCard {
+    max-width: 100% !important;
+  }
+
+  .shopCard img {
+    height: 190px !important;
+    object-fit: cover !important;
+  }
+
+  .cart-sidebar {
+    max-width: 100% !important;
+  }
+
+  /* Chat / panels tablet fix */
+  .chat-panel,
+  .agri-chat-header,
+  .agri-chat-side-card,
+  .crop-form-card,
+  .crop-result-card,
+  .diagnosis-container,
+  .upload-section,
+  .booking-details,
+  .expert-card {
+    max-width: 100% !important;
+  }
+
+  /* Prevent any element from pushing page sideways */
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+}
