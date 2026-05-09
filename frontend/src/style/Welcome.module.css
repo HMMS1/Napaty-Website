@@ -628,3 +628,147 @@
     border-radius: 22px;
   }
 }
+
+/* =========================================
+   WELCOME SAFE MOBILE PERFORMANCE ONLY
+   Desktop stays exactly the same
+========================================= */
+
+@media (max-width: 1024px) {
+  .heroGlowOne,
+  .heroGlowTwo {
+    filter: blur(42px);
+  }
+
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 8px 22px rgba(21, 93, 59, 0.08);
+  }
+
+  .heroImage {
+    box-shadow: 0 8px 22px rgba(21, 93, 59, 0.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    overflow-x: hidden;
+  }
+
+  .hero {
+    padding: 42px 16px 34px;
+  }
+
+  .heroGlowOne,
+  .heroGlowTwo,
+  .imageRing {
+    display: none !important;
+  }
+
+  .heroText,
+  .featureCard,
+  .stepCard,
+  .statCard,
+  .floatingCardTop,
+  .floatingCardBottom {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 4px 12px rgba(21, 93, 59, 0.06) !important;
+  }
+
+  .heroImage {
+    box-shadow: 0 4px 12px rgba(21, 93, 59, 0.06) !important;
+  }
+
+  .featureCard:hover,
+  .stepCard:hover,
+  .statCard:hover,
+  .primaryBtn:hover,
+  .secondaryBtn:hover {
+    transform: none !important;
+  }
+
+  .floatingCardTop,
+  .floatingCardBottom {
+    display: none !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .hero {
+    padding: 32px 12px 28px;
+  }
+
+  .imageWrapper {
+    max-width: 280px;
+  }
+
+  .heroText {
+    padding: 24px 18px;
+    border-radius: 22px;
+  }
+
+  .title {
+    font-size: 1.9rem;
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+  }
+
+  .description {
+    font-size: 0.94rem;
+    line-height: 1.85;
+  }
+
+  .featureCard,
+  .stepCard,
+  .statCard {
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 390px) {
+  .imageWrapper {
+    max-width: 255px;
+  }
+
+  .title {
+    font-size: 1.72rem;
+  }
+
+  .subtitle {
+    font-size: 0.98rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .imageWrapper {
+    max-width: 230px;
+  }
+
+  .title {
+    font-size: 1.55rem;
+  }
+
+  .subtitle {
+    font-size: 0.92rem;
+  }
+
+  .description {
+    font-size: 0.86rem;
+  }
+
+  .badge,
+  .sectionBadge {
+    font-size: 0.78rem;
+  }
+}
