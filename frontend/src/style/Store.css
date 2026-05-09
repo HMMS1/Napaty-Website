@@ -1,4 +1,3 @@
-
 .shopCard {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
@@ -82,7 +81,6 @@
   box-shadow: 0 10px 20px rgba(25, 135, 84, 0.2);
 }
 
-
 .cart-sidebar {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
@@ -141,7 +139,6 @@
   top: 20px;
 }
 
-
 #shopPaymentModal .modal-content {
   border-radius: 24px !important;
   overflow: hidden;
@@ -174,7 +171,6 @@
   max-height: calc(90vh - 85px);
   padding-bottom: 20px;
 }
-
 
 .shopPayOption {
   border: 1px solid rgba(42, 140, 74, 0.12);
@@ -306,7 +302,6 @@
   }
 }
 
-
 .title-txt,
 .card-title,
 h3,
@@ -341,7 +336,6 @@ h6 {
   font-weight: 700;
 }
 
-
 .modal-backdrop-custom {
   background-color: rgba(0, 0, 0, 0.52);
   backdrop-filter: blur(4px);
@@ -358,6 +352,9 @@ h6 {
   object-fit: contain;
 }
 
+/* =========================
+   PAYMENT MODAL - SMALL
+========================= */
 @media (max-width: 576px) {
   .payment-modal-dialog {
     width: calc(100% - 16px);
@@ -374,6 +371,9 @@ h6 {
   }
 }
 
+/* =========================
+   TABLET + MOBILE STORE
+========================= */
 @media (max-width: 992px) {
   .shopCard img {
     height: 190px;
@@ -406,6 +406,14 @@ h6 {
     padding: 14px;
   }
 
+  .cart-sidebar,
+  .cart-sidebar.sticky-top,
+  .sticky-top .cart-sidebar {
+    position: sticky !important;
+    top: 85px !important;
+    z-index: 900;
+  }
+
   .cart-header {
     font-size: 1.1rem;
   }
@@ -423,6 +431,22 @@ h6 {
   }
 }
 
+/* =========================
+   MOBILE STORE
+========================= */
+@media (max-width: 768px) {
+  .cart-sidebar,
+  .cart-sidebar.sticky-top,
+  .sticky-top .cart-sidebar {
+    position: sticky !important;
+    top: 75px !important;
+    z-index: 900;
+  }
+}
+
+/* =========================
+   SMALL MOBILE STORE
+========================= */
 @media (max-width: 480px) {
   .shopCard img {
     height: 160px;
@@ -461,6 +485,14 @@ h6 {
   .cart-sidebar {
     padding: 12px;
     border-radius: 16px;
+  }
+
+  .cart-sidebar,
+  .cart-sidebar.sticky-top,
+  .sticky-top .cart-sidebar {
+    position: sticky !important;
+    top: 65px !important;
+    z-index: 900;
   }
 
   .cart-header {
