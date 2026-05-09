@@ -428,6 +428,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
   const [cartItems, setCartItems] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const [showMobileCart, setShowMobileCart] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(productsData);
 
   // message box states
@@ -464,6 +465,22 @@ const ShoppingPage = ({ language = 'ar' }) => {
     }
   }, [productsData, filter]);
 
+  useEffect(() => {
+    document.body.classList.toggle('mobile-cart-open', showMobileCart);
+
+    return () => {
+      document.body.classList.remove('mobile-cart-open');
+    };
+  }, [showMobileCart]);
+
+  const isMobileOrTablet = () => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 992px)').matches;
+  };
+
+  const getCartCount = () =>
+    cartItems.reduce((total, item) => total + item.quantity, 0);
+
   // فتح message box
   const openMessageBox = (type, title, text) => {
     setMessageBoxType(type);
@@ -487,19 +504,28 @@ const ShoppingPage = ({ language = 'ar' }) => {
 
   // إضافة منتج للسلة
   const addToCart = (product) => {
-    const existingItem = cartItems.find(item => item.id === product.id);
-    if (existingItem) {
-      setCartItems(cartItems.map(item =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-      ));
-    } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === product.id);
+
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      return [...prevItems, { ...product, quantity: 1 }];
+    });
+
+    if (isMobileOrTablet()) {
+      setShowMobileCart(true);
     }
   };
 
   // إزالة منتج من السلة
   const removeFromCart = (productId) => {
-    setCartItems(cartItems.filter(item => item.id !== productId));
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
   };
 
   // تحديث الكمية
@@ -508,13 +534,19 @@ const ShoppingPage = ({ language = 'ar' }) => {
       removeFromCart(productId);
       return;
     }
-    setCartItems(cartItems.map(item =>
-      item.id === productId ? { ...item, quantity: newQuantity } : item
-    ));
+
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === productId ? { ...item, quantity: newQuantity } : item
+      )
+    );
   };
 
   // إفراغ السلة
-  const clearCart = () => setCartItems([]);
+  const clearCart = () => {
+    setCartItems([]);
+    setShowMobileCart(false);
+  };
 
   // حساب الإجمالي
   const calculateTotal = () =>
@@ -556,6 +588,9 @@ const ShoppingPage = ({ language = 'ar' }) => {
           src={product.img}
           className="card-img-top object-fit-cover"
           alt={product.name}
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
         />
         <div className="card-body text-end text-success mt-2 d-flex flex-column">
           <h5 className="card-title">{product.name}</h5>
@@ -578,15 +613,25 @@ const ShoppingPage = ({ language = 'ar' }) => {
   );
 
   // مكون السلة
-  const ShoppingCart = () => {
+  const ShoppingCart = ({ isMobileDrawer = false, onClose } = {}) => {
     if (cartItems.length === 0) {
       return (
         <div className="card shadow-lg border-0">
-          <div className="card-header bg-success text-white">
+          <div className="card-header bg-success text-white d-flex justify-content-between align-items-center">
             <h5 className="mb-0">
               <i className="fas fa-shopping-cart me-2"></i>
               {isArabic ? 'سلة التسوق' : 'Shopping Cart'}
             </h5>
+            {isMobileDrawer && (
+              <button
+                type="button"
+                className="mobile-cart-close-btn"
+                onClick={onClose}
+                aria-label={isArabic ? 'إغلاق السلة' : 'Close cart'}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            )}
           </div>
           <div className="card-body text-center py-5">
             <i className="fas fa-shopping-basket fa-3x text-muted mb-3"></i>
@@ -603,7 +648,19 @@ const ShoppingPage = ({ language = 'ar' }) => {
             <i className="fas fa-shopping-cart me-2"></i>
             {isArabic ? 'سلة التسوق' : 'Shopping Cart'}
           </h5>
-          <span className="badge bg-light text-success">{cartItems.length}</span>
+          <div className="d-flex align-items-center gap-2">
+            <span className="badge bg-light text-success">{getCartCount()}</span>
+            {isMobileDrawer && (
+              <button
+                type="button"
+                className="mobile-cart-close-btn"
+                onClick={onClose}
+                aria-label={isArabic ? 'إغلاق السلة' : 'Close cart'}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="card-body">
@@ -731,6 +788,8 @@ const ShoppingPage = ({ language = 'ar' }) => {
                           src={method.image}
                           alt={method.namee}
                           className="mb-3 payment-method-img"
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <i className={`${method.icon} ${method.color} fa-3x mb-3 d-block`}></i>
@@ -793,6 +852,49 @@ const ShoppingPage = ({ language = 'ar' }) => {
     );
   };
 
+
+  // زر السلة العائم للموبايل والتابلت
+  const MobileCartButton = () => (
+    <button
+      type="button"
+      className={`mobile-cart-floating ${cartItems.length > 0 ? 'has-items' : ''}`}
+      onClick={() => setShowMobileCart(true)}
+      aria-label={isArabic ? 'فتح سلة التسوق' : 'Open shopping cart'}
+    >
+      <span className="mobile-cart-floating-icon">
+        <i className="fas fa-shopping-cart"></i>
+      </span>
+      <span className="mobile-cart-floating-text">
+        {isArabic ? 'السلة' : 'Cart'}
+      </span>
+      {cartItems.length > 0 && (
+        <span className="mobile-cart-floating-count">{getCartCount()}</span>
+      )}
+    </button>
+  );
+
+  // درج السلة للموبايل والتابلت
+  const MobileCartDrawer = () => {
+    if (!showMobileCart) return null;
+
+    return (
+      <div
+        className="mobile-cart-overlay"
+        onClick={() => setShowMobileCart(false)}
+      >
+        <div
+          className="mobile-cart-drawer"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <ShoppingCart
+            isMobileDrawer
+            onClose={() => setShowMobileCart(false)}
+          />
+        </div>
+      </div>
+    );
+  };
+
   // التصميم الرئيسي
   return (
     <div className={`shopping-page ${isArabic ? 'rtl' : 'ltr'}`}>
@@ -831,11 +933,15 @@ const ShoppingPage = ({ language = 'ar' }) => {
             </div>
           </div>
 
-          <div className="col-lg-3">
+          <div className="col-lg-3 store-desktop-cart">
             <ShoppingCart />
           </div>
         </div>
       </div>
+
+      <MobileCartButton />
+
+      <MobileCartDrawer />
 
       <PaymentModal />
 
