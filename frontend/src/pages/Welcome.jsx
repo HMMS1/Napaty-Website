@@ -15,9 +15,16 @@ function Welcome({ language = "ar" }) {
   const navigate = useNavigate();
   const isArabic = language === "ar";
 
-  const handleGetStarted = () => {
+ const handleGetStarted = () => {
+  const isLoggedIn =
+    !!localStorage.getItem("access") || !!localStorage.getItem("user");
+
+  if (isLoggedIn) {
+    navigate("/diagnosis");
+  } else {
     navigate("/login");
-  };
+  }
+};
 
   const text = {
     heroTitle: isArabic ? "مرحباً بك في" : "Welcome to",
