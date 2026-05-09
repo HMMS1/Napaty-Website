@@ -1,5 +1,5 @@
 // src/pages/Header.js
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaUser,
@@ -15,15 +15,7 @@ import { MdLocalHospital } from "react-icons/md";
 import { useConsultationNotifications } from "../hooks/useConsultationNotifications";
 import "../style/Header.css";
 
-const safeParseUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem("user") || "{}");
-  } catch {
-    return {};
-  }
-};
-
-const NotificationBadge = memo(({ count }) => {
+const NotificationBadge = ({ count }) => {
   if (!count || count <= 0) return null;
 
   return (
@@ -31,9 +23,7 @@ const NotificationBadge = memo(({ count }) => {
       {count > 99 ? "99+" : count}
     </span>
   );
-});
-
-NotificationBadge.displayName = "NotificationBadge";
+};
 
 const Header = ({ user, setUser, language = "ar", setLanguage }) => {
   const location = useLocation();
@@ -41,7 +31,7 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
   const [showMenu, setShowMenu] = useState(false);
   const isArabic = language === "ar";
 
-  const storedUser = useMemo(() => safeParseUser(), [user]);
+  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
   const displayName =
     user?.full_name ||
@@ -50,25 +40,15 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     storedUser?.name ||
     (isArabic ? "المستخدم" : "User");
 
-  const isEnglishName = useMemo(
-    () => /^[A-Za-z\s]+$/.test(displayName),
-    [displayName]
-  );
-
+  const isEnglishName = /^[A-Za-z\s]+$/.test(displayName);
   const greeting = isArabic ? (isEnglishName ? "Hi" : "مرحباً") : "Hi";
 
-  const isLoggedIn = useMemo(
-    () =>
-      !!user ||
-      !!localStorage.getItem("access") ||
-      !!localStorage.getItem("user"),
-    [user]
-  );
+  const isLoggedIn =
+    !!user || !!localStorage.getItem("access") || !!localStorage.getItem("user");
 
-  const userType = useMemo(
-    () => (localStorage.getItem("user_type") || "user").toString().toLowerCase(),
-    [user]
-  );
+  const userType = (localStorage.getItem("user_type") || "user")
+    .toString()
+    .toLowerCase();
 
   const { badgeCount, markAllAsSeen } = useConsultationNotifications(
     isLoggedIn ? userType : null
@@ -78,7 +58,7 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     setShowMenu(false);
   }, [location.pathname]);
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = () => {
     ["access", "refresh", "user_type", "user"].forEach((k) =>
       localStorage.removeItem(k)
     );
@@ -86,24 +66,21 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     setShowMenu(false);
     setUser(null);
     navigate("/login", { replace: true });
-  }, [navigate, setUser]);
+  };
 
-  const handleProtectedNavigation = useCallback(
-    async (e, path, requiresAuth = false) => {
-      if (requiresAuth && !isLoggedIn) {
-        e.preventDefault();
-        navigate("/login", { replace: true });
-        return;
-      }
+  const handleProtectedNavigation = async (e, path, requiresAuth = false) => {
+    if (requiresAuth && !isLoggedIn) {
+      e.preventDefault();
+      navigate("/login", { replace: true });
+      return;
+    }
 
-      if (path === "/consultation" && isLoggedIn) {
-        await markAllAsSeen();
-      }
-    },
-    [isLoggedIn, markAllAsSeen, navigate]
-  );
+    if (path === "/consultation" && isLoggedIn) {
+      await markAllAsSeen();
+    }
+  };
 
-  const toggleLanguage = useCallback(() => {
+  const toggleLanguage = () => {
     if (!setLanguage) return;
 
     const newLang = language === "ar" ? "en" : "ar";
@@ -111,50 +88,47 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     localStorage.setItem("language", newLang);
     document.documentElement.lang = newLang;
     document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
-  }, [language, setLanguage]);
+  };
 
-  const navItems = useMemo(
-    () => [
-      {
-        path: "/welcome",
-        icon: <FaHome />,
-        label: isArabic ? "الرئيسية" : "Home",
-        requiresAuth: false,
-      },
-      {
-        path: "/diagnosis",
-        icon: <MdLocalHospital />,
-        label: isArabic ? "تشخيص الأمراض" : "Disease Diagnosis",
-        requiresAuth: false,
-      },
-      {
-        path: "/soil-analysis",
-        icon: <FaFlask />,
-        label: isArabic ? "انواع التربة" : "Soil Types",
-        requiresAuth: false,
-      },
-      {
-        path: "/plants-seasons",
-        icon: <FaCalendarAlt />,
-        label: isArabic ? "النباتات والفصول" : "Plants & Seasons",
-        requiresAuth: false,
-      },
-      {
-        path: "/store",
-        icon: <FaShoppingCart />,
-        label: isArabic ? "المتجر" : "Store",
-        requiresAuth: true,
-      },
-      {
-        path: "/consultation",
-        icon: <FaComments />,
-        label: isArabic ? "استشارة الخبراء" : "Expert Consultation",
-        requiresAuth: true,
-        showBadge: isLoggedIn,
-      },
-    ],
-    [isArabic, isLoggedIn]
-  );
+  const navItems = [
+    {
+      path: "/welcome",
+      icon: <FaHome />,
+      label: isArabic ? "الرئيسية" : "Home",
+      requiresAuth: false,
+    },
+    {
+      path: "/diagnosis",
+      icon: <MdLocalHospital />,
+      label: isArabic ? "تشخيص الأمراض" : "Disease Diagnosis",
+      requiresAuth: false,
+    },
+    {
+      path: "/soil-analysis",
+      icon: <FaFlask />,
+      label: isArabic ? "انواع التربة" : "Soil Types",
+      requiresAuth: false,
+    },
+    {
+      path: "/plants-seasons",
+      icon: <FaCalendarAlt />,
+      label: isArabic ? "النباتات والفصول" : "Plants & Seasons",
+      requiresAuth: false,
+    },
+    {
+      path: "/store",
+      icon: <FaShoppingCart />,
+      label: isArabic ? "المتجر" : "Store",
+      requiresAuth: true,
+    },
+    {
+      path: "/consultation",
+      icon: <FaComments />,
+      label: isArabic ? "استشارة الخبراء" : "Expert Consultation",
+      requiresAuth: true,
+      showBadge: isLoggedIn,
+    },
+  ];
 
   return (
     <header className="header">
@@ -164,16 +138,11 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
             src="/images/Capture.png"
             alt={isArabic ? "نباتي" : "Napaty"}
             className="header-logo-image"
-            width="50"
-            height="50"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
           />
           <h1>{isArabic ? "نباتي" : "Napaty"}</h1>
         </div>
 
-        <nav className="nav-menu" aria-label={isArabic ? "القائمة الرئيسية" : "Main navigation"}>
+        <nav className="nav-menu">
           <ul>
             {navItems.map((item) => (
               <li key={item.path}>
@@ -202,7 +171,7 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
         </nav>
 
         <div className="user-actions">
-          <button className="lang-toggle-btn" onClick={toggleLanguage} type="button">
+          <button className="lang-toggle-btn" onClick={toggleLanguage}>
             {isArabic ? "EN" : "AR"}
           </button>
 
@@ -211,8 +180,6 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
               <button
                 className="user-menu-btn"
                 onClick={() => setShowMenu((p) => !p)}
-                type="button"
-                aria-expanded={showMenu}
               >
                 <FaChevronDown className="chevron-icon" />
                 <span>
@@ -223,7 +190,7 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
 
               {showMenu && (
                 <div className="user-dropdown">
-                  <button className="logout-btn" onClick={handleLogout} type="button">
+                  <button className="logout-btn" onClick={handleLogout}>
                     <FaSignOutAlt />
                     {isArabic ? "تسجيل الخروج" : "Logout"}
                   </button>
@@ -242,4 +209,4 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
   );
 };
 
-export default memo(Header);
+export default Header;
