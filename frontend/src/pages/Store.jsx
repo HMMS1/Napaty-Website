@@ -473,10 +473,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     };
   }, [showMobileCart]);
 
-  const isMobileOrTablet = () => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia('(max-width: 992px)').matches;
-  };
 
   const getCartCount = () =>
     cartItems.reduce((total, item) => total + item.quantity, 0);
