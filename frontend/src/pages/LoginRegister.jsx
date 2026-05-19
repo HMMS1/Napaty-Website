@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginRequest, registerRequest } from "../api/auth";
+import { loginRequest } from "../api/auth";
 
 import {
   FaUser,
@@ -18,7 +18,6 @@ const emptyForm = {
   email: "",
   password: "",
   name: "",
-  phone: "",
   location: "",
   experience: "",
   field: "",
@@ -31,13 +30,17 @@ const Login = ({ setUser, language = "ar" }) => {
   const [activeTab, setActiveTab] = useState("login");
   const [userType, setUserType] = useState("user");
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // لإظهار/إخفاء تأكيد الباسورد
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({ ...emptyForm });
+
+  // ستايتس التسجيل الجديد بكود التفعيل
+  const [registerStep, setResetRegisterStep] = useState(1);
+  const [registerOtp, setRegisterOtp] = useState("");
 
   // States الخاصة باستعادة كلمة المرور (3 خطوات)
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [resetStep, setResetStep] = useState(1); 
-  const [resetData, setResetData] = useState({ email: "", code: "", newPassword: "", confirmPassword: "" });
+  const [resetData, setResetData] = useState({ email: "", code: "", newPassword: "" , confirmPassword: "" });
 
   const [showMessageBox, setShowMessageBox] = useState(false);
   const [messageBoxType, setMessageBoxType] = useState("success");
@@ -53,6 +56,8 @@ const Login = ({ setUser, language = "ar" }) => {
     setShowConfirmPassword(false);
     setIsForgotPassword(false);
     setResetStep(1);
+    setResetRegisterStep(1);
+    setRegisterOtp("");
     setResetData({ email: "", code: "", newPassword: "", confirmPassword: "" });
   }, [displayTab]);
 
@@ -103,6 +108,7 @@ const Login = ({ setUser, language = "ar" }) => {
     setActiveTab(tab);
     setIsForgotPassword(false);
     setResetStep(1);
+    setResetRegisterStep(1);
   };
 
   // دالة التعامل مع استرجاع كلمة المرور (مقسمة لـ 3 خطوات)
@@ -111,7 +117,6 @@ const Login = ({ setUser, language = "ar" }) => {
 
     try {
       if (resetStep === 1) {
-        // الخطوة 1: إرسال الإيميل للسيرفر
         if (!resetData.email) {
           openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى إدخال البريد الإلكتروني" : "Please enter email");
           return;
@@ -132,21 +137,19 @@ const Login = ({ setUser, language = "ar" }) => {
 
         if (response.ok) {
           openMessageBox("success", isArabic ? "تم" : "Success", isArabic ? "تم إرسال الكود لبريدك الإلكتروني بنجاح" : "Code sent to your email");
-          setResetStep(2); // النقل لشاشة الكود
+          setResetStep(2);
         } else {
           openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "حدث خطأ أثناء إرسال الكود" : "Error sending code"));
         }
 
       } else if (resetStep === 2) {
-        // الخطوة 2: النقل لشاشة الباسورد الجديد (التحقق الفعلي بيتم في الخطوة التالتة توفيراً للريكويستات)
         if (!resetData.code) {
           openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى إدخال الكود أولاً" : "Please enter code");
           return;
         }
-        setResetStep(3); // النقل لشاشة الباسورد الجديد
+        setResetStep(3);
 
       } else if (resetStep === 3) {
-        // الخطوة 3: التحقق من الباسورد الجديد وتأكيده ثم إرسال الكل للسيرفر
         if (!resetData.newPassword || !resetData.confirmPassword) {
           openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى إدخال كلمة المرور وتأكيدها" : "Please enter and confirm password");
           return;
@@ -180,7 +183,6 @@ const Login = ({ setUser, language = "ar" }) => {
           setResetStep(1);
           setResetData({ email: "", code: "", newPassword: "", confirmPassword: "" });
         } else {
-          // لو الكود اللي دخله في الخطوة التانية طلع غلط، نرجعه لشاشة الكود تاني
           openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "الكود غير صحيح أو منتهي الصلاحية" : "Invalid code"));
           setResetStep(2); 
         }
@@ -191,6 +193,7 @@ const Login = ({ setUser, language = "ar" }) => {
     }
   };
 
+  // دالة تسجيل الدخول وإنشاء الحساب المعدلة خطوتين وبدون موبايل
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -228,44 +231,89 @@ const Login = ({ setUser, language = "ar" }) => {
         return;
       }
 
-      if (!formData.name || !formData.email || !formData.password || !formData.phone) {
-        openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى ملء جميع الحقول المطلوبة" : "Please fill all required fields");
-        return;
-      }
-      if (userType === "expert") {
-        if (!formData.experience || !formData.field) {
-          openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى ملء مدة الخبرة والمجال للخبير الزراعي" : "Please enter experience years and specialization for the agricultural expert");
+      // لو دخلنا هنا يبقى إحنا في تابة الـ Register
+      if (registerStep === 1) {
+        if (!formData.name || !formData.email || !formData.password) {
+          openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى ملء جميع الحقول المطلوبة" : "Please fill all required fields");
           return;
         }
-      }
+        if (userType === "expert" && (!formData.experience || !formData.field)) {
+          openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى ملء مدة الخبرة والمجال للخبير الزراعي" : "Please enter experience details");
+          return;
+        }
 
-      const payload = {
-        full_name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        phone: formData.phone || "",
-        location: formData.location || "",
-        user_type: userType,
-        ...(userType === "expert" && {
-          experience_years: Number(formData.experience),
-          specialization: formData.field,
-        }),
-      };
-      await registerRequest(payload);
-      openMessageBox("success", isArabic ? "تم بنجاح" : "Success", isArabic ? "تم إنشاء الحساب بنجاح " : "Account created successfully ");
-      setFormData({ ...emptyForm });
-      setUserType("user");
-      setShowPassword(false);
-      setActiveTab("login");
+        const payload = {
+          full_name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          location: formData.location || "",
+          user_type: userType,
+          ...(userType === "expert" && {
+            experience_years: Number(formData.experience),
+            specialization: formData.field,
+          }),
+        };
+
+        // طلب إرسال كود التفعيل للحساب الجديد
+        const response = await fetch("https://hamzamostafa20.pythonanywhere.com/api/auth/register/request/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          openMessageBox("success", isArabic ? "تم" : "Success", isArabic ? "تم إرسال كود التفعيل لبريدك الإلكتروني" : "Activation code sent to your email");
+          setResetRegisterStep(2); // التوجه لخطوة إدخال الكود
+        } else {
+          openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "فشل إرسال كود التفعيل" : "Failed to send code"));
+        }
+
+      } else if (registerStep === 2) {
+        if (!registerOtp) {
+          openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى إدخال كود التفعيل" : "Please enter code");
+          return;
+        }
+
+        // إرسال الكود للتأكيد النهائي وبناء الحساب
+        const response = await fetch("https://hamzamostafa20.pythonanywhere.com/api/auth/register/verify/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email, code: registerOtp }),
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          openMessageBox("success", isArabic ? "تم بنجاح" : "Success", isArabic ? "تم تفعيل حسابك وإنشاؤه بنجاح!" : "Account verified and created successfully");
+          
+          // تسجيل دخول تلقائي لليوزر بعد التفعيل مباشرة
+          if (data.tokens?.access) localStorage.setItem("access", data.tokens.access);
+          if (data.tokens?.refresh) localStorage.setItem("refresh", data.tokens.refresh);
+          
+          const savedUserType = data.user?.user_type || userType;
+          const userData = {
+            ...(data.user || {}),
+            user_type: savedUserType,
+            isAuthenticated: true,
+          };
+          localStorage.setItem("user_type", savedUserType);
+          localStorage.setItem("user", JSON.stringify(userData));
+          
+          setUser(userData);
+          setFormData({ ...emptyForm });
+          setResetRegisterStep(1);
+          setRegisterOtp("");
+          navigate("/", { replace: true });
+        } else {
+          openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "الكود غير صحيح" : "Invalid code"));
+        }
+      }
     } catch (err) {
-      const data = err?.response?.data;
-      const msg = data?.detail || data?.message || (data && typeof data === "object" ? JSON.stringify(data) : null) || (isArabic ? "حصل خطأ.. تأكد من البيانات أو من السيرفر" : "Something went wrong.. check your data or the server");
-      openMessageBox("warning", isArabic ? "خطأ" : "Error", msg);
+      openMessageBox("warning", isArabic ? "خطأ" : "Error", isArabic ? "حصل خطأ في السيرفر أو الاتصال" : "Server error occurred");
       console.error(err);
     }
   };
 
-  // العناوين المتغيرة حسب الخطوة عشان اليوزر ميتوهش
   const getResetTitle = () => {
     if (resetStep === 1) return isArabic ? "استعادة كلمة المرور" : "Reset Password";
     if (resetStep === 2) return isArabic ? "إدخال كود التحقق" : "Enter Verification Code";
@@ -309,7 +357,7 @@ const Login = ({ setUser, language = "ar" }) => {
 
           <div className={`auth-panel ${isAnimating ? "switch-out" : "switch-in"}`} key={displayTab}>
             
-            {displayTab === "register" && (
+            {displayTab === "register" && registerStep === 1 && (
               <div className="user-type-section smooth-block">
                 <h3>{isArabic ? "نوع الحساب" : "Account Type"}</h3>
                 <div className="user-types">
@@ -335,7 +383,6 @@ const Login = ({ setUser, language = "ar" }) => {
                     {getResetTitle()}
                   </h4>
 
-                  {/* الخطوة الأولى: الإيميل */}
                   {resetStep === 1 && (
                     <div className="form-group smooth-block">
                       <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
@@ -352,7 +399,6 @@ const Login = ({ setUser, language = "ar" }) => {
                     </div>
                   )}
 
-                  {/* الخطوة التانية: الكود */}
                   {resetStep === 2 && (
                     <div className="form-group smooth-block delay-1">
                       <label>{isArabic ? "كود التحقق" : "Verification Code"}</label>
@@ -369,7 +415,6 @@ const Login = ({ setUser, language = "ar" }) => {
                     </div>
                   )}
 
-                  {/* الخطوة التالتة: الباسورد الجديد والتأكيد */}
                   {resetStep === 3 && (
                     <>
                       <div className="form-group smooth-block delay-1">
@@ -444,116 +489,125 @@ const Login = ({ setUser, language = "ar" }) => {
               <form onSubmit={handleSubmit} className="login-form login-form-proper">
                 {displayTab === "register" ? (
                   <>
-                    <div className="form-section smooth-block delay-1">
-                      <h4 className="section-mini-title">
-                        {isArabic ? "بيانات الحساب" : "Account Information"}
-                      </h4>
+                    {registerStep === 1 ? (
+                      <>
+                        <div className="form-section smooth-block delay-1">
+                          <h4 className="section-mini-title">
+                            {isArabic ? "بيانات الحساب الجديد" : "New Account Details"}
+                          </h4>
 
-                      <div className="form-single-column">
-                        <div className="form-group">
-                          <label>{isArabic ? "الاسم الكامل" : "Full Name"}</label>
-                          <div className="input-with-icon">
-                            <FaUser className="input-icon" />
-                            <input
-                              type="text"
-                              name="name"
-                              value={formData.name}
-                              onChange={handleChange}
-                              placeholder={isArabic ? "أدخل اسمك الكامل" : "Enter your full name"}
-                              required
-                            />
-                          </div>
-                        </div>
-
-                        <div className="form-group">
-                          <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
-                          <div className="input-with-icon">
-                            <FaEnvelope className="input-icon" />
-                            <input
-                              type="email"
-                              name="email"
-                              value={formData.email}
-                              onChange={handleChange}
-                              placeholder={isArabic ? "أدخل بريدك الإلكتروني" : "Enter your email"}
-                              required
-                            />
-                          </div>
-                        </div>
-
-                        <div className="form-group">
-                          <label>{isArabic ? "رقم الهاتف" : "Phone Number"}</label>
-                          <div className="input-with-icon">
-                            <FaUser className="input-icon" />
-                            <input
-                              type="tel"
-                              name="phone"
-                              value={formData.phone}
-                              onChange={handleChange}
-                              placeholder={isArabic ? "أدخل رقم هاتفك" : "Enter your phone number"}
-                              required
-                            />
-                          </div>
-                        </div>
-
-                        {userType === "expert" && (
-                          <>
-                            <div className="form-group smooth-block delay-2">
-                              <label>{isArabic ? "مدة الخبرة (سنوات)" : "Experience (Years)"}</label>
+                          <div className="form-single-column">
+                            <div className="form-group">
+                              <label>{isArabic ? "الاسم الكامل" : "Full Name"}</label>
                               <div className="input-with-icon">
-                                <FaCalendarAlt className="input-icon" />
-                                <input
-                                  type="number"
-                                  name="experience"
-                                  value={formData.experience}
-                                  onChange={handleChange}
-                                  placeholder={isArabic ? "عدد سنوات الخبرة" : "Number of years of experience"}
-                                  min="0"
-                                  max="50"
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <div className="form-group smooth-block delay-3">
-                              <label>{isArabic ? "المجال التخصصي" : "Specialization"}</label>
-                              <div className="input-with-icon">
-                                <FaBriefcase className="input-icon" />
+                                <FaUser className="input-icon" />
                                 <input
                                   type="text"
-                                  name="field"
-                                  value={formData.field}
+                                  name="name"
+                                  value={formData.name}
                                   onChange={handleChange}
-                                  placeholder={isArabic ? "مثال: نباتات زينة، أشجار فاكهة، خضروات" : "Example: Ornamental plants, fruit trees, vegetables"}
+                                  placeholder={isArabic ? "أدخل اسمك الكامل" : "Enter your full name"}
                                   required
                                 />
                               </div>
                             </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
 
-                    <div className="form-section smooth-block delay-2">
-                      <h4 className="section-mini-title">{isArabic ? "الأمان" : "Security"}</h4>
-                      <div className="form-group">
-                        <label>{isArabic ? "كلمة المرور" : "Password"}</label>
-                        <div className="input-with-icon">
-                          <FaLock className="input-icon" />
-                          <input
-                            type={showPassword ? "text" : "password"}
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder={isArabic ? "أدخل كلمة المرور" : "Enter password"}
-                            required
-                            minLength="6"
-                          />
-                          <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                          </button>
+                            <div className="form-group">
+                              <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
+                              <div className="input-with-icon">
+                                <FaEnvelope className="input-icon" />
+                                <input
+                                  type="email"
+                                  name="email"
+                                  value={formData.email}
+                                  onChange={handleChange}
+                                  placeholder={isArabic ? "أدخل بريدك الإلكتروني" : "Enter your email"}
+                                  required
+                                />
+                              </div>
+                            </div>
+
+                            {userType === "expert" && (
+                              <>
+                                <div className="form-group smooth-block delay-2">
+                                  <label>{isArabic ? "مدة الخبرة (سنوات)" : "Experience (Years)"}</label>
+                                  <div className="input-with-icon">
+                                    <FaCalendarAlt className="input-icon" />
+                                    <input
+                                      type="number"
+                                      name="experience"
+                                      value={formData.experience}
+                                      onChange={handleChange}
+                                      placeholder={isArabic ? "عدد سنوات الخبرة" : "Number of years of experience"}
+                                      min="0"
+                                      max="50"
+                                      required
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="form-group smooth-block delay-3">
+                                  <label>{isArabic ? "المجال التخصصي" : "Specialization"}</label>
+                                  <div className="input-with-icon">
+                                    <FaBriefcase className="input-icon" />
+                                    <input
+                                      type="text"
+                                      name="field"
+                                      value={formData.field}
+                                      onChange={handleChange}
+                                      placeholder={isArabic ? "مثال: نباتات زينة، أشجار فاكهة" : "Example: Ornamental plants"}
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="form-section smooth-block delay-2">
+                          <h4 className="section-mini-title">{isArabic ? "الأمان" : "Security"}</h4>
+                          <div className="form-group">
+                            <label>{isArabic ? "كلمة المرور" : "Password"}</label>
+                            <div className="input-with-icon">
+                              <FaLock className="input-icon" />
+                              <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder={isArabic ? "أدخل كلمة المرور" : "Enter password"}
+                                required
+                                minLength="6"
+                              />
+                              <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      /* خطوة إدخال كود تفعيل الحساب الجديد */
+                      <div className="form-section smooth-block">
+                        <h4 className="section-mini-title" style={{ textAlign: 'center', marginBottom: '20px', color: '#4CAF50' }}>
+                          {isArabic ? "تأكيد بريدك الإلكتروني" : "Verify Your Email"}
+                        </h4>
+                        <div className="form-group">
+                          <label>{isArabic ? "كود التفعيل" : "Activation Code"}</label>
+                          <div className="input-with-icon">
+                            <FaLock className="input-icon" />
+                            <input
+                              type="text"
+                              value={registerOtp}
+                              onChange={(e) => setRegisterOtp(e.target.value)}
+                              placeholder={isArabic ? "أدخل كود التفعيل المكون من 6 أرقام" : "Enter 6-digit code"}
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </>
                 ) : (
                   <>
@@ -608,13 +662,17 @@ const Login = ({ setUser, language = "ar" }) => {
                 )}
 
                 <button type="submit" className={`submit-btn ${displayTab === "login" ? "" : "submit-btn-proper"} smooth-submit`}>
-                  {displayTab === "login" ? (isArabic ? "تسجيل الدخول" : "Login") : (isArabic ? "إنشاء الحساب" : "Create Account")}
+                  {displayTab === "login" 
+                    ? (isArabic ? "تسجيل الدخول" : "Login") 
+                    : registerStep === 1 
+                    ? (isArabic ? "إرسال كود التفعيل" : "Send Code") 
+                    : (isArabic ? "تفعيل وإنشاء الحساب" : "Verify & Register")}
                 </button>
               </form>
             )}
           </div>
 
-          {!isForgotPassword && (
+          {!isForgotPassword && (registerStep === 1 || displayTab === "login") && (
             <div className="auth-footer">
               {displayTab === "login" ? (
                 <p>
