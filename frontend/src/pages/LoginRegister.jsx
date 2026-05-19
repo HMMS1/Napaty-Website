@@ -114,17 +114,23 @@ const Login = ({ setUser, language = "ar" }) => {
           return;
         }
 
-        // إرسال طلب إرسال الكود للباك إند المرفوع
         const response = await fetch("https://hamzamostafa20.pythonanywhere.com/api/auth/request-reset/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: resetData.email }),
         });
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error(isArabic ? "السيرفر لا يعمل بشكل صحيح" : "Server is not responding correctly");
+        }
+
         const data = await response.json();
 
         if (response.ok) {
           openMessageBox("success", isArabic ? "تم" : "Success", isArabic ? "تم إرسال الكود لبريدك الإلكتروني" : "Code sent to your email");
-          setResetStep(2);
+          // هنا السحر بيحصل: بنغير الخطوة لـ 2 عشان نظهر مربع الكود والباسورد الجديد
+          setResetStep(2); 
         } else {
           openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "حدث خطأ أثناء إرسال الكود" : "Error sending code"));
         }
@@ -134,7 +140,6 @@ const Login = ({ setUser, language = "ar" }) => {
           return;
         }
 
-        // إرسال طلب تغيير كلمة المرور للباك إند المرفوع
         const response = await fetch("https://hamzamostafa20.pythonanywhere.com/api/auth/reset-password/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -144,6 +149,12 @@ const Login = ({ setUser, language = "ar" }) => {
             new_password: resetData.newPassword,
           }),
         });
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error(isArabic ? "حدث خطأ في السيرفر" : "Server Error");
+        }
+
         const data = await response.json();
 
         if (response.ok) {
@@ -156,7 +167,7 @@ const Login = ({ setUser, language = "ar" }) => {
         }
       }
     } catch (err) {
-      openMessageBox("warning", isArabic ? "خطأ" : "Error", isArabic ? "تعذر الاتصال بالخادم" : "Server connection failed");
+      openMessageBox("warning", isArabic ? "تفاصيل الخطأ" : "Error", err.message || (isArabic ? "تعذر الاتصال بالخادم" : "Server connection failed"));
       console.error(err);
     }
   };
@@ -375,6 +386,7 @@ const Login = ({ setUser, language = "ar" }) => {
                     {isArabic ? "استعادة كلمة المرور" : "Reset Password"}
                   </h4>
 
+                  {/* هنا الشرط اللي بيغير الشاشة بين الإيميل (رقم 1) والكود (رقم 2) */}
                   {resetStep === 1 ? (
                     <div className="form-group">
                       <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
