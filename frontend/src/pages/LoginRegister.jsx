@@ -251,29 +251,16 @@ const Login = ({ setUser, language = "ar" }) => {
         const data = await response.json();
 
         if (response.ok) {
-          // ✅ الأهم: احفظ كل حاجة الأول، وبعدين اعمل navigate بعد OK
-          if (data.tokens?.access) localStorage.setItem("access", data.tokens.access);
-          if (data.tokens?.refresh) localStorage.setItem("refresh", data.tokens.refresh);
-
-          const savedUserType = data.user?.user_type || userType;
-          const userData = {
-            ...(data.user || {}),
-            user_type: savedUserType,
-            isAuthenticated: true,
-          };
-          localStorage.setItem("user_type", savedUserType);
-          localStorage.setItem("user", JSON.stringify(userData));
-          setUser(userData);
+          // ✅ مش بنعمل login تلقائي — بنرجعه لصفحة تسجيل الدخول بس
           setFormData({ ...emptyForm });
           setResetRegisterStep(1);
           setRegisterOtp("");
 
-          // ✅ navigate هيحصل بعد ما اليوزر يضغط OK — مش قبله
           openMessageBox(
             "success",
             isArabic ? "تم بنجاح" : "Success",
-            isArabic ? "تم تفعيل حسابك وإنشاؤه بنجاح!" : "Account verified and created successfully!",
-            "/" // ← الـ path اللي هيروحله بعد OK
+            isArabic ? "تم إنشاء حسابك بنجاح! سجّل دخولك الآن" : "Account created successfully! Please log in.",
+            "/login" // ← بعد OK يروح لصفحة الـ login
           );
         } else {
           openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "الكود غير صحيح" : "Invalid code"));
