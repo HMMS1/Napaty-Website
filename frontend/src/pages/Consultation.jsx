@@ -68,9 +68,10 @@ function Consultation({ language = "ar" }) {
   const isArabic = language === "ar";
   const navigate = useNavigate();
 
-  // ✅ التعديل الأساسي: قراءة التوكن مباشرة في كل render مش مرة واحدة
-  const token =
-    localStorage.getItem("access") || localStorage.getItem("token");
+  // ✅ token كـ state عشان لو اتحفظ بعد الـ mount نعرف نعيد التحميل
+  const [token, setToken] = useState(
+    () => localStorage.getItem("access") || localStorage.getItem("token")
+  );
 
   const userType = (
     localStorage.getItem("user_type") || "user"
@@ -105,6 +106,31 @@ function Consultation({ language = "ar" }) {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [requestToDelete, setRequestToDelete] = useState(null);
+
+  // ✅ لو التوكن مجاش في أول render، استنى وجرب تاني (بعد التسجيل مباشرة)
+  useEffect(() => {
+    if (token) return;
+
+    const interval = setInterval(() => {
+      const found = localStorage.getItem("access") || localStorage.getItem("token");
+      if (found) {
+        setToken(found);
+        clearInterval(interval);
+        clearTimeout(timeout);
+      }
+    }, 100);
+
+    // بعد 3 ثواني لو مفيش توكن، روح للـ login
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
+      navigate("/login", { replace: true });
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [token, navigate]);
 
   const getHiddenRequests = useCallback(() => {
     try {
@@ -167,10 +193,6 @@ function Consultation({ language = "ar" }) {
       isArabic ? "تم حذف المحادثة بنجاح" : "The chat was removed successfully"
     );
   }, [requestToDelete, saveHiddenRequest, isArabic]);
-
-  useEffect(() => {
-    if (!token) navigate("/login", { replace: true });
-  }, [token, navigate]);
 
   useEffect(() => {
     if (!token || userType !== "user") return;
@@ -273,9 +295,7 @@ function Consultation({ language = "ar" }) {
       });
       openMessageBox(
         "success",
-        isArabic
-          ? "تم إرسال طلب الاستشارة بنجاح"
-          : "Consultation request sent successfully"
+        isArabic ? "تم إرسال طلب الاستشارة بنجاح" : "Consultation request sent successfully"
       );
       setSelectedExpert(null);
       setConsultationTime("");
@@ -284,9 +304,7 @@ function Consultation({ language = "ar" }) {
     } catch (e) {
       openMessageBox(
         "error",
-        isArabic
-          ? "حصل خطأ أثناء إرسال الطلب"
-          : "An error occurred while sending the request"
+        isArabic ? "حصل خطأ أثناء إرسال الطلب" : "An error occurred while sending the request"
       );
       console.error(e);
     } finally {
@@ -306,9 +324,7 @@ function Consultation({ language = "ar" }) {
     } catch (e) {
       openMessageBox(
         "error",
-        isArabic
-          ? "حصل خطأ أثناء إلغاء الطلب"
-          : "An error occurred while cancelling the request"
+        isArabic ? "حصل خطأ أثناء إلغاء الطلب" : "An error occurred while cancelling the request"
       );
       console.error(e);
     } finally {
@@ -326,11 +342,8 @@ function Consultation({ language = "ar" }) {
             ? {
                 ...r,
                 status:
-                  status === "accept"
-                    ? "accepted"
-                    : status === "reject"
-                    ? "rejected"
-                    : status,
+                  status === "accept" ? "accepted" :
+                  status === "reject" ? "rejected" : status,
               }
             : r
         )
@@ -338,19 +351,13 @@ function Consultation({ language = "ar" }) {
       openMessageBox(
         "success",
         status === "accept" || status === "accepted"
-          ? isArabic
-            ? "تم قبول الطلب بنجاح"
-            : "The request has been accepted successfully"
-          : isArabic
-          ? "تم رفض الطلب بنجاح"
-          : "The request has been rejected successfully"
+          ? isArabic ? "تم قبول الطلب بنجاح" : "The request has been accepted successfully"
+          : isArabic ? "تم رفض الطلب بنجاح" : "The request has been rejected successfully"
       );
     } catch (e) {
       openMessageBox(
         "error",
-        isArabic
-          ? "حصل خطأ أثناء تحديث الحالة"
-          : "An error occurred while updating the status"
+        isArabic ? "حصل خطأ أثناء تحديث الحالة" : "An error occurred while updating the status"
       );
       console.error(e);
     } finally {
@@ -361,17 +368,13 @@ function Consultation({ language = "ar" }) {
   const MessageBox = () => {
     if (!showMessageBox) return null;
     const icon =
-      messageBoxType === "success"
-        ? "fas fa-check-circle"
-        : messageBoxType === "warning"
-        ? "fas fa-exclamation-triangle"
-        : "fas fa-times-circle";
+      messageBoxType === "success" ? "fas fa-check-circle" :
+      messageBoxType === "warning" ? "fas fa-exclamation-triangle" :
+      "fas fa-times-circle";
     const mainColor =
-      messageBoxType === "success"
-        ? "#198754"
-        : messageBoxType === "warning"
-        ? "#f59e0b"
-        : "#dc2626";
+      messageBoxType === "success" ? "#198754" :
+      messageBoxType === "warning" ? "#f59e0b" :
+      "#dc2626";
     return (
       <div className="consultation-overlay">
         <div className="consultation-message-box">
@@ -460,69 +463,61 @@ function Consultation({ language = "ar" }) {
           {!reqLoading && !reqError && requests.length === 0 && (
             <p>{isArabic ? "لا توجد طلبات حالياً" : "No requests at the moment"}</p>
           )}
-          {!reqLoading &&
-            !reqError &&
-            requests.map((req) => {
-              const reqTime = formatDateTime(getRequestTime(req), language);
-              const userName =
-                req.user_name ||
-                req.user?.full_name ||
-                req.user?.username ||
-                (isArabic ? "مستخدم" : "User");
-              const timeSlot = req.time_slot || "-";
-              const unread = Number(req.unread_count || 0);
-              return (
-                <div key={req.id} className="consultation-request-card">
-                  <h4>{isArabic ? "طلب من:" : "Request from:"} {userName}</h4>
-                  <p><b>{isArabic ? "وقت الجلسة:" : "Session Time:"}</b> {timeSlot}</p>
-                  {reqTime && (
-                    <p className="muted">
-                      <b>{isArabic ? "وقت الإرسال:" : "Sent At:"}</b> {reqTime}
+          {!reqLoading && !reqError && requests.map((req) => {
+            const reqTime = formatDateTime(getRequestTime(req), language);
+            const userName =
+              req.user_name || req.user?.full_name || req.user?.username ||
+              (isArabic ? "مستخدم" : "User");
+            const timeSlot = req.time_slot || "-";
+            const unread = Number(req.unread_count || 0);
+            return (
+              <div key={req.id} className="consultation-request-card">
+                <h4>{isArabic ? "طلب من:" : "Request from:"} {userName}</h4>
+                <p><b>{isArabic ? "وقت الجلسة:" : "Session Time:"}</b> {timeSlot}</p>
+                {reqTime && (
+                  <p className="muted">
+                    <b>{isArabic ? "وقت الإرسال:" : "Sent At:"}</b> {reqTime}
+                  </p>
+                )}
+                {req.message && (
+                  <p><b>{isArabic ? "الرسالة:" : "Message:"}</b> {req.message}</p>
+                )}
+                {req.status === "pending" && (
+                  <div className="action-buttons">
+                    <button
+                      disabled={updatingId === req.id}
+                      onClick={() => handleUpdateStatus(req.id, "accept")}
+                      className="btn-accept"
+                    >
+                      {updatingId === req.id ? "..." : isArabic ? "قبول" : "Accept"}
+                    </button>
+                    <button
+                      disabled={updatingId === req.id}
+                      onClick={() => handleUpdateStatus(req.id, "reject")}
+                      className="btn-reject"
+                    >
+                      {updatingId === req.id ? "..." : isArabic ? "رفض" : "Reject"}
+                    </button>
+                    <DeleteButton onClick={() => openDeleteConfirm(req, "expert")} />
+                  </div>
+                )}
+                {req.status === "accepted" && (
+                  <div className="action-buttons">
+                    <ChatButton language={language} unreadCount={unread} onClick={() => handleOpenChat(req.id)} />
+                    <DeleteButton onClick={() => openDeleteConfirm(req, "expert")} />
+                  </div>
+                )}
+                {req.status !== "pending" && req.status !== "accepted" && (
+                  <div className="action-buttons">
+                    <p className="faded">
+                      {isArabic ? "تم إنهاء هذا الطلب" : "This request has been processed"}
                     </p>
-                  )}
-                  {req.message && (
-                    <p><b>{isArabic ? "الرسالة:" : "Message:"}</b> {req.message}</p>
-                  )}
-                  {req.status === "pending" && (
-                    <div className="action-buttons">
-                      <button
-                        disabled={updatingId === req.id}
-                        onClick={() => handleUpdateStatus(req.id, "accept")}
-                        className="btn-accept"
-                      >
-                        {updatingId === req.id ? "..." : isArabic ? "قبول" : "Accept"}
-                      </button>
-                      <button
-                        disabled={updatingId === req.id}
-                        onClick={() => handleUpdateStatus(req.id, "reject")}
-                        className="btn-reject"
-                      >
-                        {updatingId === req.id ? "..." : isArabic ? "رفض" : "Reject"}
-                      </button>
-                      <DeleteButton onClick={() => openDeleteConfirm(req, "expert")} />
-                    </div>
-                  )}
-                  {req.status === "accepted" && (
-                    <div className="action-buttons">
-                      <ChatButton
-                        language={language}
-                        unreadCount={unread}
-                        onClick={() => handleOpenChat(req.id)}
-                      />
-                      <DeleteButton onClick={() => openDeleteConfirm(req, "expert")} />
-                    </div>
-                  )}
-                  {req.status !== "pending" && req.status !== "accepted" && (
-                    <div className="action-buttons">
-                      <p className="faded">
-                        {isArabic ? "تم إنهاء هذا الطلب" : "This request has been processed"}
-                      </p>
-                      <DeleteButton onClick={() => openDeleteConfirm(req, "expert")} />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    <DeleteButton onClick={() => openDeleteConfirm(req, "expert")} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
         <MessageBox />
         <DeleteConfirmModal />
@@ -549,16 +544,12 @@ function Consultation({ language = "ar" }) {
           )}
           {myReqError && <p style={{ color: "red" }}>{myReqError}</p>}
           {!myReqLoading && !myReqError && myReqs.length === 0 ? (
-            <p className="faded">
-              {isArabic ? "مفيش طلبات لحد دلوقتي" : "No requests yet"}
-            </p>
+            <p className="faded">{isArabic ? "مفيش طلبات لحد دلوقتي" : "No requests yet"}</p>
           ) : (
             myReqs.map((req) => {
               const reqTime = formatDateTime(getRequestTime(req), language);
               const expertName =
-                req.expert_name ||
-                req.expert?.full_name ||
-                req.expert?.username ||
+                req.expert_name || req.expert?.full_name || req.expert?.username ||
                 (isArabic ? "خبير" : "Expert");
               const unread = Number(req.unread_count || 0);
               return (
@@ -575,11 +566,7 @@ function Consultation({ language = "ar" }) {
                   <div className="action-buttons">
                     {req.status === "accepted" ? (
                       <>
-                        <ChatButton
-                          language={language}
-                          unreadCount={unread}
-                          onClick={() => handleOpenChat(req.id)}
-                        />
+                        <ChatButton language={language} unreadCount={unread} onClick={() => handleOpenChat(req.id)} />
                         <DeleteButton onClick={() => openDeleteConfirm(req, "user")} />
                       </>
                     ) : req.status === "pending" ? (
@@ -617,11 +604,7 @@ function Consultation({ language = "ar" }) {
             <h3>{isArabic ? "الخبراء المتاحون" : "Available Experts"}</h3>
             <div className="experts-grid">
               {experts.map((expert) => (
-                <div
-                  key={expert.id}
-                  className="expert-card"
-                  onClick={() => setSelectedExpert(expert)}
-                >
+                <div key={expert.id} className="expert-card" onClick={() => setSelectedExpert(expert)}>
                   <div className="expert-info">
                     <h4>{expert.full_name || expert.name}</h4>
                     <p>{expert.specialization || (isArabic ? "خبير زراعي" : "Agricultural Expert")}</p>
@@ -680,11 +663,7 @@ function Consultation({ language = "ar" }) {
             </button>
             <button
               className="back-btn"
-              onClick={() => {
-                setSelectedExpert(null);
-                setConsultationTime("");
-                setMessage("");
-              }}
+              onClick={() => { setSelectedExpert(null); setConsultationTime(""); setMessage(""); }}
               disabled={creating}
             >
               {isArabic ? "رجوع" : "Back"}
