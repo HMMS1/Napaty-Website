@@ -267,7 +267,36 @@ const Login = ({ setUser, language = "ar" }) => {
         }
       }
     } catch (err) {
-      openMessageBox("warning", isArabic ? "خطأ" : "Error", isArabic ? "حصل خطأ في السيرفر أو الاتصال" : "Server error occurred");
+      // ✅ لو السيرفر رجع رسالة خطأ واضحة (مش network error)
+      const serverMsg = err?.response?.data?.detail
+        || err?.response?.data?.non_field_errors?.[0]
+        || err?.response?.data?.email?.[0]
+        || err?.response?.data?.password?.[0]
+        || null;
+
+      if (serverMsg) {
+        // رسالة من السيرفر — نترجمها لرسالة واضحة للمستخدم
+        const isWrongCredentials =
+          serverMsg.toLowerCase().includes("invalid") ||
+          serverMsg.toLowerCase().includes("incorrect") ||
+          serverMsg.toLowerCase().includes("no active account") ||
+          serverMsg.toLowerCase().includes("wrong");
+
+        openMessageBox(
+          "warning",
+          isArabic ? "خطأ في تسجيل الدخول" : "Login Failed",
+          isWrongCredentials
+            ? (isArabic ? "البريد الإلكتروني أو كلمة المرور غير صحيحة" : "Incorrect email or password")
+            : serverMsg
+        );
+      } else {
+        // network error أو السيرفر مش شغال
+        openMessageBox(
+          "warning",
+          isArabic ? "خطأ في الاتصال" : "Connection Error",
+          isArabic ? "تعذر الاتصال بالخادم، تحقق من الإنترنت" : "Could not connect to server, check your internet"
+        );
+      }
       console.error(err);
     }
   };
