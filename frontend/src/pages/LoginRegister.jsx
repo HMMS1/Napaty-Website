@@ -33,6 +33,11 @@ const Login = ({ setUser, language = "ar" }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ ...emptyForm });
 
+  // States الخاصة باستعادة كلمة المرور
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [resetStep, setResetStep] = useState(1);
+  const [resetData, setResetData] = useState({ email: "", code: "", newPassword: "" });
+
   const [showMessageBox, setShowMessageBox] = useState(false);
   const [messageBoxType, setMessageBoxType] = useState("success");
   const [messageBoxTitle, setMessageBoxTitle] = useState("");
@@ -44,6 +49,9 @@ const Login = ({ setUser, language = "ar" }) => {
   useEffect(() => {
     setFormData({ ...emptyForm });
     setShowPassword(false);
+    setIsForgotPassword(false);
+    setResetStep(1);
+    setResetData({ email: "", code: "", newPassword: "" });
   }, [displayTab]);
 
   useEffect(() => {
@@ -91,6 +99,66 @@ const Login = ({ setUser, language = "ar" }) => {
   const switchTab = (tab) => {
     if (tab === activeTab) return;
     setActiveTab(tab);
+    setIsForgotPassword(false);
+    setResetStep(1);
+  };
+
+  // دالة التعامل مع استرجاع كلمة المرور
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (resetStep === 1) {
+        if (!resetData.email) {
+          openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى إدخال البريد الإلكتروني" : "Please enter email");
+          return;
+        }
+
+        // إرسال طلب إرسال الكود
+        const response = await fetch("http://127.0.0.1:8000/api/auth/request-reset/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: resetData.email }),
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          openMessageBox("success", isArabic ? "تم" : "Success", isArabic ? "تم إرسال الكود لبريدك الإلكتروني" : "Code sent to your email");
+          setResetStep(2);
+        } else {
+          openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "حدث خطأ أثناء إرسال الكود" : "Error sending code"));
+        }
+      } else {
+        if (!resetData.code || !resetData.newPassword) {
+          openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى إدخال الكود وكلمة المرور الجديدة" : "Please enter code and new password");
+          return;
+        }
+
+        // إرسال طلب تغيير كلمة المرور
+        const response = await fetch("http://127.0.0.1:8000/api/auth/reset-password/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: resetData.email,
+            code: resetData.code,
+            new_password: resetData.newPassword,
+          }),
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          openMessageBox("success", isArabic ? "تم بنجاح" : "Success", isArabic ? "تم تغيير كلمة المرور بنجاح" : "Password updated successfully");
+          setIsForgotPassword(false);
+          setResetStep(1);
+          setResetData({ email: "", code: "", newPassword: "" });
+        } else {
+          openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "الكود غير صحيح" : "Invalid code"));
+        }
+      }
+    } catch (err) {
+      openMessageBox("warning", isArabic ? "خطأ" : "Error", isArabic ? "تعذر الاتصال بالخادم" : "Server connection failed");
+      console.error(err);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -228,9 +296,7 @@ const Login = ({ setUser, language = "ar" }) => {
           <div className="app-title">
             <div className="app-title-text">
               <h1>{isArabic ? "نباتي" : "Napaty"}</h1>
-              <p className="app-subtitle">
-              
-              </p>
+              <p className="app-subtitle"></p>
             </div>
           </div>
         </div>
@@ -302,184 +368,208 @@ const Login = ({ setUser, language = "ar" }) => {
               </div>
             )}
 
-            <form
-              onSubmit={handleSubmit}
-              className="login-form login-form-proper"
-            >
-              {displayTab === "register" ? (
-                <>
-                  <div className="form-section smooth-block delay-1">
-                    <h4 className="section-mini-title">
-                      {isArabic ? "بيانات الحساب" : "Account Information"}
-                    </h4>
+            {isForgotPassword && displayTab === "login" ? (
+              <form onSubmit={handleForgotPasswordSubmit} className="login-form login-form-proper smooth-block">
+                <div className="form-section">
+                  <h4 className="section-mini-title" style={{ textAlign: 'center', marginBottom: '20px' }}>
+                    {isArabic ? "استعادة كلمة المرور" : "Reset Password"}
+                  </h4>
 
-                    <div className="form-single-column">
-                      <div className="form-group">
-                        <label>{isArabic ? "الاسم الكامل" : "Full Name"}</label>
+                  {resetStep === 1 ? (
+                    <div className="form-group">
+                      <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
+                      <div className="input-with-icon">
+                        <FaEnvelope className="input-icon" />
+                        <input
+                          type="email"
+                          value={resetData.email}
+                          onChange={(e) => setResetData({ ...resetData, email: e.target.value })}
+                          placeholder={isArabic ? "أدخل بريدك الإلكتروني" : "Enter your email"}
+                          required
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="form-group smooth-block delay-1">
+                        <label>{isArabic ? "كود التحقق" : "Verification Code"}</label>
                         <div className="input-with-icon">
-                          <FaUser className="input-icon" />
+                          <FaLock className="input-icon" />
                           <input
                             type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            placeholder={
-                              isArabic
-                                ? "أدخل اسمك الكامل"
-                                : "Enter your full name"
-                            }
+                            value={resetData.code}
+                            onChange={(e) => setResetData({ ...resetData, code: e.target.value })}
+                            placeholder={isArabic ? "أدخل الكود" : "Enter Code"}
                             required
                           />
                         </div>
                       </div>
-
-                      <div className="form-group">
-                        <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
+                      <div className="form-group smooth-block delay-2">
+                        <label>{isArabic ? "كلمة المرور الجديدة" : "New Password"}</label>
                         <div className="input-with-icon">
-                          <FaEnvelope className="input-icon" />
+                          <FaLock className="input-icon" />
                           <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder={
-                              isArabic
-                                ? "أدخل بريدك الإلكتروني"
-                                : "Enter your email"
-                            }
+                            type={showPassword ? "text" : "password"}
+                            value={resetData.newPassword}
+                            onChange={(e) => setResetData({ ...resetData, newPassword: e.target.value })}
+                            placeholder={isArabic ? "كلمة المرور الجديدة" : "New Password"}
                             required
                           />
+                          <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
                         </div>
                       </div>
+                    </>
+                  )}
+                </div>
 
-                      <div className="form-group">
-                        <label>{isArabic ? "رقم الهاتف" : "Phone Number"}</label>
-                        <div className="input-with-icon">
-                          <FaUser className="input-icon" />
-                          <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            placeholder={
-                              isArabic
-                                ? "أدخل رقم هاتفك"
-                                : "Enter your phone number"
-                            }
-                            required
-                          />
-                        </div>
-                      </div>
+                <button type="submit" className="submit-btn submit-btn-proper smooth-submit">
+                  {resetStep === 1 
+                    ? (isArabic ? "إرسال الكود" : "Send Code") 
+                    : (isArabic ? "تغيير كلمة المرور" : "Reset Password")}
+                </button>
 
-                      {userType === "expert" && (
-                        <>
-                          <div className="form-group smooth-block delay-2">
-                            <label>
-                              {isArabic
-                                ? "مدة الخبرة (سنوات)"
-                                : "Experience (Years)"}
-                            </label>
-                            <div className="input-with-icon">
-                              <FaCalendarAlt className="input-icon" />
-                              <input
-                                type="number"
-                                name="experience"
-                                value={formData.experience}
-                                onChange={handleChange}
-                                placeholder={
-                                  isArabic
-                                    ? "عدد سنوات الخبرة"
-                                    : "Number of years of experience"
-                                }
-                                min="0"
-                                max="50"
-                                required
-                              />
-                            </div>
+                <div style={{ textAlign: "center", marginTop: "20px" }}>
+                  <span
+                    className="forgot-password"
+                    style={{ cursor: "pointer", fontWeight: "600" }}
+                    onClick={() => {
+                      setIsForgotPassword(false);
+                      setResetStep(1);
+                    }}
+                  >
+                    {isArabic ? "العودة لتسجيل الدخول" : "Back to Login"}
+                  </span>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit} className="login-form login-form-proper">
+                {displayTab === "register" ? (
+                  <>
+                    <div className="form-section smooth-block delay-1">
+                      <h4 className="section-mini-title">
+                        {isArabic ? "بيانات الحساب" : "Account Information"}
+                      </h4>
+
+                      <div className="form-single-column">
+                        <div className="form-group">
+                          <label>{isArabic ? "الاسم الكامل" : "Full Name"}</label>
+                          <div className="input-with-icon">
+                            <FaUser className="input-icon" />
+                            <input
+                              type="text"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleChange}
+                              placeholder={
+                                isArabic
+                                  ? "أدخل اسمك الكامل"
+                                  : "Enter your full name"
+                              }
+                              required
+                            />
                           </div>
-
-                          <div className="form-group smooth-block delay-3">
-                            <label>
-                              {isArabic ? "المجال التخصصي" : "Specialization"}
-                            </label>
-                            <div className="input-with-icon">
-                              <FaBriefcase className="input-icon" />
-                              <input
-                                type="text"
-                                name="field"
-                                value={formData.field}
-                                onChange={handleChange}
-                                placeholder={
-                                  isArabic
-                                    ? "مثال: نباتات زينة، أشجار فاكهة، خضروات"
-                                    : "Example: Ornamental plants, fruit trees, vegetables"
-                                }
-                                required
-                              />
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="form-section smooth-block delay-2">
-                    <h4 className="section-mini-title">
-                      {isArabic ? "الأمان" : "Security"}
-                    </h4>
-
-                    <div className="form-group">
-                      <label>{isArabic ? "كلمة المرور" : "Password"}</label>
-                      <div className="input-with-icon">
-                        <FaLock className="input-icon" />
-                        <input
-                          type={showPassword ? "text" : "password"}
-                          name="password"
-                          value={formData.password}
-                          onChange={handleChange}
-                          placeholder={
-                            isArabic ? "أدخل كلمة المرور" : "Enter password"
-                          }
-                          required
-                          minLength="6"
-                        />
-                        <button
-                          type="button"
-                          className="password-toggle"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="form-section smooth-block delay-1">
-                    <h4 className="section-mini-title">
-                      {isArabic ? "تسجيل الدخول" : "Sign In"}
-                    </h4>
-
-                    <div className="form-single-column">
-                      <div className="form-group">
-                        <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
-                        <div className="input-with-icon">
-                          <FaEnvelope className="input-icon" />
-                          <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder={
-                              isArabic
-                                ? "أدخل بريدك الإلكتروني"
-                                : "Enter your email"
-                            }
-                            required
-                          />
                         </div>
+
+                        <div className="form-group">
+                          <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
+                          <div className="input-with-icon">
+                            <FaEnvelope className="input-icon" />
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                              placeholder={
+                                isArabic
+                                  ? "أدخل بريدك الإلكتروني"
+                                  : "Enter your email"
+                              }
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group">
+                          <label>{isArabic ? "رقم الهاتف" : "Phone Number"}</label>
+                          <div className="input-with-icon">
+                            <FaUser className="input-icon" />
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={formData.phone}
+                              onChange={handleChange}
+                              placeholder={
+                                isArabic
+                                  ? "أدخل رقم هاتفك"
+                                  : "Enter your phone number"
+                              }
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        {userType === "expert" && (
+                          <>
+                            <div className="form-group smooth-block delay-2">
+                              <label>
+                                {isArabic
+                                  ? "مدة الخبرة (سنوات)"
+                                  : "Experience (Years)"}
+                              </label>
+                              <div className="input-with-icon">
+                                <FaCalendarAlt className="input-icon" />
+                                <input
+                                  type="number"
+                                  name="experience"
+                                  value={formData.experience}
+                                  onChange={handleChange}
+                                  placeholder={
+                                    isArabic
+                                      ? "عدد سنوات الخبرة"
+                                      : "Number of years of experience"
+                                  }
+                                  min="0"
+                                  max="50"
+                                  required
+                                />
+                              </div>
+                            </div>
+
+                            <div className="form-group smooth-block delay-3">
+                              <label>
+                                {isArabic ? "المجال التخصصي" : "Specialization"}
+                              </label>
+                              <div className="input-with-icon">
+                                <FaBriefcase className="input-icon" />
+                                <input
+                                  type="text"
+                                  name="field"
+                                  value={formData.field}
+                                  onChange={handleChange}
+                                  placeholder={
+                                    isArabic
+                                      ? "مثال: نباتات زينة، أشجار فاكهة، خضروات"
+                                      : "Example: Ornamental plants, fruit trees, vegetables"
+                                  }
+                                  required
+                                />
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
+                    </div>
+
+                    <div className="form-section smooth-block delay-2">
+                      <h4 className="section-mini-title">
+                        {isArabic ? "الأمان" : "Security"}
+                      </h4>
 
                       <div className="form-group">
                         <label>{isArabic ? "كلمة المرور" : "Password"}</label>
@@ -494,6 +584,7 @@ const Login = ({ setUser, language = "ar" }) => {
                               isArabic ? "أدخل كلمة المرور" : "Enter password"
                             }
                             required
+                            minLength="6"
                           />
                           <button
                             type="button"
@@ -505,44 +596,109 @@ const Login = ({ setUser, language = "ar" }) => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              )}
+                  </>
+                ) : (
+                  <>
+                    <div className="form-section smooth-block delay-1">
+                      <h4 className="section-mini-title">
+                        {isArabic ? "تسجيل الدخول" : "Sign In"}
+                      </h4>
 
-              <button
-                type="submit"
-                className={`submit-btn ${
-                  displayTab === "login" ? "" : "submit-btn-proper"
-                } smooth-submit`}
-              >
-                {displayTab === "login"
-                  ? isArabic
-                    ? "تسجيل الدخول"
-                    : "Login"
-                  : isArabic
-                  ? "إنشاء الحساب"
-                  : "Create Account"}
-              </button>
-            </form>
-          </div>
+                      <div className="form-single-column">
+                        <div className="form-group">
+                          <label>{isArabic ? "البريد الإلكتروني" : "Email"}</label>
+                          <div className="input-with-icon">
+                            <FaEnvelope className="input-icon" />
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                              placeholder={
+                                isArabic
+                                  ? "أدخل بريدك الإلكتروني"
+                                  : "Enter your email"
+                              }
+                              required
+                            />
+                          </div>
+                        </div>
 
-          <div className="auth-footer">
-            {displayTab === "login" ? (
-              <p>
-                {isArabic ? "ليس لديك حساب؟" : "Don't have an account?"}{" "}
-                <span onClick={() => switchTab("register")}>
-                  {isArabic ? "سجل الآن" : "Register now"}
-                </span>
-              </p>
-            ) : (
-              <p>
-                {isArabic ? "لديك حساب بالفعل؟" : "Already have an account?"}{" "}
-                <span onClick={() => switchTab("login")}>
-                  {isArabic ? "سجل الدخول" : "Log in"}
-                </span>
-              </p>
+                        <div className="form-group">
+                          <label>{isArabic ? "كلمة المرور" : "Password"}</label>
+                          <div className="input-with-icon">
+                            <FaLock className="input-icon" />
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              name="password"
+                              value={formData.password}
+                              onChange={handleChange}
+                              placeholder={
+                                isArabic ? "أدخل كلمة المرور" : "Enter password"
+                              }
+                              required
+                            />
+                            <button
+                              type="button"
+                              className="password-toggle"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                          </div>
+                        </div>
+                        
+                        <div className="form-options">
+                          <span 
+                            className="forgot-password" 
+                            style={{ cursor: "pointer", display: "inline-block", marginTop: "5px" }} 
+                            onClick={() => setIsForgotPassword(true)}
+                          >
+                            {isArabic ? "نسيت كلمة المرور؟" : "Forgot Password?"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                <button
+                  type="submit"
+                  className={`submit-btn ${
+                    displayTab === "login" ? "" : "submit-btn-proper"
+                  } smooth-submit`}
+                >
+                  {displayTab === "login"
+                    ? isArabic
+                      ? "تسجيل الدخول"
+                      : "Login"
+                    : isArabic
+                    ? "إنشاء الحساب"
+                    : "Create Account"}
+                </button>
+              </form>
             )}
           </div>
+
+          {!isForgotPassword && (
+            <div className="auth-footer">
+              {displayTab === "login" ? (
+                <p>
+                  {isArabic ? "ليس لديك حساب؟" : "Don't have an account?"}{" "}
+                  <span onClick={() => switchTab("register")}>
+                    {isArabic ? "سجل الآن" : "Register now"}
+                  </span>
+                </p>
+              ) : (
+                <p>
+                  {isArabic ? "لديك حساب بالفعل؟" : "Already have an account?"}{" "}
+                  <span onClick={() => switchTab("login")}>
+                    {isArabic ? "سجل الدخول" : "Log in"}
+                  </span>
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
