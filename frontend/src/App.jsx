@@ -1,5 +1,10 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 
 import Header from "./components/Header";
@@ -18,68 +23,147 @@ const CropRecommendation = lazy(() => import("./pages/CropRecommendation"));
 const AgriChat = lazy(() => import("./pages/AgriChat"));
 const CommunicationRedirect = lazy(() => import("./pages/Communication"));
 
-const RouteLoader = () => (<div aria-hidden="true" style={{ minHeight: "45vh", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }} />);
+const RouteLoader = () => (
+  <div
+    aria-hidden="true"
+    style={{
+      minHeight: "45vh",
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  />
+);
+
+// ✅ دالة مساعدة لقراءة الـ user من localStorage بشكل آمن
+function getUserFromStorage() {
+  try {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) return JSON.parse(savedUser);
+  } catch {
+    localStorage.removeItem("user");
+  }
+  return null;
+}
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState(localStorage.getItem("language") || "ar");
+  // ✅ ابدأ بقراءة الـ user من localStorage فورًا (مش null وبعدين useEffect)
+  const [user, setUser] = useState(() => getUserFromStorage());
+
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "ar"
+  );
+
+  // ✅ setUser معدّلة: لما تتستدعى تحدّث localStorage تلقائيًا
+  const handleSetUser = (newUser) => {
+    if (newUser) {
+      localStorage.setItem("user", JSON.stringify(newUser));
+    } else {
+      localStorage.removeItem("user");
+    }
+    setUser(newUser);
+  };
 
   useEffect(() => {
-    const verifyUser = async () => {
-      const token = localStorage.getItem("access");
-      if (token) {
-        try {
-          const response = await fetch("https://hamzamostafa20.pythonanywhere.com/api/auth/me/", {
-            headers: { "Authorization": `Bearer ${token}` }
-          });
-          if (response.ok) {
-            const userData = await response.json();
-            setUser({ ...userData, isAuthenticated: true });
-          } else {
-            localStorage.clear();
-            setUser(null);
-          }
-        } catch (err) {
-          localStorage.clear();
-          setUser(null);
-        }
-      }
-      setLoading(false);
-    };
-    verifyUser();
-  }, []);
-
-  if (loading) return null;
+    localStorage.setItem("language", language);
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+  }, [language]);
 
   return (
     <Router>
       <div className={`App ${language === "en" ? "ltr-app" : "rtl-app"}`}>
-        <Header user={user} setUser={setUser} language={language} setLanguage={setLanguage} />
+        <Header
+          user={user}
+          setUser={handleSetUser}
+          language={language}
+          setLanguage={setLanguage}
+        />
+
         <main className="main-content">
           <Suspense fallback={<RouteLoader />}>
             <Routes>
               <Route path="/" element={<Welcome language={language} />} />
               <Route path="/welcome" element={<Welcome language={language} />} />
-              <Route path="/login" element={<LoginRegister setUser={setUser} language={language} />} />
-              <Route path="/diagnosis" element={<DiseaseDiagnosis language={language} />} />
-              <Route path="/soil-analysis" element={<SoilAnalysis language={language} />} />
-              <Route path="/plants-seasons" element={<PlantsSeasons language={language} />} />
-              <Route path="/crop-recommendation" element={<CropRecommendation language={language} />} />
-              <Route path="/agri-chat" element={<AgriChat language={language} />} />
-              
-              <Route path="/chat/:requestId" element={<ProtectedRoute user={user}><Chat language={language} /></ProtectedRoute>} />
-              <Route path="/store" element={<ProtectedRoute user={user}><Store language={language} /></ProtectedRoute>} />
-              <Route path="/consultation" element={<ProtectedRoute user={user}><Consultation language={language} /></ProtectedRoute>} />
-              <Route path="/communication" element={<ProtectedRoute user={user}><CommunicationRedirect language={language} /></ProtectedRoute>} />
+
+              <Route
+                path="/chat/:requestId"
+                element={
+                  <ProtectedRoute>
+                    <Chat language={language} />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/login"
+                element={
+                  <LoginRegister setUser={handleSetUser} language={language} />
+                }
+              />
+
+              <Route
+                path="/diagnosis"
+                element={<DiseaseDiagnosis language={language} />}
+              />
+
+              <Route
+                path="/soil-analysis"
+                element={<SoilAnalysis language={language} />}
+              />
+
+              <Route
+                path="/plants-seasons"
+                element={<PlantsSeasons language={language} />}
+              />
+
+              <Route
+                path="/crop-recommendation"
+                element={<CropRecommendation language={language} />}
+              />
+
+              <Route
+                path="/agri-chat"
+                element={<AgriChat language={language} />}
+              />
+
+              <Route
+                path="/store"
+                element={
+                  <ProtectedRoute>
+                    <Store language={language} />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/consultation"
+                element={
+                  <ProtectedRoute>
+                    <Consultation language={language} />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/communication"
+                element={
+                  <ProtectedRoute>
+                    <CommunicationRedirect language={language} />
+                  </ProtectedRoute>
+                }
+              />
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
         </main>
+
         <Footer language={language} />
       </div>
     </Router>
   );
 }
+
 export default App;
