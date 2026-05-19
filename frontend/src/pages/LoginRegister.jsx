@@ -251,10 +251,12 @@ const Login = ({ setUser, language = "ar" }) => {
         const data = await response.json();
 
         if (response.ok) {
-          // ✅ مش بنعمل login تلقائي — بنرجعه لصفحة تسجيل الدخول بس
+          // ✅ مش بنعمل login تلقائي — بنرجعه لتاب تسجيل الدخول
           setFormData({ ...emptyForm });
           setResetRegisterStep(1);
           setRegisterOtp("");
+          // ✅ حوّل التاب لـ login فوراً قبل الـ message box
+          setActiveTab("login");
 
           openMessageBox(
             "success",
