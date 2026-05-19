@@ -114,8 +114,8 @@ const Login = ({ setUser, language = "ar" }) => {
           return;
         }
 
-        // إرسال طلب إرسال الكود
-        const response = await fetch("http://127.0.0.1:8000/api/auth/request-reset/", {
+        // إرسال طلب إرسال الكود للباك إند المرفوع
+        const response = await fetch("https://hamzamostafa20.pythonanywhere.com/api/auth/request-reset/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: resetData.email }),
@@ -134,8 +134,8 @@ const Login = ({ setUser, language = "ar" }) => {
           return;
         }
 
-        // إرسال طلب تغيير كلمة المرور
-        const response = await fetch("http://127.0.0.1:8000/api/auth/reset-password/", {
+        // إرسال طلب تغيير كلمة المرور للباك إند المرفوع
+        const response = await fetch("https://hamzamostafa20.pythonanywhere.com/api/auth/reset-password/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
