@@ -22,19 +22,7 @@ const Welcome = lazy(() => import("./pages/Welcome"));
 const CropRecommendation = lazy(() => import("./pages/CropRecommendation"));
 const AgriChat = lazy(() => import("./pages/AgriChat"));
 const CommunicationRedirect = lazy(() => import("./pages/Communication"));
-
-const RouteLoader = () => (
-  <div
-    aria-hidden="true"
-    style={{
-      minHeight: "45vh",
-      width: "100%",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-  />
-);
+const Community = lazy(() => import("./pages/Community")); // ✅ إضافة المسار الجديد هنا
 
 // ✅ دالة مساعدة لقراءة الـ user من localStorage بشكل آمن
 function getUserFromStorage() {
@@ -48,14 +36,14 @@ function getUserFromStorage() {
 }
 
 function App() {
-  // ✅ ابدأ بقراءة الـ user من localStorage فورًا (مش null وبعدين useEffect)
+  // ✅ ابدأ بقراءة الـ user من localStorage فورًا
   const [user, setUser] = useState(() => getUserFromStorage());
 
   const [language, setLanguage] = useState(
     localStorage.getItem("language") || "ar"
   );
 
-  // ✅ setUser معدّلة: لما تتستدعى تحدّث localStorage تلقائيًا
+  // ✅ setUser معدّلة: لما تستدعى تحدّث localStorage تلقائيًا
   const handleSetUser = (newUser) => {
     if (newUser) {
       localStorage.setItem("user", JSON.stringify(newUser));
@@ -82,7 +70,7 @@ function App() {
         />
 
         <main className="main-content">
-          <Suspense fallback={<RouteLoader />}>
+          <Suspense fallback={<div aria-hidden="true" style={{ minHeight: "45vh", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }} />}>
             <Routes>
               <Route path="/" element={<Welcome language={language} />} />
               <Route path="/welcome" element={<Welcome language={language} />} />
@@ -90,7 +78,7 @@ function App() {
               <Route
                 path="/chat/:requestId"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute user={user}>
                     <Chat language={language} />
                   </ProtectedRoute>
                 }
@@ -131,7 +119,7 @@ function App() {
               <Route
                 path="/store"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute user={user}>
                     <Store language={language} />
                   </ProtectedRoute>
                 }
@@ -140,7 +128,7 @@ function App() {
               <Route
                 path="/consultation"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute user={user}>
                     <Consultation language={language} />
                   </ProtectedRoute>
                 }
@@ -149,8 +137,18 @@ function App() {
               <Route
                 path="/communication"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute user={user}>
                     <CommunicationRedirect language={language} />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* ✅ شاشة الـ Community التفاعلية الجديدة المحمية من الدخول العشوائي */}
+              <Route
+                path="/community"
+                element={
+                  <ProtectedRoute user={user}>
+                    <Community language={language} />
                   </ProtectedRoute>
                 }
               />
