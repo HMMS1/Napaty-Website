@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
+
 import {
   FaImage,
   FaPaperPlane,
@@ -49,7 +55,7 @@ const Community = ({ language }) => {
   };
 
   // ================= FETCH POSTS =================
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE}/api/community/posts/`, {
         headers: authHeader(),
@@ -65,11 +71,11 @@ const Community = ({ language }) => {
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   // ================= IMAGE SELECT =================
   const handleImageSelect = (e) => {
@@ -356,7 +362,14 @@ const Community = ({ language }) => {
             return (
               <div key={post.id} className="community-post-node">
                 {/* HEADER */}
-                <div className="community-node-header">
+                <div
+                  className="community-node-header"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <div
                     style={{
                       display: "flex",
@@ -444,8 +457,13 @@ const Community = ({ language }) => {
                             isMyReaction ? "active-reaction" : ""
                           }`}
                         >
-                          <span>{reaction.emoji}</span>
-                          <span>{count}</span>
+                          <span className="reaction-emoji">
+                            {reaction.emoji}
+                          </span>
+
+                          <span className="reaction-counter">
+                            {count}
+                          </span>
                         </button>
                       );
                     })}
@@ -456,7 +474,7 @@ const Community = ({ language }) => {
                     className="community-action-btn comment-trigger-btn"
                     onClick={() => toggleComments(post.id)}
                   >
-                    <FaRegCommentDots />
+                    <FaRegCommentDots size={18} />
 
                     <span>
                       {post.comments?.length || 0}{" "}
