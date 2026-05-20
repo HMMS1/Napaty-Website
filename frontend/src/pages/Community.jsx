@@ -19,6 +19,9 @@ const Community = ({ language }) => {
   const [commentInputs, setCommentInputs] = useState({});
   const fileInputRef = useRef(null);
 
+  // مرجع (Ref) عشان نقدر نعمل Focus على حقل الإدخال لما ندوس "رد"
+  const commentInputRefs = useRef({});
+
   const fetchPosts = async () => {
     const token = localStorage.getItem("access");
     try {
@@ -84,9 +87,7 @@ const Community = ({ language }) => {
         },
         body: JSON.stringify({ reaction_type: reactionType }),
       });
-      if (res.ok) {
-        fetchPosts();
-      }
+      if (res.ok) fetchPosts();
     } catch (error) {
       console.error("Error reacting:", error);
     }
@@ -94,6 +95,20 @@ const Community = ({ language }) => {
 
   const toggleComments = (postId) => {
     setOpenComments(prev => ({ ...prev, [postId]: !prev[postId] }));
+  };
+
+  // ✅ دالة الرد (المنشن) الجديدة
+  const handleReplyClick = (postId, authorName) => {
+    const mention = `@${authorName} `;
+    setCommentInputs(prev => ({
+      ...prev,
+      [postId]: mention // بنحط اسم الشخص في الخانة
+    }));
+    
+    // بنعمل Focus على الخانة عشان اليوزر يكتب علطول
+    if (commentInputRefs.current[postId]) {
+      commentInputRefs.current[postId].focus();
+    }
   };
 
   const submitComment = async (postId) => {
@@ -117,6 +132,15 @@ const Community = ({ language }) => {
     } catch (error) {
       console.error("Error commenting:", error);
     }
+  };
+
+  // ✅ دالة لتلوين الـ Mention في التعليقات
+  const formatCommentText = (text) => {
+    // بتدور على أي كلمة بتبدأ بـ @ وتخليها زرقاء
+    const parts = text.split(/(@\S+)/g);
+    return parts.map((part, i) => 
+      part.startsWith('@') ? <span key={i} className="mention-tag">{part}</span> : part
+    );
   };
 
   return (
@@ -223,17 +247,25 @@ const Community = ({ language }) => {
                   <div className="community-comments-section">
                     <div className="comments-list">
                       {post.comments?.map(comment => (
-                        <div key={comment.id} className="comment-bubble">
-                          <div className={`comment-avatar ${comment.author_type === "expert" ? "expert" : ""}`}>
-                            {comment.author_type === "expert" ? <FaUserTie size={12} /> : <FaUser size={12} />}
+                        <div key={comment.id} className="comment-bubble-wrapper">
+                          <div className="comment-bubble">
+                            <div className={`comment-avatar ${comment.author_type === "expert" ? "expert" : ""}`}>
+                              {comment.author_type === "expert" ? <FaUserTie size={12} /> : <FaUser size={12} />}
+                            </div>
+                            <div className="comment-content">
+                              <h5>
+                                {comment.author_name} 
+                                {comment.author_type === "expert" && <span className="expert-star">★</span>}
+                              </h5>
+                              <p>{formatCommentText(comment.content)}</p>
+                            </div>
                           </div>
-                          <div className="comment-content">
-                            <h5>
-                              {comment.author_name} 
-                              {comment.author_type === "expert" && <span className="expert-star">★</span>}
-                            </h5>
-                            <p>{comment.content}</p>
+                          {/* ✅ زر الرد تحت التعليق */}
+                          <div className="comment-actions-row">
                             <small>{new Date(comment.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US', {hour: '2-digit', minute:'2-digit'})}</small>
+                            <button className="reply-text-btn" onClick={() => handleReplyClick(post.id, comment.author_name)}>
+                              {isArabic ? "رد" : "Reply"}
+                            </button>
                           </div>
                         </div>
                       ))}
@@ -242,6 +274,7 @@ const Community = ({ language }) => {
                     <div className="comment-input-area">
                       <input 
                         type="text" 
+                        ref={el => commentInputRefs.current[post.id] = el} // ربط الخانة بالمرجع
                         placeholder={isArabic ? "اكتب تعليقاً..." : "Write a comment..."}
                         value={commentInputs[post.id] || ""}
                         onChange={(e) => setCommentInputs({...commentInputs, [post.id]: e.target.value})}
