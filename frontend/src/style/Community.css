@@ -1,547 +1,654 @@
-.community-page-wrapper {
-  padding: 30px 20px;
-  max-width: 760px;
-  margin: 0 auto;
-  min-height: 85vh;
-  font-family: inherit;
-  box-sizing: border-box;
-}
-
-.community-header-banner {
-  text-align: center;
-  margin-bottom: 35px;
-}
-
-.community-header-banner h2 {
-  color: #2e7d32;
-  font-size: 2.2rem;
-  margin-bottom: 8px;
-  font-weight: 700;
-}
-
-.community-header-banner p {
-  color: #666;
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
-
-/* ================= CREATE POST ================= */
-
-.community-create-card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e8f5e9;
-  margin-bottom: 30px;
-}
-
-.community-create-card textarea {
-  width: 100%;
-  min-height: 110px;
-  padding: 15px;
-  border-radius: 14px;
-  border: 1px solid #dee2e6;
-  font-size: 1rem;
-  margin-bottom: 15px;
-  resize: vertical;
-  transition: all 0.25s ease;
-  outline: none;
-  box-sizing: border-box;
-  font-family: inherit;
-  background: #fff;
-}
-
-.community-create-card textarea:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
-}
-
-.community-preview-wrapper {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  overflow: hidden;
-  max-width: 220px;
-  border: 1px solid #e2e8f0;
-}
-
-.community-upload-preview {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.community-remove-preview {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(0, 0, 0, 0.65);
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.community-card-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f1f3f5;
-  padding-top: 15px;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.community-upload-btn-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.community-file-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #2e7d32;
-  background: #e8f5e9;
-  padding: 10px 18px;
-  border-radius: 30px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: 0.2s ease;
-}
-
-.community-file-label:hover {
-  background: #c8e6c9;
-}
-
-.community-submit-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 11px 24px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 0.96rem;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.community-submit-button:hover:not(:disabled) {
-  background: #43a047;
-  transform: translateY(-1px);
-}
-
-.community-submit-button:disabled {
-  background: #cbd5e1;
-  color: #94a3b8;
-  cursor: not-allowed;
-}
-
-/* ================= POSTS ================= */
-
-.community-post-node {
-  background: #fff;
-  padding: 22px;
-  border-radius: 18px;
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.05);
-  border: 1px solid #edf2f7;
-  margin-bottom: 24px;
-}
-
-.community-node-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 16px;
-}
-
-.community-avatar-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.community-avatar-icon.user-badge {
-  background: #4caf50;
-}
-
-.community-avatar-icon.expert-badge {
-  background: #2196f3;
-}
-
-.community-node-meta h4 {
-  margin: 0;
-  font-size: 1.05rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #1e293b;
-}
-
-.community-node-meta small {
-  color: #94a3b8;
-  font-size: 0.82rem;
-}
-
-.community-expert-tag {
-  background: #e3f2fd;
-  color: #1e88e5;
-  padding: 2px 10px;
-  border-radius: 14px;
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.community-node-body {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #334155;
-  margin-bottom: 18px;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.community-node-image-container {
-  overflow: hidden;
-  border-radius: 14px;
-  margin-bottom: 18px;
-  border: 1px solid #f1f5f9;
-}
-
-.community-node-img {
-  width: 100%;
-  max-height: 500px;
-  object-fit: cover;
-  display: block;
-}
-
-/* ================= EMPTY ================= */
-
-.community-empty-state {
-  text-align: center;
-  padding: 50px 20px;
-  color: #94a3b8;
-}
-
-.community-empty-state p {
-  margin-top: 10px;
-}
-
-/* ================= FOOTER ================= */
-
-.community-node-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 14px;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.reactions-group {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.community-action-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 8px 14px;
-  border-radius: 24px;
-  cursor: pointer;
-  transition: 0.2s ease;
-  font-weight: 500;
-  color: #475569;
-}
-
-.community-action-btn:hover {
-  background: #f1f5f9;
-  transform: scale(1.03);
-}
-
-.community-action-btn.active-reaction {
-  background: #e8f5e9;
-  border-color: #a5d6a7;
-  color: #2e7d32;
-  font-weight: 700;
-}
-
-.reaction-emoji {
-  font-size: 1.05rem;
-}
-
-.reaction-counter {
-  font-size: 0.92rem;
-}
-
-.comment-trigger-btn {
-  background: transparent;
-}
-
-.comment-trigger-btn:hover {
-  color: #2196f3;
-}
-
-/* ================= DELETE ================= */
-
-.community-delete-post-btn {
-  border: none;
-  background: transparent;
-  color: #ef4444;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.community-delete-post-btn:hover {
-  background: #fef2f2;
-  color: #dc2626;
-}
-
-/* ================= COMMENTS ================= */
-
-.community-comments-section {
-  margin-top: 20px;
-  border-top: 1px dashed #e2e8f0;
-  padding-top: 16px;
-}
-
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 16px;
-  max-height: 320px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.comment-bubble-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.comment-bubble {
-  display: flex;
-  gap: 10px;
-}
-
-.comment-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #e2e8f0;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.comment-avatar.expert {
-  background: #e0f2fe;
-  color: #0284c7;
-}
-
-.comment-content {
-  background: #f8fafc;
-  padding: 11px 14px;
-  border-radius: 0 16px 16px 16px;
-  max-width: 90%;
-}
-
-.rtl-app .comment-content {
-  border-radius: 16px 0 16px 16px;
-}
-
-.comment-content h5 {
-  margin: 0 0 4px;
-  font-size: 0.88rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #1e293b;
-}
-
-.comment-content p {
-  margin: 0;
-  line-height: 1.5;
-  color: #475569;
-  font-size: 0.94rem;
-  word-break: break-word;
-}
-
-.expert-star {
-  color: #f59e0b;
-  font-size: 0.78rem;
-}
-
-.comment-actions-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 5px;
-  padding-inline-start: 45px;
-}
-
-.comment-actions-row small {
-  font-size: 0.74rem;
-  color: #94a3b8;
-}
-
-.reply-text-btn {
-  background: transparent;
-  border: none;
-  color: #64748b;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.reply-text-btn:hover {
-  color: #2196f3;
-}
-
-/* ================= MENTION ================= */
-
-.mention-tag {
-  color: #2196f3;
-  background: #e0f2fe;
-  padding: 1px 5px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-/* ================= COMMENT INPUT ================= */
-
-.comment-input-area {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.comment-input-area input {
-  flex: 1;
-  padding: 11px 16px;
-  border-radius: 22px;
-  border: 1px solid #e2e8f0;
-  outline: none;
-  background: #f8fafc;
-  font-size: 0.94rem;
-  transition: 0.2s ease;
-}
-
-.comment-input-area input:focus {
-  border-color: #4caf50;
-  background: #fff;
-}
-
-.comment-input-area button {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: none;
-  background: #4caf50;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.2s ease;
-  flex-shrink: 0;
-}
-
-.comment-input-area button:hover {
-  background: #388e3c;
-}
-
-/* ================= SCROLL ================= */
-
-.comments-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.comments-list::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 20px;
-}
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 768px) {
-  .community-page-wrapper {
-    padding: 20px 14px;
-  }
-
-  .community-header-banner h2 {
-    font-size: 1.8rem;
-  }
-
-  .community-create-card,
-  .community-post-node {
-    padding: 16px;
-  }
-
-  .community-card-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .community-submit-button {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .community-file-label {
-    justify-content: center;
-  }
-
-  .community-node-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .reactions-group {
-    justify-content: center;
-  }
-
-  .comment-trigger-btn {
-    justify-content: center;
-  }
-
-  .comment-content {
-    max-width: 100%;
-  }
-
-  .comment-actions-row {
-    padding-inline-start: 42px;
-  }
-}
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
+
+import {
+  FaImage,
+  FaPaperPlane,
+  FaUserTie,
+  FaUser,
+  FaRegSmile,
+  FaRegCommentDots,
+  FaTrash,
+} from "react-icons/fa";
+
+import "../style/Community.css";
+
+const REACTION_TYPES = [
+  { id: "like", emoji: "👍", label: "إعجاب" },
+  { id: "love", emoji: "❤️", label: "أحببته" },
+  { id: "helpful", emoji: "💡", label: "مفيد" },
+];
+
+const API_BASE = "https://hamzamostafa20.pythonanywhere.com";
+
+// ================= DELETE MODAL =================
+const DeleteConfirmModal = ({ isOpen, isArabic, onConfirm, onCancel }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onCancel}>
+      <div
+        className="modal-card"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-icon-wrapper">
+          <FaTrash size={22} />
+        </div>
+
+        <h3 className="modal-title">
+          {isArabic ? "حذف المنشور" : "Delete Post"}
+        </h3>
+
+        <p className="modal-body">
+          {isArabic
+            ? "هل أنت متأكد من حذف هذا المنشور؟ لن تتمكن من التراجع عن هذا الإجراء."
+            : "Are you sure you want to delete this post? This action cannot be undone."}
+        </p>
+
+        <div className="modal-actions">
+          <button className="modal-btn-cancel" onClick={onCancel}>
+            {isArabic ? "إلغاء" : "Cancel"}
+          </button>
+
+          <button className="modal-btn-confirm" onClick={onConfirm}>
+            <FaTrash size={13} />
+            <span>{isArabic ? "حذف" : "Delete"}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Community = ({ language }) => {
+  const isArabic = language === "ar";
+
+  const [posts, setPosts] = useState([]);
+  const [newPostText, setNewPostText] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [openComments, setOpenComments] = useState({});
+  const [commentInputs, setCommentInputs] = useState({});
+
+  // Modal state
+  const [deleteModal, setDeleteModal] = useState({ open: false, postId: null });
+
+  const fileInputRef = useRef(null);
+  const commentInputRefs = useRef({});
+
+  // ================= AUTH =================
+  const authHeader = () => ({
+    Authorization: `Bearer ${localStorage.getItem("access")}`,
+  });
+
+  // ================= IMAGE URL =================
+  const buildImageUrl = (raw) => {
+    if (!raw) return null;
+
+    const clean = raw
+      .replace("http://hamzamostafa20.pythonanywhere.com", "")
+      .replace("https://hamzamostafa20.pythonanywhere.com", "");
+
+    return `${API_BASE}${clean.startsWith("/") ? clean : `/${clean}`}`;
+  };
+
+  // ================= FETCH POSTS =================
+  const fetchPosts = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_BASE}/api/community/posts/`, {
+        headers: authHeader(),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+
+      const data = await response.json();
+
+      setPosts(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  // ================= IMAGE SELECT =================
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setSelectedImage(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  // ================= SUBMIT POST =================
+  const submitPost = async (e) => {
+    e.preventDefault();
+
+    if (!newPostText.trim() && !selectedImage) return;
+
+    const formData = new FormData();
+
+    if (newPostText.trim()) {
+      formData.append("content", newPostText);
+    }
+
+    if (selectedImage) {
+      formData.append("image", selectedImage);
+    }
+
+    try {
+      const response = await fetch(`${API_BASE}/api/community/posts/`, {
+        method: "POST",
+        headers: authHeader(),
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
+
+      setNewPostText("");
+      setSelectedImage(null);
+      setImagePreview(null);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
+      fetchPosts();
+    } catch (error) {
+      console.error("Error posting:", error);
+    }
+  };
+
+  // ================= REACTIONS =================
+  const handleReaction = async (postId, reactionType) => {
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/community/posts/${postId}/react/`,
+        {
+          method: "POST",
+          headers: {
+            ...authHeader(),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            reaction_type: reactionType,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        fetchPosts();
+      }
+    } catch (error) {
+      console.error("Reaction error:", error);
+    }
+  };
+
+  // ================= DELETE POST =================
+  // Step 1: open the modal
+  const handleDeletePost = (postId) => {
+    setDeleteModal({ open: true, postId });
+  };
+
+  // Step 2: user confirmed → call API
+  const confirmDelete = async () => {
+    const postId = deleteModal.postId;
+    setDeleteModal({ open: false, postId: null });
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/community/posts/${postId}/delete/`,
+        {
+          method: "DELETE",
+          headers: authHeader(),
+        }
+      );
+
+      if (response.ok) {
+        fetchPosts();
+      } else {
+        alert(isArabic ? "فشل حذف المنشور" : "Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
+  };
+
+  // Step 3: user cancelled
+  const cancelDelete = () => {
+    setDeleteModal({ open: false, postId: null });
+  };
+
+  // ================= COMMENTS =================
+  const toggleComments = (postId) => {
+    setOpenComments((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  };
+
+  const handleReplyClick = (postId, authorName) => {
+    setCommentInputs((prev) => ({
+      ...prev,
+      [postId]: `@${authorName} `,
+    }));
+
+    commentInputRefs.current[postId]?.focus();
+  };
+
+  const submitComment = async (postId) => {
+    const text = commentInputs[postId];
+
+    if (!text?.trim()) return;
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/community/posts/${postId}/comment/`,
+        {
+          method: "POST",
+          headers: {
+            ...authHeader(),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: text,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setCommentInputs((prev) => ({
+          ...prev,
+          [postId]: "",
+        }));
+
+        fetchPosts();
+      }
+    } catch (error) {
+      console.error("Comment error:", error);
+    }
+  };
+
+  // ================= COMMENT FORMAT =================
+  const formatCommentText = (text) => {
+    if (!text) return null;
+
+    return text.split(/(@\S+)/g).map((part, index) => {
+      if (part.startsWith("@")) {
+        return (
+          <span key={index} className="mention-tag">
+            {part}
+          </span>
+        );
+      }
+
+      return part;
+    });
+  };
+
+  // ================= RENDER =================
+  return (
+    <div className="community-page-wrapper">
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={deleteModal.open}
+        isArabic={isArabic}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
+
+      {/* Header */}
+      <div className="community-header-banner">
+        <h2>
+          {isArabic
+            ? "المجتمع الزراعي التفاعلي"
+            : "Interactive Agri Community"}
+        </h2>
+
+        <p>
+          {isArabic
+            ? "شارك خبرتك، اسأل الخبراء والمزارعين، وتفاعل مع المجتمع"
+            : "Share your experience, ask experts, and interact with others"}
+        </p>
+      </div>
+
+      {/* Create Post */}
+      <div className="community-create-card">
+        <form onSubmit={submitPost}>
+          <textarea
+            value={newPostText}
+            onChange={(e) => setNewPostText(e.target.value)}
+            placeholder={
+              isArabic
+                ? "بم تفكر؟ شارك تجربتك أو اسأل المجتمع الزراعي..."
+                : "What's on your mind?"
+            }
+          />
+
+          {imagePreview && (
+            <div className="community-preview-wrapper">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="community-upload-preview"
+              />
+
+              <button
+                type="button"
+                className="community-remove-preview"
+                onClick={() => {
+                  setSelectedImage(null);
+                  setImagePreview(null);
+                }}
+              >
+                ×
+              </button>
+            </div>
+          )}
+
+          <div className="community-card-actions">
+            <div className="community-upload-btn-wrapper">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                id="community-img-file"
+              />
+
+              <label
+                htmlFor="community-img-file"
+                className="community-file-label"
+              >
+                <FaImage />
+
+                <span>
+                  {selectedImage
+                    ? isArabic
+                      ? "تغيير الصورة"
+                      : "Change Image"
+                    : isArabic
+                    ? "إضافة صورة"
+                    : "Add Image"}
+                </span>
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="community-submit-button"
+              disabled={!newPostText.trim() && !selectedImage}
+            >
+              <FaPaperPlane />
+
+              <span>{isArabic ? "نشر الآن" : "Post Now"}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* POSTS */}
+      <div className="community-posts-stream">
+        {posts.length === 0 ? (
+          <div className="community-empty-state">
+            <FaRegSmile size={40} />
+
+            <p>
+              {isArabic
+                ? "لا توجد منشورات بعد"
+                : "No posts yet, be the first"}
+            </p>
+          </div>
+        ) : (
+          posts.map((post) => {
+            const imageUrl = buildImageUrl(post.image);
+
+            return (
+              <div key={post.id} className="community-post-node">
+                {/* HEADER */}
+                <div
+                  className="community-node-header"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "14px",
+                    }}
+                  >
+                    <div
+                      className={`community-avatar-icon ${
+                        post.author_type === "expert"
+                          ? "expert-badge"
+                          : "user-badge"
+                      }`}
+                    >
+                      {post.author_type === "expert" ? (
+                        <FaUserTie size={18} />
+                      ) : (
+                        <FaUser size={18} />
+                      )}
+                    </div>
+
+                    <div className="community-node-meta">
+                      <h4>
+                        {post.author_name}
+
+                        {post.author_type === "expert" && (
+                          <span className="community-expert-tag">
+                            {isArabic ? "خبير زراعي" : "Agri Expert"}
+                          </span>
+                        )}
+                      </h4>
+
+                      <small>
+                        {new Date(post.created_at).toLocaleString(
+                          isArabic ? "ar-EG" : "en-US"
+                        )}
+                      </small>
+                    </div>
+                  </div>
+
+                  {post.is_author && (
+                    <button
+                      type="button"
+                      className="community-delete-post-btn"
+                      onClick={() => handleDeletePost(post.id)}
+                    >
+                      <FaTrash size={16} />
+                    </button>
+                  )}
+                </div>
+
+                {/* BODY */}
+                {post.content && (
+                  <p className="community-node-body">{post.content}</p>
+                )}
+
+                {imageUrl && (
+                  <div className="community-node-image-container">
+                    <img
+                      src={imageUrl}
+                      alt="Post"
+                      className="community-node-img"
+                    />
+                  </div>
+                )}
+
+                {/* FOOTER */}
+                <div className="community-node-footer">
+                  <div className="reactions-group">
+                    {REACTION_TYPES.map((reaction) => {
+                      const count =
+                        post.reactions_count?.[reaction.id] || 0;
+
+                      const isMyReaction =
+                        post.user_reaction === reaction.id;
+
+                      return (
+                        <button
+                          key={reaction.id}
+                          type="button"
+                          onClick={() =>
+                            handleReaction(post.id, reaction.id)
+                          }
+                          className={`community-action-btn ${
+                            isMyReaction ? "active-reaction" : ""
+                          }`}
+                        >
+                          <span className="reaction-emoji">
+                            {reaction.emoji}
+                          </span>
+
+                          <span className="reaction-counter">
+                            {count}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="community-action-btn comment-trigger-btn"
+                    onClick={() => toggleComments(post.id)}
+                  >
+                    <FaRegCommentDots size={18} />
+
+                    <span>
+                      {post.comments?.length || 0}{" "}
+                      {isArabic ? "تعليقات" : "Comments"}
+                    </span>
+                  </button>
+                </div>
+
+                {/* COMMENTS */}
+                {openComments[post.id] && (
+                  <div className="community-comments-section">
+                    <div className="comments-list">
+                      {(post.comments || []).map((comment) => (
+                        <div
+                          key={comment.id}
+                          className="comment-bubble-wrapper"
+                        >
+                          <div className="comment-bubble">
+                            <div
+                              className={`comment-avatar ${
+                                comment.author_type === "expert"
+                                  ? "expert"
+                                  : ""
+                              }`}
+                            >
+                              {comment.author_type === "expert" ? (
+                                <FaUserTie size={12} />
+                              ) : (
+                                <FaUser size={12} />
+                              )}
+                            </div>
+
+                            <div className="comment-content">
+                              <h5>
+                                {comment.author_name}
+
+                                {comment.author_type === "expert" && (
+                                  <span className="expert-star">★</span>
+                                )}
+                              </h5>
+
+                              <p>
+                                {formatCommentText(comment.content)}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="comment-actions-row">
+                            <small>
+                              {new Date(
+                                comment.created_at
+                              ).toLocaleString(
+                                isArabic ? "ar-EG" : "en-US",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )}
+                            </small>
+
+                            <button
+                              className="reply-text-btn"
+                              onClick={() =>
+                                handleReplyClick(
+                                  post.id,
+                                  comment.author_name
+                                )
+                              }
+                            >
+                              {isArabic ? "رد" : "Reply"}
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* INPUT */}
+                    <div className="comment-input-area">
+                      <input
+                        type="text"
+                        ref={(el) =>
+                          (commentInputRefs.current[post.id] = el)
+                        }
+                        placeholder={
+                          isArabic
+                            ? "اكتب تعليقاً..."
+                            : "Write a comment..."
+                        }
+                        value={commentInputs[post.id] || ""}
+                        onChange={(e) =>
+                          setCommentInputs({
+                            ...commentInputs,
+                            [post.id]: e.target.value,
+                          })
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            submitComment(post.id);
+                          }
+                        }}
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => submitComment(post.id)}
+                      >
+                        <FaPaperPlane />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Community;
