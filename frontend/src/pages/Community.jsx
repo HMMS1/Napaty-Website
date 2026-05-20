@@ -301,13 +301,13 @@ const Community = ({ language }) => {
       <div className="community-header-banner">
         <h2>
           {isArabic
-            ? "المجتمع الزراعي التفاعلي"
-            : "Interactive Agri Community"}
+            ? "مجتمع نباتي "
+            : "Napaty Community"}
         </h2>
 
         <p>
           {isArabic
-            ? "شارك خبرتك، اسأل الخبراء والمزارعين، وتفاعل مع المجتمع"
+            ? "شارك خبرتك، اسأل الخبراء والمزارعين، "
             : "Share your experience, ask experts, and interact with others"}
         </p>
       </div>
@@ -320,7 +320,7 @@ const Community = ({ language }) => {
             onChange={(e) => setNewPostText(e.target.value)}
             placeholder={
               isArabic
-                ? "بم تفكر؟ شارك تجربتك أو اسأل المجتمع الزراعي..."
+                ? "بم تفكر؟ شارك تجربتك    ..."
                 : "What's on your mind?"
             }
           />
