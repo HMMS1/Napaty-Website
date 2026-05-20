@@ -439,3 +439,42 @@
 .comment-input-area button:hover {
   background: #388e3c;
 }
+
+/* زر حذف المنشور الخاص بالملك */
+.community-delete-post-btn {
+  background: transparent;
+  border: none;
+  color: #e53935;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.community-delete-post-btn:hover {
+  background: #ffebee;
+  color: #c62828;
+  transform: scale(1.08);
+}
+
+/* إصلاح قفلة الكود المقطوع سابقاً للزرار */
+.comment-input-area button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.comment-input-area button:hover {
+  background: #388e3c;
+}
