@@ -261,9 +261,11 @@ const Community = ({ language }) => {
         <div className="delete-modal-overlay">
           <div className="delete-modal-box">
 
-            <div className="delete-modal-icon">
-              <FaTrash />
-            </div>
+            <div className="delete-modal-icon-wrapper">
+  <div className="delete-modal-icon">
+    <FaTrash />
+  </div>
+</div>
 
             <h3>
               {isArabic ? "حذف المنشور" : "Delete Post"}
