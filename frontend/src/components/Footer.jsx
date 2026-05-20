@@ -31,6 +31,7 @@ const Footer = ({ language = "ar" }) => {
     consultation: isArabic ? "الاستشارات" : "Consultation",
     cropRecommend: isArabic ? "اقتراح المحصول" : "Crop Recommendation",
     agriChat: isArabic ? "الشات الزراعي" : "Agricultural Chat",
+    community: isArabic ? "المجتمع" : "Community", // ✅ تمت إضافة نص المجتمع هنا
 
 
     contact: isArabic ? "تواصل معنا" : "Contact Us",
@@ -63,10 +64,9 @@ const Footer = ({ language = "ar" }) => {
   ];
 
    const quickLinks = [
-    
+    { href: "/community", label: text.community }, // ✅ تمت إضافة رابط المجتمع هنا
     { href: "/crop-recommendation", label: text.cropRecommend },
     { href: "/agri-chat", label: text.agriChat },
-    
   ];
 
   return (
