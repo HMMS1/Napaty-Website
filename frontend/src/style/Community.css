@@ -433,4 +433,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition:
+  transition: background 0.2s ease;
+}
+
+.comment-input-area button:hover {
+  background: #388e3c;
+}
