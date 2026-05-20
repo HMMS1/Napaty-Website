@@ -6,26 +6,23 @@ import React, {
 } from "react";
 
 import {
-  FaImage,
   FaPaperPlane,
-  FaUserTie,
-  FaUser,
-  FaRegSmile,
-  FaRegCommentDots,
   FaTrash,
 } from "react-icons/fa";
 
 import "../style/Community.css";
 
 const REACTION_TYPES = [
-  { id: "like", emoji: "👍", label: "إعجاب" },
-  { id: "love", emoji: "❤️", label: "أحببته" },
-  { id: "helpful", emoji: "💡", label: "مفيد" },
+  { id: "like", emoji: "👍" },
+  { id: "love", emoji: "❤️" },
+  { id: "helpful", emoji: "💡" },
 ];
 
-const API_BASE = "https://hamzamostafa20.pythonanywhere.com";
+const API_BASE =
+  "https://hamzamostafa20.pythonanywhere.com";
 
 // ================= DELETE MODAL =================
+
 const DeleteConfirmModal = ({
   isOpen,
   isArabic,
@@ -35,17 +32,24 @@ const DeleteConfirmModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onCancel}>
+    <div
+      className="modal-overlay"
+      onClick={onCancel}
+    >
       <div
         className="modal-card"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) =>
+          e.stopPropagation()
+        }
       >
         <div className="modal-icon-wrapper">
           <FaTrash size={22} />
         </div>
 
         <h3 className="modal-title">
-          {isArabic ? "حذف المنشور" : "Delete Post"}
+          {isArabic
+            ? "حذف المنشور"
+            : "Delete Post"}
         </h3>
 
         <p className="modal-body">
@@ -67,7 +71,10 @@ const DeleteConfirmModal = ({
             onClick={onConfirm}
           >
             <FaTrash size={13} />
-            <span>{isArabic ? "حذف" : "Delete"}</span>
+
+            <span>
+              {isArabic ? "حذف" : "Delete"}
+            </span>
           </button>
         </div>
       </div>
@@ -75,55 +82,40 @@ const DeleteConfirmModal = ({
   );
 };
 
+// ================= MAIN COMPONENT =================
+
 const Community = ({ language }) => {
   const isArabic = language === "ar";
 
   const [posts, setPosts] = useState([]);
-  const [newPostText, setNewPostText] = useState("");
+
+  const [newPostText, setNewPostText] =
+    useState("");
+
   const [selectedImage, setSelectedImage] =
     useState(null);
+
   const [imagePreview, setImagePreview] =
     useState(null);
-  const [openComments, setOpenComments] =
-    useState({});
-  const [commentInputs, setCommentInputs] =
-    useState({});
 
-  const [deleteModal, setDeleteModal] = useState({
-    open: false,
-    postId: null,
-  });
+  const [deleteModal, setDeleteModal] =
+    useState({
+      open: false,
+      postId: null,
+    });
 
   const fileInputRef = useRef(null);
-  const commentInputRefs = useRef({});
 
   // ================= AUTH =================
+
   const authHeader = () => ({
     Authorization: `Bearer ${localStorage.getItem(
       "access"
     )}`,
   });
 
-  // ================= IMAGE URL =================
-  const buildImageUrl = (raw) => {
-    if (!raw) return null;
-
-    const clean = raw
-      .replace(
-        "http://hamzamostafa20.pythonanywhere.com",
-        ""
-      )
-      .replace(
-        "https://hamzamostafa20.pythonanywhere.com",
-        ""
-      );
-
-    return `${API_BASE}${
-      clean.startsWith("/") ? clean : `/${clean}`
-    }`;
-  };
-
   // ================= FETCH POSTS =================
+
   const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch(
@@ -134,12 +126,16 @@ const Community = ({ language }) => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch posts");
+        throw new Error(
+          "Failed to fetch posts"
+        );
       }
 
       const data = await response.json();
 
-      setPosts(Array.isArray(data) ? data : []);
+      setPosts(
+        Array.isArray(data) ? data : []
+      );
     } catch (error) {
       console.error(
         "Error fetching posts:",
@@ -153,24 +149,30 @@ const Community = ({ language }) => {
   }, [fetchPosts]);
 
   // ================= IMAGE SELECT =================
+
   const handleImageSelect = (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
     setSelectedImage(file);
-    setImagePreview(URL.createObjectURL(file));
+
+    setImagePreview(
+      URL.createObjectURL(file)
+    );
   };
 
   // ================= SUBMIT POST =================
+
   const submitPost = async (e) => {
     e.preventDefault();
 
     if (
       !newPostText.trim() &&
       !selectedImage
-    )
+    ) {
       return;
+    }
 
     const formData = new FormData();
 
@@ -205,7 +207,9 @@ const Community = ({ language }) => {
       }
 
       setNewPostText("");
+
       setSelectedImage(null);
+
       setImagePreview(null);
 
       if (fileInputRef.current) {
@@ -221,7 +225,8 @@ const Community = ({ language }) => {
     }
   };
 
-  // ================= REACTIONS =================
+  // ================= REACTION =================
+
   const handleReaction = async (
     postId,
     reactionType
@@ -237,7 +242,8 @@ const Community = ({ language }) => {
               "application/json",
           },
           body: JSON.stringify({
-            reaction_type: reactionType,
+            reaction_type:
+              reactionType,
           }),
         }
       );
@@ -253,13 +259,7 @@ const Community = ({ language }) => {
     }
   };
 
-  // ================= DELETE POST =================
-  const handleDeletePost = (postId) => {
-    setDeleteModal({
-      open: true,
-      postId,
-    });
-  };
+  // ================= DELETE =================
 
   const confirmDelete = async () => {
     const postId = deleteModal.postId;
@@ -280,6 +280,12 @@ const Community = ({ language }) => {
 
       if (response.ok) {
         fetchPosts();
+      } else {
+        alert(
+          isArabic
+            ? "فشل حذف المنشور"
+            : "Failed to delete post"
+        );
       }
     } catch (error) {
       console.error(
@@ -296,62 +302,20 @@ const Community = ({ language }) => {
     });
   };
 
-  // ================= COMMENTS =================
-  const toggleComments = (postId) => {
-    setOpenComments((prev) => ({
-      ...prev,
-      [postId]: !prev[postId],
-    }));
-  };
-
-  const submitComment = async (
-    postId
-  ) => {
-    const text =
-      commentInputs[postId];
-
-    if (!text?.trim()) return;
-
-    try {
-      const response = await fetch(
-        `${API_BASE}/api/community/posts/${postId}/comment/`,
-        {
-          method: "POST",
-          headers: {
-            ...authHeader(),
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            content: text,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        setCommentInputs((prev) => ({
-          ...prev,
-          [postId]: "",
-        }));
-
-        fetchPosts();
-      }
-    } catch (error) {
-      console.error(
-        "Comment error:",
-        error
-      );
-    }
-  };
+  // ================= RENDER =================
 
   return (
     <div className="community-page-wrapper">
+      {/* MODAL */}
+
       <DeleteConfirmModal
         isOpen={deleteModal.open}
         isArabic={isArabic}
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />
+
+      {/* HEADER */}
 
       <div className="community-header-banner">
         <h2>
@@ -362,10 +326,12 @@ const Community = ({ language }) => {
 
         <p>
           {isArabic
-            ? "شارك خبرتك مع المجتمع"
-            : "Share your experience"}
+            ? "شارك خبرتك وتفاعل مع المجتمع"
+            : "Share your experience with the community"}
         </p>
       </div>
+
+      {/* CREATE POST */}
 
       <div className="community-create-card">
         <form onSubmit={submitPost}>
@@ -378,8 +344,8 @@ const Community = ({ language }) => {
             }
             placeholder={
               isArabic
-                ? "اكتب منشور..."
-                : "Write a post..."
+                ? "بم تفكر؟"
+                : "What's on your mind?"
             }
           />
 
@@ -390,53 +356,195 @@ const Community = ({ language }) => {
                 alt="Preview"
                 className="community-upload-preview"
               />
+
+              <button
+                type="button"
+                className="community-remove-preview"
+                onClick={() => {
+                  setSelectedImage(null);
+
+                  setImagePreview(null);
+                }}
+              >
+                ×
+              </button>
             </div>
           )}
 
           <div className="community-card-actions">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageSelect}
-              ref={fileInputRef}
-            />
+            <div className="community-upload-btn-wrapper">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={
+                  handleImageSelect
+                }
+                ref={fileInputRef}
+                style={{
+                  display: "none",
+                }}
+                id="community-img-file"
+              />
 
-            <button type="submit">
+              <label
+                htmlFor="community-img-file"
+                className="community-file-label"
+              >
+                {isArabic
+                  ? "إضافة صورة"
+                  : "Add Image"}
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="community-submit-button"
+              disabled={
+                !newPostText.trim() &&
+                !selectedImage
+              }
+            >
               <FaPaperPlane />
+
+              <span>
+                {isArabic
+                  ? "نشر"
+                  : "Post"}
+              </span>
             </button>
           </div>
         </form>
       </div>
 
+      {/* POSTS */}
+
       <div className="community-posts-stream">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="community-post-node"
-          >
-            <h4>{post.author_name}</h4>
+        {posts.length === 0 ? (
+          <div className="community-empty-state">
+            <p>
+              {isArabic
+                ? "لا توجد منشورات"
+                : "No posts yet"}
+            </p>
+          </div>
+        ) : (
+          posts.map((post) => (
+            <div
+              key={post.id}
+              className="community-post-node"
+            >
+              {/* HEADER */}
 
-            <p>{post.content}</p>
+              <div className="community-node-header">
+                <div>
+                  <div className="community-node-meta">
+                    <h4>
+                      {
+                        post.author_name
+                      }
+                    </h4>
 
-            <div className="community-node-footer">
-              {REACTION_TYPES.map(
-                (reaction) => (
+                    <small>
+                      {new Date(
+                        post.created_at
+                      ).toLocaleString(
+                        isArabic
+                          ? "ar-EG"
+                          : "en-US"
+                      )}
+                    </small>
+                  </div>
+                </div>
+
+                {post.is_author && (
                   <button
-                    key={reaction.id}
+                    type="button"
+                    className="community-delete-post-btn"
                     onClick={() =>
-                      handleReaction(
-                        post.id,
-                        reaction.id
-                      )
+                      setDeleteModal({
+                        open: true,
+                        postId:
+                          post.id,
+                      })
                     }
                   >
-                    {reaction.emoji}
+                    <FaTrash size={16} />
                   </button>
-                )
+                )}
+              </div>
+
+              {/* BODY */}
+
+              {post.content && (
+                <p className="community-node-body">
+                  {post.content}
+                </p>
               )}
+
+              {/* IMAGE */}
+
+              {post.image && (
+                <div className="community-node-image-container">
+                  <img
+                    src={`${API_BASE}${post.image}`}
+                    alt="Post"
+                    className="community-node-img"
+                  />
+                </div>
+              )}
+
+              {/* FOOTER */}
+
+              <div className="community-node-footer">
+                <div className="reactions-group">
+                  {REACTION_TYPES.map(
+                    (reaction) => {
+                      const count =
+                        post
+                          .reactions_count?.[
+                          reaction.id
+                        ] || 0;
+
+                      const isMyReaction =
+                        post.user_reaction ===
+                        reaction.id;
+
+                      return (
+                        <button
+                          key={
+                            reaction.id
+                          }
+                          type="button"
+                          onClick={() =>
+                            handleReaction(
+                              post.id,
+                              reaction.id
+                            )
+                          }
+                          className={`community-action-btn ${
+                            isMyReaction
+                              ? "active-reaction"
+                              : ""
+                          }`}
+                        >
+                          <span className="reaction-emoji">
+                            {
+                              reaction.emoji
+                            }
+                          </span>
+
+                          <span className="reaction-counter">
+                            {count}
+                          </span>
+                        </button>
+                      );
+                    }
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
