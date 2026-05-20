@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaImage, FaPaperPlane, FaUserTie, FaUser, FaRegSmile, FaRegCommentDots } from "react-icons/fa";
+import { FaImage, FaPaperPlane, FaUserTie, FaUser, FaRegSmile, FaRegCommentDots, FaTrash } from "react-icons/fa";
 import "../style/Community.css";
 
 const REACTION_TYPES = [
@@ -17,9 +17,8 @@ const Community = ({ language }) => {
   
   const [openComments, setOpenComments] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
-  
   const fileInputRef = useRef(null);
-  const commentInputRefs = useRef({}); // المرجع عشان الـ Focus في المنشن
+  const commentInputRefs = useRef({});
 
   const fetchPosts = async () => {
     const token = localStorage.getItem("access");
@@ -92,18 +91,34 @@ const Community = ({ language }) => {
     }
   };
 
+  // ✅ دالة حذف المنشور
+  const handleDeletePost = async (postId) => {
+    const confirmDelete = window.confirm(isArabic ? "هل أنت متأكد من حذف هذا المنشور؟" : "Are you sure you want to delete this post?");
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem("access");
+    try {
+      const res = await fetch(`https://hamzamostafa20.pythonanywhere.com/api/community/posts/${postId}/delete/`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      if (res.ok) {
+        fetchPosts(); // إعادة جلب البيانات لتحديث الصفحة فوراً
+      } else {
+        alert(isArabic ? "فشل حذف المنشور" : "Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   const toggleComments = (postId) => {
     setOpenComments(prev => ({ ...prev, [postId]: !prev[postId] }));
   };
 
-  // ✅ دالة الرد (المنشن) بتضيف الاسم في خانة الكتابة وتعمل فوكس
   const handleReplyClick = (postId, authorName) => {
     const mention = `@${authorName} `;
-    setCommentInputs(prev => ({
-      ...prev,
-      [postId]: mention
-    }));
-    
+    setCommentInputs(prev => ({ ...prev, [postId]: mention }));
     if (commentInputRefs.current[postId]) {
       commentInputRefs.current[postId].focus();
     }
@@ -132,7 +147,6 @@ const Community = ({ language }) => {
     }
   };
 
-  // ✅ دالة تلوين المنشن باللون الأزرق
   const formatCommentText = (text) => {
     if (!text) return "";
     const parts = text.split(/(@\S+)/g);
@@ -186,27 +200,43 @@ const Community = ({ language }) => {
           </div>
         ) : (
           posts.map(post => {
-            // ✅ معالجة الروابط عشان الصور تظهر دايماً
-            const imageUrl = post.image 
-              ? (post.image.startsWith("http") ? post.image : `https://hamzamostafa20.pythonanywhere.com${post.image}`)
-              : null;
+            {/* ✅ معالجة الرابط الذكية جداً لمنع تكرار النطاق وحل مشكلة الـ SSL */}
+            let imageUrl = null;
+            if (post.image) {
+              const cleanPath = post.image.replace("http://hamzamostafa20.pythonanywhere.com", "").replace("https://hamzamostafa20.pythonanywhere.com", "");
+              imageUrl = `https://hamzamostafa20.pythonanywhere.com${cleanPath.startsWith('/') ? cleanPath : '/' + cleanPath}`;
+            }
 
             return (
               <div key={post.id} className="community-post-node">
                 
-                <div className="community-node-header">
-                  <div className={`community-avatar-icon ${post.author_type === "expert" ? "expert-badge" : "user-badge"}`}>
-                    {post.author_type === "expert" ? <FaUserTie size={18} /> : <FaUser size={18} />}
+                <div className="community-node-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                    <div className={`community-avatar-icon ${post.author_type === "expert" ? "expert-badge" : "user-badge"}`}>
+                      {post.author_type === "expert" ? <FaUserTie size={18} /> : <FaUser size={18} />}
+                    </div>
+                    <div className="community-node-meta">
+                      <h4>
+                        {post.author_name}
+                        {post.author_type === "expert" && (
+                          <span className="community-expert-tag">{isArabic ? "خبير زراعي" : "Agri Expert"}</span>
+                        )}
+                      </h4>
+                      <small>{new Date(post.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US')}</small>
+                    </div>
                   </div>
-                  <div className="community-node-meta">
-                    <h4>
-                      {post.author_name}
-                      {post.author_type === "expert" && (
-                        <span className="community-expert-tag">{isArabic ? "خبير زراعي" : "Agri Expert"}</span>
-                      )}
-                    </h4>
-                    <small>{new Date(post.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US')}</small>
-                  </div>
+
+                  {/* ✅ أيقونة حذف المنشور تظهر فقط إذا كان المستخدم هو صاحب البوست */}
+                  {post.is_author && (
+                    <button 
+                      type="button" 
+                      className="community-delete-post-btn" 
+                      onClick={() => handleDeletePost(post.id)}
+                      title={isArabic ? "حذف المنشور" : "Delete Post"}
+                    >
+                      <FaTrash size={16} />
+                    </button>
+                  )}
                 </div>
 
                 {post.content && <p className="community-node-body">{post.content}</p>}
@@ -242,7 +272,6 @@ const Community = ({ language }) => {
                   </button>
                 </div>
 
-                {/* قسم التعليقات */}
                 {openComments[post.id] && (
                   <div className="community-comments-section">
                     <div className="comments-list">
@@ -260,7 +289,6 @@ const Community = ({ language }) => {
                               <p>{formatCommentText(comment.content)}</p>
                             </div>
                           </div>
-                          {/* ✅ زر الرد تحت كل تعليق */}
                           <div className="comment-actions-row">
                             <small>{new Date(comment.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US', {hour: '2-digit', minute:'2-digit'})}</small>
                             <button className="reply-text-btn" onClick={() => handleReplyClick(post.id, comment.author_name)}>
