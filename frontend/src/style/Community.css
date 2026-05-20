@@ -1,39 +1,58 @@
-.community-page-wrapper {
-  padding: 30px 20px;
-  max-width: 760px;
-  margin: 0 auto;
-  min-height: 85vh;
-  font-family: inherit;
+/* =========================================================
+   GLOBAL RESPONSIVE SYSTEM
+========================================================= */
+
+* {
   box-sizing: border-box;
 }
 
+img {
+  max-width: 100%;
+}
+
+.community-page-wrapper {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 85vh;
+  padding: clamp(12px, 3vw, 30px);
+  font-family: inherit;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .community-header-banner {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: clamp(20px, 4vw, 35px);
 }
 
 .community-header-banner h2 {
   color: #2e7d32;
-  font-size: 2.2rem;
+  font-size: clamp(1.45rem, 4vw, 2.2rem);
   margin-bottom: 8px;
   font-weight: 700;
+  line-height: 1.3;
 }
 
 .community-header-banner p {
   color: #666;
-  font-size: 1.05rem;
-  line-height: 1.6;
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  line-height: 1.7;
 }
 
-/* ================= CREATE POST ================= */
+/* =========================================================
+   CREATE POST
+========================================================= */
 
 .community-create-card {
   background: #ffffff;
-  padding: 20px;
+  padding: clamp(14px, 3vw, 22px);
   border-radius: 18px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   border: 1px solid #e8f5e9;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 }
 
 .community-create-card textarea {
@@ -42,12 +61,11 @@
   padding: 15px;
   border-radius: 14px;
   border: 1px solid #dee2e6;
-  font-size: 1rem;
+  font-size: clamp(0.92rem, 2vw, 1rem);
   margin-bottom: 15px;
   resize: vertical;
   transition: all 0.25s ease;
   outline: none;
-  box-sizing: border-box;
   font-family: inherit;
   background: #fff;
 }
@@ -63,7 +81,8 @@
   margin-bottom: 15px;
   border-radius: 12px;
   overflow: hidden;
-  max-width: 220px;
+  width: 100%;
+  max-width: 260px;
   border: 1px solid #e2e8f0;
 }
 
@@ -108,6 +127,7 @@
 .community-file-label {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   color: #2e7d32;
   background: #e8f5e9;
@@ -115,8 +135,9 @@
   border-radius: 30px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
   transition: 0.2s ease;
+  min-height: 46px;
 }
 
 .community-file-label:hover {
@@ -126,6 +147,7 @@
 .community-submit-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: #4caf50;
   color: #fff;
@@ -133,9 +155,10 @@
   padding: 11px 24px;
   border-radius: 30px;
   font-weight: 600;
-  font-size: 0.96rem;
+  font-size: clamp(0.85rem, 2vw, 0.96rem);
   cursor: pointer;
   transition: 0.2s ease;
+  min-height: 46px;
 }
 
 .community-submit-button:hover:not(:disabled) {
@@ -149,11 +172,13 @@
   cursor: not-allowed;
 }
 
-/* ================= POSTS ================= */
+/* =========================================================
+   POSTS
+========================================================= */
 
 .community-post-node {
   background: #fff;
-  padding: 22px;
+  padding: clamp(14px, 3vw, 22px);
   border-radius: 18px;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.05);
   border: 1px solid #edf2f7;
@@ -163,14 +188,15 @@
 .community-node-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 15px;
+  align-items: flex-start;
+  gap: 14px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 .community-avatar-icon {
-  width: 46px;
-  height: 46px;
+  width: clamp(40px, 6vw, 46px);
+  height: clamp(40px, 6vw, 46px);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -189,16 +215,17 @@
 
 .community-node-meta h4 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: clamp(0.92rem, 2vw, 1.05rem);
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   color: #1e293b;
 }
 
 .community-node-meta small {
   color: #94a3b8;
-  font-size: 0.82rem;
+  font-size: clamp(0.72rem, 2vw, 0.82rem);
 }
 
 .community-expert-tag {
@@ -206,13 +233,13 @@
   color: #1e88e5;
   padding: 2px 10px;
   border-radius: 14px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
 }
 
 .community-node-body {
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  line-height: 1.8;
   color: #334155;
   margin-bottom: 18px;
   white-space: pre-wrap;
@@ -233,11 +260,13 @@
   display: block;
 }
 
-/* ================= EMPTY ================= */
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .community-empty-state {
   text-align: center;
-  padding: 50px 20px;
+  padding: clamp(30px, 5vw, 50px) 20px;
   color: #94a3b8;
 }
 
@@ -245,7 +274,9 @@
   margin-top: 10px;
 }
 
-/* ================= FOOTER ================= */
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .community-node-footer {
   display: flex;
@@ -275,6 +306,8 @@
   transition: 0.2s ease;
   font-weight: 500;
   color: #475569;
+  min-height: 42px;
+  font-size: clamp(0.8rem, 2vw, 0.92rem);
 }
 
 .community-action-btn:hover {
@@ -289,44 +322,9 @@
   font-weight: 700;
 }
 
-.reaction-emoji {
-  font-size: 1.05rem;
-}
-
-.reaction-counter {
-  font-size: 0.92rem;
-}
-
-.comment-trigger-btn {
-  background: transparent;
-}
-
-.comment-trigger-btn:hover {
-  color: #2196f3;
-}
-
-/* ================= DELETE ================= */
-
-.community-delete-post-btn {
-  border: none;
-  background: transparent;
-  color: #ef4444;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.community-delete-post-btn:hover {
-  background: #fef2f2;
-  color: #dc2626;
-}
-
-/* ================= COMMENTS ================= */
+/* =========================================================
+   COMMENTS
+========================================================= */
 
 .community-comments-section {
   margin-top: 20px;
@@ -341,17 +339,12 @@
   margin-bottom: 16px;
   max-height: 320px;
   overflow-y: auto;
-  padding-right: 4px;
-}
-
-.comment-bubble-wrapper {
-  display: flex;
-  flex-direction: column;
 }
 
 .comment-bubble {
   display: flex;
   gap: 10px;
+  align-items: flex-start;
 }
 
 .comment-avatar {
@@ -375,33 +368,26 @@
   background: #f8fafc;
   padding: 11px 14px;
   border-radius: 0 16px 16px 16px;
-  max-width: 90%;
-}
-
-.rtl-app .comment-content {
-  border-radius: 16px 0 16px 16px;
+  width: fit-content;
+  max-width: calc(100% - 50px);
 }
 
 .comment-content h5 {
   margin: 0 0 4px;
-  font-size: 0.88rem;
+  font-size: clamp(0.8rem, 2vw, 0.88rem);
   display: flex;
   align-items: center;
   gap: 5px;
   color: #1e293b;
+  flex-wrap: wrap;
 }
 
 .comment-content p {
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #475569;
-  font-size: 0.94rem;
+  font-size: clamp(0.84rem, 2vw, 0.94rem);
   word-break: break-word;
-}
-
-.expert-star {
-  color: #f59e0b;
-  font-size: 0.78rem;
 }
 
 .comment-actions-row {
@@ -410,11 +396,7 @@
   gap: 14px;
   margin-top: 5px;
   padding-inline-start: 45px;
-}
-
-.comment-actions-row small {
-  font-size: 0.74rem;
-  color: #94a3b8;
+  flex-wrap: wrap;
 }
 
 .reply-text-btn {
@@ -426,21 +408,9 @@
   cursor: pointer;
 }
 
-.reply-text-btn:hover {
-  color: #2196f3;
-}
-
-/* ================= MENTION ================= */
-
-.mention-tag {
-  color: #2196f3;
-  background: #e0f2fe;
-  padding: 1px 5px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-/* ================= COMMENT INPUT ================= */
+/* =========================================================
+   COMMENT INPUT
+========================================================= */
 
 .comment-input-area {
   display: flex;
@@ -450,18 +420,13 @@
 
 .comment-input-area input {
   flex: 1;
+  min-width: 0;
   padding: 11px 16px;
   border-radius: 22px;
   border: 1px solid #e2e8f0;
   outline: none;
   background: #f8fafc;
-  font-size: 0.94rem;
-  transition: 0.2s ease;
-}
-
-.comment-input-area input:focus {
-  border-color: #4caf50;
-  background: #fff;
+  font-size: clamp(0.84rem, 2vw, 0.94rem);
 }
 
 .comment-input-area button {
@@ -475,15 +440,78 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: 0.2s ease;
   flex-shrink: 0;
 }
 
-.comment-input-area button:hover {
-  background: #388e3c;
+/* =========================================================
+   DELETE BUTTON
+========================================================= */
+
+.community-delete-post-btn {
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ================= SCROLL ================= */
+.community-delete-post-btn:hover {
+  background: #fef2f2;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 18px;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: clamp(22px, 4vw, 36px);
+  width: 100%;
+  max-width: 400px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.18),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #fee2e2;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.modal-btn-cancel,
+.modal-btn-confirm {
+  flex: 1;
+  min-height: 48px;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
 
 .comments-list::-webkit-scrollbar {
   width: 6px;
@@ -494,137 +522,14 @@
   border-radius: 20px;
 }
 
-/* ================= DELETE MODAL ================= */
+/* =========================================================
+   EXTRA SMALL DEVICES
+   320px → 480px
+========================================================= */
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.55);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 20px;
-  animation: modalOverlayIn 0.2s ease;
-}
-
-@keyframes modalOverlayIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.modal-card {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 36px 32px 28px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.18),
-    0 4px 16px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  animation: modalCardIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border: 1px solid #fee2e2;
-}
-
-@keyframes modalCardIn {
-  from { opacity: 0; transform: scale(0.88) translateY(12px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.modal-icon-wrapper {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: #fef2f2;
-  border: 2px solid #fecaca;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ef4444;
-  margin-bottom: 18px;
-}
-
-.modal-title {
-  margin: 0 0 10px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.modal-body {
-  margin: 0 0 28px;
-  font-size: 0.95rem;
-  color: #64748b;
-  line-height: 1.65;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-  width: 100%;
-}
-
-.modal-btn-cancel {
-  flex: 1;
-  padding: 12px 20px;
-  border-radius: 14px;
-  border: 1.5px solid #e2e8f0;
-  background: #f8fafc;
-  color: #475569;
-  font-size: 0.96rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.modal-btn-cancel:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-.modal-btn-confirm {
-  flex: 1;
-  padding: 12px 20px;
-  border-radius: 14px;
-  border: none;
-  background: #ef4444;
-  color: #fff;
-  font-size: 0.96rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  transition: 0.2s ease;
-}
-
-.modal-btn-confirm:hover {
-  background: #dc2626;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
-}
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .community-page-wrapper {
-    padding: 20px 14px;
-  }
-
-  .community-header-banner h2 {
-    font-size: 1.8rem;
-  }
-
-  .community-create-card,
-  .community-post-node {
-    padding: 16px;
+    padding: 12px;
   }
 
   .community-card-actions {
@@ -632,13 +537,9 @@
     align-items: stretch;
   }
 
-  .community-submit-button {
-    justify-content: center;
-    width: 100%;
-  }
-
+  .community-submit-button,
   .community-file-label {
-    justify-content: center;
+    width: 100%;
   }
 
   .community-node-footer {
@@ -659,14 +560,40 @@
   }
 
   .comment-actions-row {
-    padding-inline-start: 42px;
-  }
-
-  .modal-card {
-    padding: 28px 20px 22px;
+    padding-inline-start: 0;
+    margin-left: 44px;
   }
 
   .modal-actions {
     flex-direction: column-reverse;
+  }
+}
+
+/* =========================================================
+   TABLETS
+========================================================= */
+
+@media (min-width: 481px) and (max-width: 991px) {
+  .community-page-wrapper {
+    max-width: 92%;
+  }
+
+  .community-post-node,
+  .community-create-card {
+    border-radius: 20px;
+  }
+}
+
+/* =========================================================
+   LARGE SCREENS
+========================================================= */
+
+@media (min-width: 1400px) {
+  .community-page-wrapper {
+    max-width: 900px;
+  }
+
+  .community-post-node {
+    padding: 28px;
   }
 }
