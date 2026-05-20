@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaImage, FaPaperPlane, FaUserTie, FaUser, FaRegSmile } from "react-icons/fa";
+import { FaImage, FaPaperPlane, FaUserTie, FaUser, FaRegSmile, FaRegCommentDots } from "react-icons/fa";
 import "../style/Community.css";
 
 const REACTION_TYPES = [
@@ -14,6 +14,9 @@ const Community = ({ language }) => {
   const [newPostText, setNewPostText] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  
+  const [openComments, setOpenComments] = useState({});
+  const [commentInputs, setCommentInputs] = useState({});
   const fileInputRef = useRef(null);
 
   const fetchPosts = async () => {
@@ -89,6 +92,33 @@ const Community = ({ language }) => {
     }
   };
 
+  const toggleComments = (postId) => {
+    setOpenComments(prev => ({ ...prev, [postId]: !prev[postId] }));
+  };
+
+  const submitComment = async (postId) => {
+    const text = commentInputs[postId];
+    if (!text || !text.trim()) return;
+
+    const token = localStorage.getItem("access");
+    try {
+      const res = await fetch(`https://hamzamostafa20.pythonanywhere.com/api/community/posts/${postId}/comment/`, {
+        method: "POST",
+        headers: { 
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ content: text }),
+      });
+      if (res.ok) {
+        setCommentInputs(prev => ({ ...prev, [postId]: "" }));
+        fetchPosts();
+      }
+    } catch (error) {
+      console.error("Error commenting:", error);
+    }
+  };
+
   return (
     <div className="community-page-wrapper">
       <div className="community-header-banner">
@@ -96,7 +126,6 @@ const Community = ({ language }) => {
         <p>{isArabic ? "شارك خبرتك، اسأل الخبراء والمزارعين، وتفاعل مع المجتمع" : "Share your experience, ask experts, and interact with others"}</p>
       </div>
 
-      {/* صندوق النشر الإبداعي */}
       <div className="community-create-card">
         <form onSubmit={submitPost}>
           <textarea
@@ -127,7 +156,6 @@ const Community = ({ language }) => {
         </form>
       </div>
 
-      {/* خلاصة المنشورات الـ Feed */}
       <div className="community-posts-stream">
         {posts.length === 0 ? (
           <div className="community-empty-state">
@@ -135,56 +163,100 @@ const Community = ({ language }) => {
             <p>{isArabic ? "لا توجد منشورات بعد، كن أول من ينشر!" : "No posts yet, be the first to share!"}</p>
           </div>
         ) : (
-          posts.map(post => (
-            <div key={post.id} className="community-post-node">
-              
-              {/* رأس المنشور */}
-              <div className="community-node-header">
-                <div className={`community-avatar-icon ${post.author_type === "expert" ? "expert-badge" : "user-badge"}`}>
-                  {post.author_type === "expert" ? <FaUserTie size={18} /> : <FaUser size={18} />}
-                </div>
-                <div className="community-node-meta">
-                  <h4>
-                    {post.author_name}
-                    {post.author_type === "expert" && (
-                      <span className="community-expert-tag">{isArabic ? "خبير زراعي" : "Agri Expert"}</span>
-                    )}
-                  </h4>
-                  <small>{new Date(post.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US')}</small>
-                </div>
-              </div>
+          posts.map(post => {
+            const imageUrl = post.image 
+              ? (post.image.startsWith("http") ? post.image : `https://hamzamostafa20.pythonanywhere.com${post.image}`)
+              : null;
 
-              {/* محتوى البوست */}
-              {post.content && <p className="community-node-body">{post.content}</p>}
-              
-              {post.image && (
-                <div className="community-node-image-container">
-                  <img src={`https://hamzamostafa20.pythonanywhere.com${post.image}`} alt="Post Media" className="community-node-img" />
+            return (
+              <div key={post.id} className="community-post-node">
+                
+                <div className="community-node-header">
+                  <div className={`community-avatar-icon ${post.author_type === "expert" ? "expert-badge" : "user-badge"}`}>
+                    {post.author_type === "expert" ? <FaUserTie size={18} /> : <FaUser size={18} />}
+                  </div>
+                  <div className="community-node-meta">
+                    <h4>
+                      {post.author_name}
+                      {post.author_type === "expert" && (
+                        <span className="community-expert-tag">{isArabic ? "خبير زراعي" : "Agri Expert"}</span>
+                      )}
+                    </h4>
+                    <small>{new Date(post.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US')}</small>
+                  </div>
                 </div>
-              )}
 
-              {/* شريط التفاعلات Reactions */}
-              <div className="community-node-footer">
-                {REACTION_TYPES.map(reaction => {
-                  const count = post.reactions_count[reaction.id] || 0;
-                  const isMyReaction = post.user_reaction === reaction.id;
+                {post.content && <p className="community-node-body">{post.content}</p>}
+                
+                {imageUrl && (
+                  <div className="community-node-image-container">
+                    <img src={imageUrl} alt="Post Media" className="community-node-img" />
+                  </div>
+                )}
+
+                <div className="community-node-footer">
+                  <div className="reactions-group">
+                    {REACTION_TYPES.map(reaction => {
+                      const count = post.reactions_count[reaction.id] || 0;
+                      const isMyReaction = post.user_reaction === reaction.id;
+                      return (
+                        <button
+                          key={reaction.id}
+                          type="button"
+                          onClick={() => handleReaction(post.id, reaction.id)}
+                          className={`community-action-btn ${isMyReaction ? "active-reaction" : ""}`}
+                        >
+                          <span className="reaction-emoji">{reaction.emoji}</span>
+                          <span className="reaction-counter">{count}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                   
-                  return (
-                    <button
-                      key={reaction.id}
-                      type="button"
-                      onClick={() => handleReaction(post.id, reaction.id)}
-                      className={`community-reaction-trigger ${isMyReaction ? "active-reaction" : ""}`}
-                    >
-                      <span className="reaction-emoji">{reaction.emoji}</span>
-                      <span className="reaction-counter">{count}</span>
-                    </button>
-                  );
-                })}
-              </div>
+                  <button type="button" className="community-action-btn comment-trigger-btn" onClick={() => toggleComments(post.id)}>
+                    <FaRegCommentDots size={18} />
+                    <span>{post.comments?.length || 0} {isArabic ? "تعليقات" : "Comments"}</span>
+                  </button>
+                </div>
 
-            </div>
-          ))
+                {openComments[post.id] && (
+                  <div className="community-comments-section">
+                    <div className="comments-list">
+                      {post.comments?.map(comment => (
+                        <div key={comment.id} className="comment-bubble">
+                          <div className={`comment-avatar ${comment.author_type === "expert" ? "expert" : ""}`}>
+                            {comment.author_type === "expert" ? <FaUserTie size={12} /> : <FaUser size={12} />}
+                          </div>
+                          <div className="comment-content">
+                            <h5>
+                              {comment.author_name} 
+                              {comment.author_type === "expert" && <span className="expert-star">★</span>}
+                            </h5>
+                            <p>{comment.content}</p>
+                            <small>{new Date(comment.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US', {hour: '2-digit', minute:'2-digit'})}</small>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="comment-input-area">
+                      <input 
+                        type="text" 
+                        placeholder={isArabic ? "اكتب تعليقاً..." : "Write a comment..."}
+                        value={commentInputs[post.id] || ""}
+                        onChange={(e) => setCommentInputs({...commentInputs, [post.id]: e.target.value})}
+                        onKeyPress={(e) => e.key === 'Enter' && submitComment(post.id)}
+                      />
+                      <button type="button" onClick={() => submitComment(post.id)}>
+                        <FaPaperPlane />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            );
+          })
         )}
       </div>
     </div>
