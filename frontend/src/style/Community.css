@@ -23,7 +23,6 @@
   font-size: 1.05rem;
 }
 
-/* صندوق إنشاء البوست */
 .community-create-card {
   background: #ffffff;
   padding: 20px;
@@ -135,7 +134,6 @@
   cursor: not-allowed;
 }
 
-/* بطاقة البوست في الخلاصة */
 .community-post-node {
   background: #ffffff;
   padding: 24px;
@@ -216,15 +214,28 @@
   display: block;
 }
 
-/* شريط الـ Reactions */
-.community-node-footer {
-  display: flex;
-  gap: 12px;
-  border-top: 1px solid #f1f3f5;
-  padding-top: 14px;
+.community-empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #adb5bd;
 }
 
-.community-reaction-trigger {
+.community-node-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f3f5;
+  padding-top: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reactions-group {
+  display: flex;
+  gap: 12px;
+}
+
+.community-action-btn {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -235,14 +246,15 @@
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
+  color: #495057;
 }
 
-.community-reaction-trigger:hover {
-  background: #f1f3f5;
-  transform: scale(1.03);
+.community-action-btn:hover {
+  background: #e9ecef;
+  transform: scale(1.02);
 }
 
-.community-reaction-trigger.active-reaction {
+.community-action-btn.active-reaction {
   background: #e8f5e9;
   border-color: #a5d6a7;
   color: #2e7d32;
@@ -257,8 +269,129 @@
   font-size: 0.95rem;
 }
 
-.community-empty-state {
-  text-align: center;
-  padding: 40px;
-  color: #adb5bd;
+.comment-trigger-btn {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+}
+
+.comment-trigger-btn:hover {
+  background: #f8f9fa;
+  color: #2196f3;
+}
+
+.community-comments-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #e9ecef;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.comment-bubble {
+  display: flex;
+  gap: 10px;
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.comment-avatar.expert {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.comment-content {
+  background: #f8f9fa;
+  padding: 10px 14px;
+  border-radius: 0 16px 16px 16px;
+  position: relative;
+  max-width: 90%;
+}
+
+.rtl-app .comment-content {
+  border-radius: 16px 0 16px 16px;
+}
+
+.comment-content h5 {
+  margin: 0 0 4px 0;
+  font-size: 0.9rem;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.expert-star {
+  color: #f59e0b;
+  font-size: 0.8rem;
+}
+
+.comment-content p {
+  margin: 0 0 5px 0;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.comment-content small {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.comment-input-area {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.comment-input-area input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  outline: none;
+  font-size: 0.95rem;
+  background: #f8fafc;
+  transition: all 0.2s;
+}
+
+.comment-input-area input:focus {
+  border-color: #4caf50;
+  background: #fff;
+}
+
+.comment-input-area button {
+  background: #4caf50;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.comment-input-area button:hover {
+  background: #388e3c;
 }
