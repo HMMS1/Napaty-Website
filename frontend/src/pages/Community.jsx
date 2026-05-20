@@ -18,9 +18,9 @@ import {
 import "../style/Community.css";
 
 const REACTION_TYPES = [
-  { id: "like", emoji: "👍", label: "إعجاب" },
-  { id: "love", emoji: "❤️", label: "أحببته" },
-  { id: "helpful", emoji: "💡", label: "مفيد" },
+  { id: "like", emoji: "👍" },
+  { id: "love", emoji: "❤️" },
+  { id: "helpful", emoji: "💡" },
 ];
 
 const API_BASE = "https://hamzamostafa20.pythonanywhere.com";
@@ -35,15 +35,18 @@ const Community = ({ language }) => {
   const [openComments, setOpenComments] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
 
+  const [deleteModal, setDeleteModal] = useState({
+    open: false,
+    postId: null,
+  });
+
   const fileInputRef = useRef(null);
   const commentInputRefs = useRef({});
 
-  // ================= AUTH =================
   const authHeader = () => ({
     Authorization: `Bearer ${localStorage.getItem("access")}`,
   });
 
-  // ================= IMAGE URL =================
   const buildImageUrl = (raw) => {
     if (!raw) return null;
 
@@ -54,7 +57,6 @@ const Community = ({ language }) => {
     return `${API_BASE}${clean.startsWith("/") ? clean : `/${clean}`}`;
   };
 
-  // ================= FETCH POSTS =================
   const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE}/api/community/posts/`, {
@@ -77,7 +79,6 @@ const Community = ({ language }) => {
     fetchPosts();
   }, [fetchPosts]);
 
-  // ================= IMAGE SELECT =================
   const handleImageSelect = (e) => {
     const file = e.target.files?.[0];
 
@@ -87,7 +88,6 @@ const Community = ({ language }) => {
     setImagePreview(URL.createObjectURL(file));
   };
 
-  // ================= SUBMIT POST =================
   const submitPost = async (e) => {
     e.preventDefault();
 
@@ -128,7 +128,6 @@ const Community = ({ language }) => {
     }
   };
 
-  // ================= REACTIONS =================
   const handleReaction = async (postId, reactionType) => {
     try {
       const response = await fetch(
@@ -153,19 +152,17 @@ const Community = ({ language }) => {
     }
   };
 
-  // ================= DELETE POST =================
-  const handleDeletePost = async (postId) => {
-    const confirmMessage = isArabic
-      ? "هل أنت متأكد من حذف هذا المنشور؟"
-      : "Are you sure you want to delete this post?";
+  const handleDeletePost = (postId) => {
+    setDeleteModal({
+      open: true,
+      postId,
+    });
+  };
 
-    const confirmed = window.confirm(confirmMessage);
-
-    if (!confirmed) return;
-
+  const confirmDeletePost = async () => {
     try {
       const response = await fetch(
-        `${API_BASE}/api/community/posts/${postId}/delete/`,
+        `${API_BASE}/api/community/posts/${deleteModal.postId}/delete/`,
         {
           method: "DELETE",
           headers: authHeader(),
@@ -174,15 +171,24 @@ const Community = ({ language }) => {
 
       if (response.ok) {
         fetchPosts();
-      } else {
-        alert(isArabic ? "فشل حذف المنشور" : "Failed to delete post");
       }
     } catch (error) {
       console.error("Delete error:", error);
     }
+
+    setDeleteModal({
+      open: false,
+      postId: null,
+    });
   };
 
-  // ================= COMMENTS =================
+  const cancelDeletePost = () => {
+    setDeleteModal({
+      open: false,
+      postId: null,
+    });
+  };
+
   const toggleComments = (postId) => {
     setOpenComments((prev) => ({
       ...prev,
@@ -232,7 +238,6 @@ const Community = ({ language }) => {
     }
   };
 
-  // ================= COMMENT FORMAT =================
   const formatCommentText = (text) => {
     if (!text) return null;
 
@@ -249,10 +254,48 @@ const Community = ({ language }) => {
     });
   };
 
-  // ================= RENDER =================
   return (
     <div className="community-page-wrapper">
-      {/* Header */}
+
+      {deleteModal.open && (
+        <div className="delete-modal-overlay">
+          <div className="delete-modal-box">
+
+            <div className="delete-modal-icon">
+              <FaTrash />
+            </div>
+
+            <h3>
+              {isArabic ? "حذف المنشور" : "Delete Post"}
+            </h3>
+
+            <p>
+              {isArabic
+                ? "هل أنت متأكد من حذف هذا المنشور؟"
+                : "Are you sure you want to delete this post?"}
+            </p>
+
+            <div className="delete-modal-actions">
+
+              <button
+                className="cancel-delete-btn"
+                onClick={cancelDeletePost}
+              >
+                {isArabic ? "إلغاء" : "Cancel"}
+              </button>
+
+              <button
+                className="confirm-delete-btn"
+                onClick={confirmDeletePost}
+              >
+                {isArabic ? "حذف" : "Delete"}
+              </button>
+
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="community-header-banner">
         <h2>
           {isArabic
@@ -267,9 +310,9 @@ const Community = ({ language }) => {
         </p>
       </div>
 
-      {/* Create Post */}
       <div className="community-create-card">
         <form onSubmit={submitPost}>
+
           <textarea
             value={newPostText}
             onChange={(e) => setNewPostText(e.target.value)}
@@ -282,6 +325,7 @@ const Community = ({ language }) => {
 
           {imagePreview && (
             <div className="community-preview-wrapper">
+
               <img
                 src={imagePreview}
                 alt="Preview"
@@ -298,11 +342,14 @@ const Community = ({ language }) => {
               >
                 ×
               </button>
+
             </div>
           )}
 
           <div className="community-card-actions">
+
             <div className="community-upload-btn-wrapper">
+
               <input
                 type="file"
                 accept="image/*"
@@ -328,6 +375,7 @@ const Community = ({ language }) => {
                     : "Add Image"}
                 </span>
               </label>
+
             </div>
 
             <button
@@ -337,23 +385,28 @@ const Community = ({ language }) => {
             >
               <FaPaperPlane />
 
-              <span>{isArabic ? "نشر الآن" : "Post Now"}</span>
+              <span>
+                {isArabic ? "نشر الآن" : "Post Now"}
+              </span>
             </button>
+
           </div>
         </form>
       </div>
 
-      {/* POSTS */}
       <div className="community-posts-stream">
+
         {posts.length === 0 ? (
           <div className="community-empty-state">
+
             <FaRegSmile size={40} />
 
             <p>
               {isArabic
                 ? "لا توجد منشورات بعد"
-                : "No posts yet, be the first"}
+                : "No posts yet"}
             </p>
+
           </div>
         ) : (
           posts.map((post) => {
@@ -361,22 +414,11 @@ const Community = ({ language }) => {
 
             return (
               <div key={post.id} className="community-post-node">
-                {/* HEADER */}
-                <div
-                  className="community-node-header"
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "14px",
-                    }}
-                  >
+
+                <div className="community-node-header">
+
+                  <div className="community-node-user">
+
                     <div
                       className={`community-avatar-icon ${
                         post.author_type === "expert"
@@ -392,12 +434,15 @@ const Community = ({ language }) => {
                     </div>
 
                     <div className="community-node-meta">
+
                       <h4>
                         {post.author_name}
 
                         {post.author_type === "expert" && (
                           <span className="community-expert-tag">
-                            {isArabic ? "خبير زراعي" : "Agri Expert"}
+                            {isArabic
+                              ? "خبير زراعي"
+                              : "Agri Expert"}
                           </span>
                         )}
                       </h4>
@@ -407,6 +452,7 @@ const Community = ({ language }) => {
                           isArabic ? "ar-EG" : "en-US"
                         )}
                       </small>
+
                     </div>
                   </div>
 
@@ -419,11 +465,13 @@ const Community = ({ language }) => {
                       <FaTrash size={16} />
                     </button>
                   )}
+
                 </div>
 
-                {/* BODY */}
                 {post.content && (
-                  <p className="community-node-body">{post.content}</p>
+                  <p className="community-node-body">
+                    {post.content}
+                  </p>
                 )}
 
                 {imageUrl && (
@@ -436,9 +484,10 @@ const Community = ({ language }) => {
                   </div>
                 )}
 
-                {/* FOOTER */}
                 <div className="community-node-footer">
+
                   <div className="reactions-group">
+
                     {REACTION_TYPES.map((reaction) => {
                       const count =
                         post.reactions_count?.[reaction.id] || 0;
@@ -454,7 +503,9 @@ const Community = ({ language }) => {
                             handleReaction(post.id, reaction.id)
                           }
                           className={`community-action-btn ${
-                            isMyReaction ? "active-reaction" : ""
+                            isMyReaction
+                              ? "active-reaction"
+                              : ""
                           }`}
                         >
                           <span className="reaction-emoji">
@@ -467,6 +518,7 @@ const Community = ({ language }) => {
                         </button>
                       );
                     })}
+
                   </div>
 
                   <button
@@ -481,18 +533,21 @@ const Community = ({ language }) => {
                       {isArabic ? "تعليقات" : "Comments"}
                     </span>
                   </button>
+
                 </div>
 
-                {/* COMMENTS */}
                 {openComments[post.id] && (
                   <div className="community-comments-section">
+
                     <div className="comments-list">
+
                       {(post.comments || []).map((comment) => (
                         <div
                           key={comment.id}
                           className="comment-bubble-wrapper"
                         >
                           <div className="comment-bubble">
+
                             <div
                               className={`comment-avatar ${
                                 comment.author_type === "expert"
@@ -508,21 +563,26 @@ const Community = ({ language }) => {
                             </div>
 
                             <div className="comment-content">
+
                               <h5>
                                 {comment.author_name}
 
                                 {comment.author_type === "expert" && (
-                                  <span className="expert-star">★</span>
+                                  <span className="expert-star">
+                                    ★
+                                  </span>
                                 )}
                               </h5>
 
                               <p>
                                 {formatCommentText(comment.content)}
                               </p>
+
                             </div>
                           </div>
 
                           <div className="comment-actions-row">
+
                             <small>
                               {new Date(
                                 comment.created_at
@@ -546,13 +606,15 @@ const Community = ({ language }) => {
                             >
                               {isArabic ? "رد" : "Reply"}
                             </button>
+
                           </div>
                         </div>
                       ))}
+
                     </div>
 
-                    {/* INPUT */}
                     <div className="comment-input-area">
+
                       <input
                         type="text"
                         ref={(el) =>
@@ -583,13 +645,17 @@ const Community = ({ language }) => {
                       >
                         <FaPaperPlane />
                       </button>
+
                     </div>
+
                   </div>
                 )}
+
               </div>
             );
           })
         )}
+
       </div>
     </div>
   );
