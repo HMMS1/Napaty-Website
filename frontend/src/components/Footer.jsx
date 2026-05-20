@@ -123,7 +123,8 @@ const Footer = ({ language = "ar" }) => {
                 <div className="footer-contact-info">
                   <span className="footer-contact-label">{text.email}</span>
                   <a href="mailto:hamza2004mohamed@gmail.com">
-                    hamza2004mohamed@gmail.com
+                    napatywebsite@gmail.com
+
                   </a>
                 </div>
               </div>
@@ -132,7 +133,7 @@ const Footer = ({ language = "ar" }) => {
                 <div className="footer-contact-icon"><FaPhoneAlt /></div>
                 <div className="footer-contact-info">
                   <span className="footer-contact-label">{text.phone}</span>
-                  <a href="tel:01025058377">01025058377</a>
+                  <a href="tel:01025058377">+201025058377</a>
                 </div>
               </div>
 
