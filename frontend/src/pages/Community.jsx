@@ -25,6 +25,45 @@ const REACTION_TYPES = [
 
 const API_BASE = "https://hamzamostafa20.pythonanywhere.com";
 
+// ================= DELETE MODAL =================
+const DeleteConfirmModal = ({ isOpen, isArabic, onConfirm, onCancel }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onCancel}>
+      <div
+        className="modal-card"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-icon-wrapper">
+          <FaTrash size={22} />
+        </div>
+
+        <h3 className="modal-title">
+          {isArabic ? "حذف المنشور" : "Delete Post"}
+        </h3>
+
+        <p className="modal-body">
+          {isArabic
+            ? "هل أنت متأكد من حذف هذا المنشور؟ لن تتمكن من التراجع عن هذا الإجراء."
+            : "Are you sure you want to delete this post? This action cannot be undone."}
+        </p>
+
+        <div className="modal-actions">
+          <button className="modal-btn-cancel" onClick={onCancel}>
+            {isArabic ? "إلغاء" : "Cancel"}
+          </button>
+
+          <button className="modal-btn-confirm" onClick={onConfirm}>
+            <FaTrash size={13} />
+            <span>{isArabic ? "حذف" : "Delete"}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Community = ({ language }) => {
   const isArabic = language === "ar";
 
@@ -34,6 +73,9 @@ const Community = ({ language }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [openComments, setOpenComments] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
+
+  // Modal state
+  const [deleteModal, setDeleteModal] = useState({ open: false, postId: null });
 
   const fileInputRef = useRef(null);
   const commentInputRefs = useRef({});
@@ -154,14 +196,15 @@ const Community = ({ language }) => {
   };
 
   // ================= DELETE POST =================
-  const handleDeletePost = async (postId) => {
-    const confirmMessage = isArabic
-      ? "هل أنت متأكد من حذف هذا المنشور؟"
-      : "Are you sure you want to delete this post?";
+  // Step 1: open the modal
+  const handleDeletePost = (postId) => {
+    setDeleteModal({ open: true, postId });
+  };
 
-    const confirmed = window.confirm(confirmMessage);
-
-    if (!confirmed) return;
+  // Step 2: user confirmed → call API
+  const confirmDelete = async () => {
+    const postId = deleteModal.postId;
+    setDeleteModal({ open: false, postId: null });
 
     try {
       const response = await fetch(
@@ -180,6 +223,11 @@ const Community = ({ language }) => {
     } catch (error) {
       console.error("Delete error:", error);
     }
+  };
+
+  // Step 3: user cancelled
+  const cancelDelete = () => {
+    setDeleteModal({ open: false, postId: null });
   };
 
   // ================= COMMENTS =================
@@ -252,6 +300,14 @@ const Community = ({ language }) => {
   // ================= RENDER =================
   return (
     <div className="community-page-wrapper">
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={deleteModal.open}
+        isArabic={isArabic}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
+
       {/* Header */}
       <div className="community-header-banner">
         <h2>
