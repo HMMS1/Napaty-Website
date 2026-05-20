@@ -23,6 +23,7 @@
   font-size: 1.05rem;
 }
 
+/* ─── Create Card ─────────────────────────────────────────────────────────── */
 .community-create-card {
   background: #ffffff;
   padding: 20px;
@@ -43,6 +44,7 @@
   resize: none;
   transition: all 0.25s ease;
   outline: none;
+  box-sizing: border-box;
 }
 
 .community-create-card textarea:focus {
@@ -134,6 +136,7 @@
   cursor: not-allowed;
 }
 
+/* ─── Post Node ───────────────────────────────────────────────────────────── */
 .community-post-node {
   background: #ffffff;
   padding: 24px;
@@ -158,15 +161,11 @@
   align-items: center;
   justify-content: center;
   color: #fff;
+  flex-shrink: 0;
 }
 
-.community-avatar-icon.user-badge {
-  background: #4caf50;
-}
-
-.community-avatar-icon.expert-badge {
-  background: #2196f3;
-}
+.community-avatar-icon.user-badge   { background: #4caf50; }
+.community-avatar-icon.expert-badge { background: #2196f3; }
 
 .community-node-meta h4 {
   margin: 0 0 3px 0;
@@ -214,12 +213,14 @@
   display: block;
 }
 
+/* ─── Empty state ─────────────────────────────────────────────────────────── */
 .community-empty-state {
   text-align: center;
   padding: 40px;
   color: #adb5bd;
 }
 
+/* ─── Footer: reactions + comments ───────────────────────────────────────── */
 .community-node-footer {
   display: flex;
   justify-content: space-between;
@@ -261,13 +262,8 @@
   font-weight: 600;
 }
 
-.reaction-emoji {
-  font-size: 1.1rem;
-}
-
-.reaction-counter {
-  font-size: 0.95rem;
-}
+.reaction-emoji   { font-size: 1.1rem; }
+.reaction-counter { font-size: 0.95rem; }
 
 .comment-trigger-btn {
   background: transparent;
@@ -280,7 +276,28 @@
   color: #2196f3;
 }
 
-/* === قسم التعليقات والمنشن === */
+/* ─── Delete Post Button ──────────────────────────────────────────────────── */
+.community-delete-post-btn {
+  background: transparent;
+  border: none;
+  color: #e53935;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.community-delete-post-btn:hover {
+  background: #ffebee;
+  color: #c62828;
+  transform: scale(1.08);
+}
+
+/* ─── Comments Section ────────────────────────────────────────────────────── */
 .community-comments-section {
   margin-top: 20px;
   padding-top: 15px;
@@ -329,7 +346,6 @@
   background: #f8f9fa;
   padding: 10px 14px;
   border-radius: 0 16px 16px 16px;
-  position: relative;
   max-width: 90%;
 }
 
@@ -390,7 +406,7 @@
   text-decoration: underline;
 }
 
-/* لون المنشن (الرد) */
+/* ─── @mention tag ────────────────────────────────────────────────────────── */
 .mention-tag {
   color: #2196f3;
   font-weight: 600;
@@ -400,6 +416,7 @@
   margin: 0 2px;
 }
 
+/* ─── Comment Input ───────────────────────────────────────────────────────── */
 .comment-input-area {
   display: flex;
   gap: 10px;
@@ -434,45 +451,7 @@
   justify-content: center;
   cursor: pointer;
   transition: background 0.2s ease;
-}
-
-.comment-input-area button:hover {
-  background: #388e3c;
-}
-
-/* زر حذف المنشور الخاص بالملك */
-.community-delete-post-btn {
-  background: transparent;
-  border: none;
-  color: #e53935;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.community-delete-post-btn:hover {
-  background: #ffebee;
-  color: #c62828;
-  transform: scale(1.08);
-}
-
-/* إصلاح قفلة الكود المقطوع سابقاً للزرار */
-.comment-input-area button {
-  background: #4caf50;
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s ease;
+  flex-shrink: 0;
 }
 
 .comment-input-area button:hover {
