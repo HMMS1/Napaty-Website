@@ -395,3 +395,50 @@
 .comment-input-area button:hover {
   background: #388e3c;
 }
+
+.comment-bubble-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.comment-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 4px;
+  padding: 0 45px; /* عشان يبقى محاذي للتعليق */
+}
+
+.rtl-app .comment-actions-row {
+  padding: 0 45px 0 0;
+}
+
+.comment-actions-row small {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.reply-text-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.reply-text-btn:hover {
+  color: #2196f3;
+  text-decoration: underline;
+}
+
+.mention-tag {
+  color: #2196f3;
+  font-weight: 600;
+  background-color: #e0f2fe;
+  padding: 0 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+}
