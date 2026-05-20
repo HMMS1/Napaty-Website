@@ -320,7 +320,7 @@ const Community = ({ language }) => {
             onChange={(e) => setNewPostText(e.target.value)}
             placeholder={
               isArabic
-                ? "بم تفكر؟ شارك تجربتك    ..."
+                ? "بم تفكر؟ شارك تجربتك "
                 : "What's on your mind?"
             }
           />
