@@ -17,10 +17,9 @@ const Community = ({ language }) => {
   
   const [openComments, setOpenComments] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
+  
   const fileInputRef = useRef(null);
-
-  // مرجع (Ref) عشان نقدر نعمل Focus على حقل الإدخال لما ندوس "رد"
-  const commentInputRefs = useRef({});
+  const commentInputRefs = useRef({}); // المرجع عشان الـ Focus في المنشن
 
   const fetchPosts = async () => {
     const token = localStorage.getItem("access");
@@ -97,15 +96,14 @@ const Community = ({ language }) => {
     setOpenComments(prev => ({ ...prev, [postId]: !prev[postId] }));
   };
 
-  // ✅ دالة الرد (المنشن) الجديدة
+  // ✅ دالة الرد (المنشن) بتضيف الاسم في خانة الكتابة وتعمل فوكس
   const handleReplyClick = (postId, authorName) => {
     const mention = `@${authorName} `;
     setCommentInputs(prev => ({
       ...prev,
-      [postId]: mention // بنحط اسم الشخص في الخانة
+      [postId]: mention
     }));
     
-    // بنعمل Focus على الخانة عشان اليوزر يكتب علطول
     if (commentInputRefs.current[postId]) {
       commentInputRefs.current[postId].focus();
     }
@@ -134,9 +132,9 @@ const Community = ({ language }) => {
     }
   };
 
-  // ✅ دالة لتلوين الـ Mention في التعليقات
+  // ✅ دالة تلوين المنشن باللون الأزرق
   const formatCommentText = (text) => {
-    // بتدور على أي كلمة بتبدأ بـ @ وتخليها زرقاء
+    if (!text) return "";
     const parts = text.split(/(@\S+)/g);
     return parts.map((part, i) => 
       part.startsWith('@') ? <span key={i} className="mention-tag">{part}</span> : part
@@ -188,6 +186,7 @@ const Community = ({ language }) => {
           </div>
         ) : (
           posts.map(post => {
+            // ✅ معالجة الروابط عشان الصور تظهر دايماً
             const imageUrl = post.image 
               ? (post.image.startsWith("http") ? post.image : `https://hamzamostafa20.pythonanywhere.com${post.image}`)
               : null;
@@ -243,6 +242,7 @@ const Community = ({ language }) => {
                   </button>
                 </div>
 
+                {/* قسم التعليقات */}
                 {openComments[post.id] && (
                   <div className="community-comments-section">
                     <div className="comments-list">
@@ -260,7 +260,7 @@ const Community = ({ language }) => {
                               <p>{formatCommentText(comment.content)}</p>
                             </div>
                           </div>
-                          {/* ✅ زر الرد تحت التعليق */}
+                          {/* ✅ زر الرد تحت كل تعليق */}
                           <div className="comment-actions-row">
                             <small>{new Date(comment.created_at).toLocaleString(isArabic ? 'ar-EG' : 'en-US', {hour: '2-digit', minute:'2-digit'})}</small>
                             <button className="reply-text-btn" onClick={() => handleReplyClick(post.id, comment.author_name)}>
@@ -274,7 +274,7 @@ const Community = ({ language }) => {
                     <div className="comment-input-area">
                       <input 
                         type="text" 
-                        ref={el => commentInputRefs.current[post.id] = el} // ربط الخانة بالمرجع
+                        ref={el => commentInputRefs.current[post.id] = el}
                         placeholder={isArabic ? "اكتب تعليقاً..." : "Write a comment..."}
                         value={commentInputs[post.id] || ""}
                         onChange={(e) => setCommentInputs({...commentInputs, [post.id]: e.target.value})}
