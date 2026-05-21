@@ -10,8 +10,8 @@ import {
   FaSignOutAlt,
   FaHome,
   FaChevronDown,
-  FaSun,    // ✅ أيقونة الشمس
-  FaMoon,   // ✅ أيقونة القمر
+  FaSun,
+  FaMoon,
 } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
 import { useConsultationNotifications } from "../hooks/useConsultationNotifications";
@@ -27,7 +27,6 @@ const NotificationBadge = ({ count }) => {
   );
 };
 
-// ✅ استقبال theme و setTheme هنا
 const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -107,7 +106,6 @@ const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }
     document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
   };
 
-  // ✅ دالة التبديل بين الدارك واللايت
   const toggleTheme = () => {
     if (!setTheme) return;
     setTheme(theme === "dark" ? "light" : "dark");
@@ -187,7 +185,6 @@ const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }
                     {item.icon}
                     {item.showBadge && <NotificationBadge count={badgeCount} />}
                   </span>
-
                   {item.label}
                 </Link>
               </li>
@@ -196,9 +193,14 @@ const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }
         </nav>
 
         <div className="user-actions">
-          {/* ✅ زرار الـ Dark Mode */}
-          <button type="button" className="theme-toggle-btn" onClick={toggleTheme}>
-            {theme === "dark" ? <FaSun /> : <FaMoon />}
+          {/* ✅ زرار الدارك مود - ظاهر دايماً ومتأكدين من الكلاس بتاعه */}
+          <button 
+            type="button" 
+            className="theme-toggle-btn" 
+            onClick={toggleTheme}
+            title={theme === "dark" ? "الوضع الفاتح" : "الوضع الداكن"}
+          >
+            {theme === "dark" ? <FaSun size={20} /> : <FaMoon size={18} />}
           </button>
 
           <button type="button" className="lang-toggle-btn" onClick={toggleLanguage}>
