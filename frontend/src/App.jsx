@@ -43,11 +43,6 @@ function App() {
     localStorage.getItem("language") || "ar"
   );
 
-  // ✅ إضافة حالة الدارك مود (قراءة من الـ localStorage)
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "light"
-  );
-
   // ✅ setUser معدّلة: لما تستدعى تحدّث localStorage تلقائيًا
   const handleSetUser = (newUser) => {
     if (newUser) {
@@ -64,23 +59,14 @@ function App() {
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
   }, [language]);
 
-  // ✅ تأثير لتطبيق الدارك مود على الموقع كله وحفظه
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
-
   return (
     <Router>
-      {/* دمج الثيم هنا للتحكم الكامل */}
-      <div className={`App ${language === "en" ? "ltr-app" : "rtl-app"} theme-${theme}`}>
+      <div className={`App ${language === "en" ? "ltr-app" : "rtl-app"}`}>
         <Header
           user={user}
           setUser={handleSetUser}
           language={language}
           setLanguage={setLanguage}
-          theme={theme}       // ✅ تمرير الثيم للهيدر
-          setTheme={setTheme} // ✅ تمرير دالة التحكم للهيدر
         />
 
         <main className="main-content">
