@@ -10,6 +10,8 @@ import {
   FaSignOutAlt,
   FaHome,
   FaChevronDown,
+  FaSun,    // ✅ أيقونة الشمس
+  FaMoon,   // ✅ أيقونة القمر
 } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
 import { useConsultationNotifications } from "../hooks/useConsultationNotifications";
@@ -25,7 +27,8 @@ const NotificationBadge = ({ count }) => {
   );
 };
 
-const Header = ({ user, setUser, language = "ar", setLanguage }) => {
+// ✅ استقبال theme و setTheme هنا
+const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
@@ -102,6 +105,12 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
     localStorage.setItem("language", newLang);
     document.documentElement.lang = newLang;
     document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
+  };
+
+  // ✅ دالة التبديل بين الدارك واللايت
+  const toggleTheme = () => {
+    if (!setTheme) return;
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   const navItems = [
@@ -187,6 +196,11 @@ const Header = ({ user, setUser, language = "ar", setLanguage }) => {
         </nav>
 
         <div className="user-actions">
+          {/* ✅ زرار الـ Dark Mode */}
+          <button type="button" className="theme-toggle-btn" onClick={toggleTheme}>
+            {theme === "dark" ? <FaSun /> : <FaMoon />}
+          </button>
+
           <button type="button" className="lang-toggle-btn" onClick={toggleLanguage}>
             {isArabic ? "EN" : "AR"}
           </button>
