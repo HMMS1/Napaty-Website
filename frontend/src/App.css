@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +11,42 @@
   --text-color: #333;
   --white: #ffffff;
   --app-bg: linear-gradient(135deg, #f6fbf4 0%, #dff1df 55%, #eef7e8 100%);
+}
+
+/* ✅ ألوان الوضع الليلي (Dark Mode) الذكية تتفعل لوحدها */
+[data-theme="dark"] {
+  --primary-color: #4caf50;
+  --secondary-color: #66bb6a;
+  --accent-color: #aed581;
+  --text-color: #f8fafc;
+  --white: #1e293b;
+  --app-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #0f172a 100%);
+}
+
+/* إضافة انتقال ناعم (Transition) عند التبديل بين الوضعين */
+body, .App, .main-content, .shopCard, .expert-card, .chat-bubble, .header, .footer {
+  transition: background 0.3s ease, color 0.3s ease, background-color 0.3s ease !important;
+}
+
+/* تصميم زرار الشمس والقمر */
+.theme-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}
+.theme-toggle-btn:hover {
+  background: var(--primary-color);
+  color: var(--white);
 }
 
 html,
@@ -466,11 +501,6 @@ body {
   /* Store tablet fix */
   .shopCard {
     max-width: 100% !important;
-  }
-
-  .shopCard img {
-    height: 190px !important;
-    object-fit: cover !important;
   }
 
   .cart-sidebar {
