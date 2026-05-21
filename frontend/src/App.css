@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -32,6 +33,10 @@ body {
   direction: rtl;
   background: var(--app-bg) !important;
   background-attachment: fixed;
+}
+
+.App {
+  min-height: 100vh;
 }
 
 .container {
@@ -76,6 +81,11 @@ body {
   color: #666;
   font-size: 1.1rem;
 }
+
+/* =========================================
+   MOBILE + TABLET FINAL PERFORMANCE OPTIMIZATION
+   Keeps desktop untouched and reduces mobile lag
+========================================= */
 
 /* Tablets */
 @media (max-width: 1024px) {
@@ -181,6 +191,88 @@ body {
   .agri-chat-header {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   }
+
+  .shopCard:hover,
+  .shopCard:hover img,
+  .plant-card:hover,
+  .plant-card:hover img,
+  .expert-card:hover,
+  .expert-card:hover img,
+  .season-card:hover,
+  .crop-mode-btn:hover,
+  .chat-bubble:hover,
+  .diagnose-btn:hover,
+  .analyze-btn:hover,
+  .upload-placeholder:hover,
+  .upload-placeholder:hover .upload-icon,
+  .change-image-btn:hover,
+  .featureCard:hover,
+  .stepCard:hover,
+  .statCard:hover,
+  .primaryBtn:hover,
+  .secondaryBtn:hover,
+  .shopDetailsBtn:hover,
+  .checkout-btn:hover,
+  .shopFilterGroup .shopFilterBtn:hover,
+  .payment-method-card:hover,
+  .shopPayOption:hover,
+  .header-logo-image:hover,
+  .nav-menu a:hover,
+  .lang-toggle-btn:hover,
+  .user-menu-btn:hover,
+  .login-btn:hover,
+  .logout-btn:hover {
+    transform: none !important;
+  }
+
+  .header {
+    will-change: auto !important;
+    transform: translateZ(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10) !important;
+  }
+
+  .header *,
+  .nav-menu *,
+  .user-actions * {
+    transition-duration: 0.12s !important;
+    animation-duration: 0.12s !important;
+  }
+
+  .nav-menu a::before {
+    display: none !important;
+  }
+
+  .nav-notification-badge,
+  .user-dropdown {
+    animation: none !important;
+  }
+
+  .login-page::before,
+  .login-page::after,
+  .crop-page::before,
+  .crop-page::after,
+  .footer-blob-top,
+  .footer-blob-bottom,
+  .heroGlowOne,
+  .heroGlowTwo,
+  .crop-form-card::before,
+  .crop-result-card::before,
+  .expert-card::before,
+  .season-card::before,
+  .featureCard::before,
+  .chat-bubble::before,
+  .agri-chat-header::before {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.15s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.15s !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Small phones */
@@ -201,6 +293,10 @@ body {
   .chat-panel,
   .agri-chat-header {
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .header {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08) !important;
   }
 }
 
@@ -243,6 +339,103 @@ body {
     padding-inline: 16px !important;
   }
 
+  /* Header tablet fix */
+  .header .container {
+    max-width: 100% !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 12px 18px !important;
+    gap: 12px !important;
+    min-height: unset !important;
+  }
+
+  .logo-section {
+    justify-content: center !important;
+  }
+
+  .nav-menu {
+    width: 100% !important;
+    margin: 0 !important;
+    justify-content: center !important;
+  }
+
+  .nav-menu ul {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    white-space: normal !important;
+  }
+
+  .nav-menu a {
+    font-size: 14px !important;
+    padding: 8px 11px !important;
+  }
+
+  .user-actions {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .user-menu-btn,
+  .login-btn,
+  .lang-toggle-btn {
+    font-size: 0.88rem !important;
+    padding: 8px 12px !important;
+  }
+
+  /* Welcome / Hero tablet fix */
+  .hero,
+  [class*="hero"] {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  [class*="heroContent"] {
+    width: 100% !important;
+    max-width: 760px !important;
+    margin-inline: auto !important;
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+    justify-items: center !important;
+    text-align: center !important;
+  }
+
+  [class*="heroVisual"] {
+    width: 100% !important;
+    justify-content: center !important;
+    order: 1 !important;
+  }
+
+  [class*="heroText"] {
+    width: 100% !important;
+    max-width: 720px !important;
+    order: 2 !important;
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+
+  [class*="imageWrapper"] {
+    width: min(100%, 360px) !important;
+    max-width: 360px !important;
+    margin-inline: auto !important;
+  }
+
+  [class*="heroImage"] {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  [class*="description"] {
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+
+  [class*="heroButtons"] {
+    justify-content: center !important;
+  }
+
+  /* Cards / grids tablet fix */
   .experts-grid,
   .featuresGrid,
   .stepsGrid,
@@ -254,145 +447,54 @@ body {
     width: 100% !important;
     max-width: 100% !important;
   }
-}
 
+  .experts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
 
-/* =========================================
-   DARK MODE OVERRIDES (Nuclear Option)
-   يطبق حرفيا على كل حتة في الموقع
-========================================= */
+  [class*="featuresGrid"],
+  [class*="statsGrid"],
+  [class*="plantsGrid"],
+  [class*="seasonsGrid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
 
-/* ألوان الدارك مود الأساسية */
-[data-theme="dark"] {
-  --primary-color: #4caf50;
-  --secondary-color: #66bb6a;
-  --accent-color: #aed581;
-  --text-color: #f1f5f9;
-  --white: #1e293b; /* ده هيبقى لون الكروت */
-  --app-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #0f172a 100%);
-}
+  [class*="stepsGrid"] {
+    grid-template-columns: 1fr !important;
+  }
 
-/* نعومة في التحويل بين الوضعين */
-body, .App, .main-content, .header, .footer, div, section, form {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
-}
+  /* Store tablet fix */
+  .shopCard {
+    max-width: 100% !important;
+  }
 
-/* ✅ زرار الدارك مود - ثابت، واضح، ومستحيل يختفي */
-.theme-toggle-btn {
-  display: flex !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  background-color: var(--white);
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 0 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 9999;
-}
+  .shopCard img {
+    height: 190px !important;
+    object-fit: cover !important;
+  }
 
-[data-theme="dark"] .theme-toggle-btn {
-  background-color: #0f172a;
-  border-color: #f59e0b; /* لون الشمس */
-  color: #f59e0b;
-}
+  .cart-sidebar {
+    max-width: 100% !important;
+  }
 
-.theme-toggle-btn:hover {
-  background-color: var(--primary-color) !important;
-  color: #ffffff !important;
-  transform: scale(1.1) rotate(15deg);
-}
+  /* Chat / panels tablet fix */
+  .chat-panel,
+  .agri-chat-header,
+  .agri-chat-side-card,
+  .crop-form-card,
+  .crop-result-card,
+  .diagnosis-container,
+  .upload-section,
+  .booking-details,
+  .expert-card {
+    max-width: 100% !important;
+  }
 
-[data-theme="dark"] .theme-toggle-btn:hover {
-  background-color: #f59e0b !important;
-  color: #0f172a !important;
+  /* Prevent any element from pushing page sideways */
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
 }
-
-/* ✅ إجبار الخلفية تكون غامقة في كل الموقع */
-[data-theme="dark"] body, 
-[data-theme="dark"] .App, 
-[data-theme="dark"] .main-content,
-[data-theme="dark"] .page-container {
-  background: var(--app-bg) !important;
-  color: var(--text-color) !important;
-}
-
-/* ✅ إجبار الكروت، الفورم، والبوكسات اللي كانت بيضا إنها تبقى كحلي غامق (حرفياً كل حاجة) */
-[data-theme="dark"] .login-container,
-[data-theme="dark"] .crop-form-card,
-[data-theme="dark"] .crop-result-card,
-[data-theme="dark"] .expert-card,
-[data-theme="dark"] .featureCard,
-[data-theme="dark"] .statCard,
-[data-theme="dark"] .stepCard,
-[data-theme="dark"] .shopCard,
-[data-theme="dark"] .community-create-card,
-[data-theme="dark"] .community-post-node,
-[data-theme="dark"] .upload-section,
-[data-theme="dark"] .diagnosis-container,
-[data-theme="dark"] .analysis-container,
-[data-theme="dark"] .chat-panel,
-[data-theme="dark"] .chat-bubble,
-[data-theme="dark"] .agri-chat-side-card,
-[data-theme="dark"] .user-dropdown,
-[data-theme="dark"] .cart-sidebar,
-[data-theme="dark"] .custom-message-box,
-[data-theme="dark"] .payment-modal-content,
-[data-theme="dark"] .nav-menu ul {
-  background-color: var(--white) !important; /* بيقرأ الكحلي من الدارك مود */
-  color: var(--text-color) !important;
-  border: 1px solid #334155 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* ✅ إجبار النصوص تكون فاتحة ومقروءة */
-[data-theme="dark"] h1,
-[data-theme="dark"] h2,
-[data-theme="dark"] h3,
-[data-theme="dark"] h4,
-[data-theme="dark"] h5,
-[data-theme="dark"] h6,
-[data-theme="dark"] span:not(.nav-notification-badge):not(.mention-tag):not(.community-expert-tag),
-[data-theme="dark"] label,
-[data-theme="dark"] .footer-description,
-[data-theme="dark"] .footer-link-item a {
-  color: var(--text-color) !important;
-}
-
-/* النصوص العادية رمادي فاتح لراحة العين */
-[data-theme="dark"] p {
-  color: #cbd5e1 !important; 
-}
-[data-theme="dark"] .page-header p {
-  color: #94a3b8 !important;
-}
-
-/* ✅ تظبيط الحقول (Inputs & Textareas) عشان تليق مع الدارك */
-[data-theme="dark"] input,
-[data-theme="dark"] textarea,
-[data-theme="dark"] select {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-  border: 1px solid #475569 !important;
-}
-[data-theme="dark"] input:focus,
-[data-theme="dark"] textarea:focus {
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2) !important;
-}
-[data-theme="dark"] input::placeholder,
-[data-theme="dark"] textarea::placeholder {
-  color: #64748b !important;
-}
-
-/* ✅ الهيدر والفوتر في الدارك مود */
-[data-theme="dark"] .header,
-[data-theme="dark"] .footer {
-  background-color: #1e293b !important;
-  border-bottom: 1px solid #33
