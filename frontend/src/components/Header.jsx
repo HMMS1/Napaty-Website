@@ -10,8 +10,6 @@ import {
   FaSignOutAlt,
   FaHome,
   FaChevronDown,
-  FaSun,
-  FaMoon,
 } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
 import { useConsultationNotifications } from "../hooks/useConsultationNotifications";
@@ -27,7 +25,7 @@ const NotificationBadge = ({ count }) => {
   );
 };
 
-const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }) => {
+const Header = ({ user, setUser, language = "ar", setLanguage }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
@@ -106,11 +104,6 @@ const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }
     document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
   };
 
-  const toggleTheme = () => {
-    if (!setTheme) return;
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
   const navItems = [
     {
       path: "/welcome",
@@ -185,6 +178,7 @@ const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }
                     {item.icon}
                     {item.showBadge && <NotificationBadge count={badgeCount} />}
                   </span>
+
                   {item.label}
                 </Link>
               </li>
@@ -193,16 +187,6 @@ const Header = ({ user, setUser, language = "ar", setLanguage, theme, setTheme }
         </nav>
 
         <div className="user-actions">
-          {/* ✅ زرار الدارك مود - ظاهر دايماً ومتأكدين من الكلاس بتاعه */}
-          <button 
-            type="button" 
-            className="theme-toggle-btn" 
-            onClick={toggleTheme}
-            title={theme === "dark" ? "الوضع الفاتح" : "الوضع الداكن"}
-          >
-            {theme === "dark" ? <FaSun size={20} /> : <FaMoon size={18} />}
-          </button>
-
           <button type="button" className="lang-toggle-btn" onClick={toggleLanguage}>
             {isArabic ? "EN" : "AR"}
           </button>
