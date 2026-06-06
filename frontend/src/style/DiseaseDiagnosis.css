@@ -1,4 +1,3 @@
-
 .diagnosis-container {
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: blur(12px);
@@ -367,181 +366,100 @@
   box-shadow: 0 6px 14px rgba(42, 140, 74, 0.22);
 }
 
-
-@media (max-width: 768px) {
-  .upload-section {
-    padding: 1.5rem;
-  }
-
-  .upload-placeholder {
-    padding: 3rem 1rem;
-  }
-
-  .upload-icon {
-    font-size: 3rem;
-  }
-
-  .upload-features {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .image-preview {
-    max-width: 100%;
-  }
-
-  .disease-header {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
-
-  .info-grid {
-    gap: 1rem;
-  }
-
-  .diagnose-btn {
-    width: 100%;
-    padding: 14px 20px;
-  }
-
-  .result-header {
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-  }
+/* ===== Treatment Grid ===== */
+.treatment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 0.8rem;
 }
 
-@media (max-width: 992px) {
-  .diagnosis-container {
-    max-width: 95%;
-    padding: 1.5rem;
-  }
-
-  .upload-section {
-    padding: 1.5rem;
-  }
-
-  .upload-placeholder {
-    padding: 3rem 1.5rem;
-  }
-
-  .image-preview img {
-    height: 260px;
-  }
-
-  .diagnose-btn {
-    min-width: 180px;
-    padding: 14px 26px;
-  }
-
-  .result-section {
-    padding: 1.5rem;
-  }
-
-  .diagnosis-card {
-    padding: 1.5rem;
-  }
-
-  .message {
-    max-width: 85%;
-  }
+.treatment-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f7faf7;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(42, 140, 74, 0.08);
+  transition: all 0.3s ease;
 }
 
-@media (max-width: 480px) {
-  .diagnosis-container {
-    padding: 1rem;
-    border-radius: 18px;
-  }
-
-  .upload-section {
-    padding: 1rem;
-    border-radius: 18px;
-  }
-
-  .upload-placeholder {
-    padding: 2.5rem 1rem;
-    border-radius: 16px;
-  }
-
-  .upload-placeholder h3 {
-    font-size: 1.2rem;
-  }
-
-  .upload-placeholder p {
-    font-size: 0.9rem;
-  }
-
-  .upload-icon {
-    font-size: 2.5rem;
-  }
-
-  .upload-features span {
-    font-size: 0.8rem;
-    padding: 0.45rem 0.8rem;
-  }
-
-  .image-preview img {
-    height: 220px;
-  }
-
-  .change-image-btn {
-    padding: 10px 18px;
-    font-size: 0.9rem;
-    border-radius: 12px;
-  }
-
-  .diagnose-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 14px;
-  }
-
-  .result-section {
-    padding: 1rem;
-    border-radius: 18px;
-  }
-
-  .diagnosis-card {
-    padding: 1rem;
-    border-radius: 16px;
-  }
-
-  .disease-header h4 {
-    font-size: 1.1rem;
-  }
-
-  .disease-badge {
-    font-size: 0.8rem;
-    padding: 6px 12px;
-  }
-
-  .info-item {
-    padding: 1rem;
-    border-radius: 14px;
-  }
-
-  .info-item h5 {
-    font-size: 1rem;
-  }
-
-  .info-item p {
-    font-size: 0.9rem;
-  }
-
-  .steps li {
-    padding: 0.8rem;
-    border-radius: 10px;
-  }
-
-  .step-number {
-    width: 22px;
-    height: 22px;
-    font-size: 0.7rem;
-  }
+.treatment-step:hover {
+  background: #eef6ef;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(42, 140, 74, 0.08);
 }
 
+.treatment-step-text {
+  color: #374151;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+/* ===== Top Predictions ===== */
+.top-predictions-box {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(42, 140, 74, 0.12);
+  box-shadow: 0 8px 22px rgba(42, 140, 74, 0.08);
+}
+
+.top-predictions-box h4 {
+  margin: 0 0 1rem;
+  color: var(--primary-color);
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.top-predictions-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.top-prediction-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.9rem;
+  border-radius: 14px;
+  background: rgba(247, 250, 247, 0.95);
+  border: 1px solid rgba(42, 140, 74, 0.08);
+}
+
+.top-prediction-rank {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+  color: white;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.top-prediction-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.top-prediction-content strong {
+  color: #245b32;
+  font-size: 0.95rem;
+}
+
+.top-prediction-content small {
+  color: #6b7280;
+  font-weight: 700;
+}
+
+/* ===== Model Select ===== */
 .upload-section {
   position: relative;
   padding-top: 4.8rem;
@@ -552,18 +470,14 @@
   top: 18px;
   left: 22px;
   z-index: 40;
-
   display: flex;
   align-items: center;
   gap: 10px;
-
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-
   border: 1px solid rgba(42, 140, 74, 0.12);
   border-radius: 999px;
-
   padding: 8px 10px 8px 16px;
   box-shadow: 0 12px 30px rgba(42, 140, 74, 0.13);
 }
@@ -581,27 +495,20 @@
 .custom-model-trigger {
   min-width: 94px;
   height: 40px;
-
   border: none;
   outline: none;
   border-radius: 999px;
-
   padding: 0 14px 0 18px;
-
   background: linear-gradient(135deg, #2f9b4b 0%, #1f7a36 100%);
   color: white;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-
   font-size: 0.96rem;
   font-weight: 900;
-
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(42, 140, 74, 0.28);
-
   transition: all 0.25s ease;
 }
 
@@ -629,49 +536,33 @@
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-
   width: 100%;
-
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-
   border: 1px solid rgba(42, 140, 74, 0.14);
   border-radius: 18px;
-
   padding: 6px;
-
   box-shadow: 0 18px 35px rgba(42, 140, 74, 0.18);
-
   animation: modelDropdown 0.2s ease forwards;
   overflow: hidden;
 }
 
 @keyframes modelDropdown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .custom-model-option {
   width: 100%;
-
   border: none;
   outline: none;
   background: transparent;
-
   padding: 10px 12px;
   border-radius: 12px;
-
   color: #1f7a36;
   font-size: 0.95rem;
   font-weight: 900;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -686,89 +577,82 @@
   box-shadow: 0 6px 14px rgba(42, 140, 74, 0.18);
 }
 
-.top-predictions-box {
-  margin-top: 1.5rem;
-  padding: 1.2rem;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(42, 140, 74, 0.12);
-  box-shadow: 0 8px 22px rgba(42, 140, 74, 0.08);
+/* ===== Responsive ===== */
+
+/* iPhone SE & very small (≤360px) */
+@media (max-width: 360px) {
+  .diagnosis-container { padding: 0.8rem; border-radius: 16px; }
+  .upload-section { padding: 0.8rem; padding-top: 4rem; border-radius: 16px; }
+  .upload-placeholder { padding: 2rem 0.8rem; border-radius: 14px; }
+  .upload-placeholder h3 { font-size: 1.1rem; }
+  .upload-placeholder p { font-size: 0.85rem; }
+  .upload-icon { font-size: 2.2rem; }
+  .upload-features { flex-direction: column; gap: 0.6rem; }
+  .upload-features span { font-size: 0.78rem; padding: 0.4rem 0.7rem; }
+  .image-preview img { height: 200px; }
+  .diagnose-btn { width: 100%; padding: 11px; font-size: 0.95rem; border-radius: 13px; }
+  .result-section { padding: 0.8rem; border-radius: 16px; }
+  .diagnosis-card { padding: 0.8rem; border-radius: 14px; }
+  .treatment-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+  .treatment-step { padding: 0.65rem; border-radius: 9px; }
+  .treatment-step-text { font-size: 0.84rem; }
+  .model-select-wrapper { top: 12px; left: 10px; padding: 6px 8px 6px 12px; }
+  .custom-model-trigger { min-width: 74px; height: 33px; font-size: 0.8rem; }
 }
 
-.top-predictions-box h4 {
-  margin: 0 0 1rem;
-  color: var(--primary-color);
-  font-size: 1.05rem;
-  font-weight: 900;
+/* Small phones: 361–480px (iPhone SE 2nd gen, older iPhones) */
+@media (min-width: 361px) and (max-width: 480px) {
+  .diagnosis-container { padding: 1rem; border-radius: 18px; }
+  .upload-section { padding: 1rem; padding-top: 4.4rem; border-radius: 18px; }
+  .upload-placeholder { padding: 2.5rem 1rem; border-radius: 16px; }
+  .upload-placeholder h3 { font-size: 1.2rem; }
+  .upload-placeholder p { font-size: 0.9rem; }
+  .upload-icon { font-size: 2.5rem; }
+  .upload-features { flex-direction: column; gap: 0.8rem; }
+  .upload-features span { font-size: 0.8rem; padding: 0.45rem 0.8rem; }
+  .image-preview img { height: 220px; }
+  .change-image-btn { padding: 10px 18px; font-size: 0.9rem; border-radius: 12px; }
+  .diagnose-btn { width: 100%; padding: 12px; font-size: 1rem; border-radius: 14px; }
+  .result-section { padding: 1rem; border-radius: 18px; }
+  .diagnosis-card { padding: 1rem; border-radius: 16px; }
+  .treatment-grid { grid-template-columns: 1fr; gap: 0.6rem; }
+  .treatment-step { padding: 0.75rem; border-radius: 10px; }
+  .treatment-step-text { font-size: 0.88rem; }
+  .model-select-wrapper { top: 12px; left: 12px; padding: 7px 8px 7px 13px; }
+  .model-select-label { font-size: 0.82rem; }
+  .custom-model-trigger { min-width: 80px; height: 36px; font-size: 0.85rem; }
 }
 
-.top-predictions-list {
-  display: grid;
-  gap: 0.8rem;
+/* iPhone X/11/12/13/14/15 and similar (481–768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .diagnosis-container { padding: 1.2rem; }
+  .upload-section { padding: 1.5rem; padding-top: 4.6rem; }
+  .upload-placeholder { padding: 3rem 1.5rem; }
+  .image-preview img { height: 250px; }
+  .diagnose-btn { width: 100%; }
+  .result-section { padding: 1.2rem; }
+  .diagnosis-card { padding: 1.2rem; }
+  .treatment-grid { grid-template-columns: 1fr; gap: 0.7rem; }
+  .treatment-step-text { font-size: 0.92rem; }
+  .result-header { flex-direction: column; text-align: center; justify-content: center; }
+  .upload-features { flex-direction: column; gap: 0.8rem; }
 }
 
-.top-prediction-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 0.9rem;
-  border-radius: 14px;
-  background: rgba(247, 250, 247, 0.95);
-  border: 1px solid rgba(42, 140, 74, 0.08);
+/* Tablet portrait (769–1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .diagnosis-container { max-width: 95%; padding: 1.5rem; }
+  .upload-section { padding: 1.5rem; }
+  .upload-placeholder { padding: 3rem 1.5rem; }
+  .image-preview img { height: 260px; }
+  .diagnose-btn { min-width: 180px; padding: 14px 26px; }
+  .result-section { padding: 1.5rem; }
+  .diagnosis-card { padding: 1.5rem; }
+  .treatment-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  .treatment-step-text { font-size: 0.93rem; }
 }
 
-.top-prediction-rank {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: linear-gradient(135deg, #43a047, #2e7d32);
-  color: white;
-  font-weight: 900;
-  flex-shrink: 0;
+/* Desktop (1025px+) */
+@media (min-width: 1025px) {
+  .treatment-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .treatment-step-text { font-size: 0.97rem; }
 }
-
-.top-prediction-content {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.top-prediction-content strong {
-  color: #245b32;
-  font-size: 0.95rem;
-}
-
-.top-prediction-content small {
-  color: #6b7280;
-  font-weight: 700;
-}
-
-@media (max-width: 480px) {
-  .upload-section {
-    padding-top: 4.4rem;
-  }
-
-  .model-select-wrapper {
-    top: 12px;
-    left: 12px;
-    padding: 7px 8px 7px 13px;
-  }
-
-  .model-select-label {
-    font-size: 0.82rem;
-  }
-
-  .custom-model-trigger {
-    min-width: 80px;
-    height: 36px;
-    font-size: 0.85rem;
-  }
-}
-
-
