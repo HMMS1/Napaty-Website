@@ -92,7 +92,7 @@ export default function OnboardingTour({ language = "ar" }) {
   const total = list.length;
 
   useEffect(() => {
-    if (localStorage.getItem("isNewUser") === "true") {
+    if (localStorage.getItem("showTour") === "true") {
       setVisible(true);
     }
   }, []);
@@ -100,7 +100,7 @@ export default function OnboardingTour({ language = "ar" }) {
   const close = () => {
     setExiting(true);
     setTimeout(() => {
-      localStorage.removeItem("isNewUser");
+      localStorage.removeItem("showTour");
       setVisible(false);
     }, 300);
   };
