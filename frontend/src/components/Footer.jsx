@@ -122,7 +122,7 @@ const Footer = ({ language = "ar" }) => {
                 <div className="footer-contact-icon"><FaEnvelope /></div>
                 <div className="footer-contact-info">
                   <span className="footer-contact-label">{text.email}</span>
-                  <a href="mailto:hamza2004mohamed@gmail.com">
+                  <a href="mailto:napatywebsite@gmail.com">
                     napatywebsite@gmail.com
 
                   </a>
