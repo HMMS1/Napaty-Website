@@ -1,4 +1,3 @@
-
 .plants-seasons-container,
 .seasons-plants-container {
   background: rgba(255, 255, 255, 0.86);
@@ -10,7 +9,6 @@
   margin: 0 auto 2rem;
   border: 1px solid rgba(255, 255, 255, 0.65);
 }
-
 
 .btnAll .btnSeason {
   border-radius: 999px !important;
@@ -52,14 +50,6 @@
   background: rgba(178, 236, 178, 0.35);
   border-radius: 14px;
 }
-
-.modal-content .modalImg {
-  border-radius: 20px !important;
-  width: 90%;
-  overflow: hidden;
-}
-
-
 
 .search-section {
   margin-bottom: 2rem;
@@ -104,7 +94,6 @@
   transform: translateY(-50%);
   color: #666;
 }
-
 
 .seasons-section {
   margin-bottom: 2rem;
@@ -223,21 +212,10 @@
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-  }
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
-
-
 
 .stats-section {
   margin-bottom: 2rem;
@@ -276,7 +254,6 @@
   color: #666;
   font-size: 0.92rem;
 }
-
 
 .plants-section h3 {
   color: var(--primary-color);
@@ -393,7 +370,6 @@
   border: 1px solid rgba(42, 140, 74, 0.08);
 }
 
-
 .no-plants {
   text-align: center;
   padding: 4rem 2rem;
@@ -413,7 +389,6 @@
   color: #666;
   font-size: 1.08rem;
 }
-
 
 .plant-details-modal {
   position: fixed;
@@ -448,14 +423,8 @@
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .close-modal {
@@ -595,223 +564,15 @@
   margin: 0;
 }
 
+.modal-content::-webkit-scrollbar { width: 8px; }
+.modal-content::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+.modal-content::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+.modal-content::-webkit-scrollbar-thumb:hover { background: #3f6346; }
 
-.modal-content::-webkit-scrollbar {
-  width: 8px;
-}
+/* ═══════════════════════════════════════
+   PREMIUM CROP MODAL
+═══════════════════════════════════════ */
 
-.modal-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 4px;
-}
-
-.modal-content::-webkit-scrollbar-thumb:hover {
-  background: #3f6346;
-}
-
-
-@media (max-width: 768px) {
-  .seasons-filter {
-    flex-wrap: wrap;
-  }
-
-  .seasons-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-
-  .plants-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-content {
-    padding: 1.5rem;
-    margin: 10px;
-  }
-
-  .modal-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .plant-image-large {
-    width: 100%;
-    max-width: 260px;
-    margin: 0 auto;
-  }
-
-  .plant-details-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .search-box {
-    max-width: 100%;
-  }
-
-  .plants-section h3 {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .season-card {
-    min-height: 88px;
-    border-radius: 20px;
-    padding: 0.9rem 1rem;
-  }
-
-  .season-info h4 {
-    font-size: 1.18rem;
-  }
-
-  .season-months {
-    font-size: 0.88rem;
-  }
-
-  .season-icon {
-    font-size: 1.45rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .plants-seasons-container,
-  .seasons-plants-container {
-    padding: 1.5rem;
-    max-width: 95%;
-  }
-
-  .plants-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
-
-  .plant-image {
-    height: 190px;
-  }
-
-  .plant-info {
-    padding: 1.2rem;
-  }
-
-  .plant-header-info h3 {
-    font-size: 1.5rem;
-  }
-
-  .modal-content {
-    max-width: 90%;
-  }
-
-  .plant-image-large {
-    width: 180px;
-    height: 180px;
-  }
-}
-
-@media (max-width: 480px) {
-  .plants-seasons-container,
-  .seasons-plants-container {
-    padding: 1rem;
-    border-radius: 18px;
-  }
-
-  .seasons-section h3,
-  .plants-section h3 {
-    font-size: 1.2rem;
-    text-align: center;
-  }
-
-  .season-card {
-    min-height: 82px;
-    padding: 0.85rem 0.9rem;
-    border-radius: 18px;
-  }
-
-  .season-icon {
-    font-size: 1.3rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .season-info h4 {
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .season-months {
-    font-size: 0.8rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-card {
-    padding: 1rem;
-    border-radius: 16px;
-  }
-
-  .stat-number {
-    font-size: 1.5rem;
-  }
-
-  .plant-card {
-    border-radius: 16px;
-  }
-
-  .plant-image {
-    height: 165px;
-  }
-
-  .plant-info {
-    padding: 1rem;
-  }
-
-  .plant-info h4 {
-    font-size: 1rem;
-  }
-
-  .plant-period,
-  .plant-cost {
-    font-size: 0.85rem;
-  }
-
-  .feature {
-    font-size: 0.72rem;
-    padding: 4px 7px;
-  }
-
-  .modal-content {
-    padding: 1.2rem;
-    border-radius: 18px;
-  }
-
-  .plant-header-info h3 {
-    font-size: 1.2rem;
-  }
-
-  .plant-image-large {
-    height: 150px;
-  }
-
-  .season-tag-large {
-    font-size: 0.75rem;
-    padding: 6px 10px;
-  }
-
-  .detail-item h5 {
-    font-size: 1rem;
-  }
-
-  .detail-item p {
-    font-size: 0.9rem;
-  }
-}
 .crops-page-premium .plantCard {
   min-height: 360px;
   border: 1px solid rgba(25, 135, 84, 0.12) !important;
@@ -924,6 +685,7 @@
   padding: 28px !important;
 }
 
+/* ── Summary cards ── */
 .premium-summary-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -967,6 +729,7 @@
   line-height: 1.6;
 }
 
+/* ── Info box ── */
 .premium-info-box {
   background: linear-gradient(135deg, #eaf8ee, #ffffff);
   border: 1px solid rgba(25, 135, 84, 0.14);
@@ -1007,6 +770,7 @@
   font-size: 1rem;
 }
 
+/* ── Details layout ── */
 .premium-details-layout {
   display: grid;
   grid-template-columns: 1.18fr 0.92fr;
@@ -1023,6 +787,7 @@
   box-shadow: 0 18px 38px rgba(20, 83, 45, 0.08);
 }
 
+/* ── Timeline ── */
 .cultivation-timeline {
   display: flex;
   flex-direction: column;
@@ -1048,6 +813,7 @@
   justify-content: center;
   font-weight: 900;
   box-shadow: 0 12px 22px rgba(25, 135, 84, 0.25);
+  flex-shrink: 0;
 }
 
 .timeline-content {
@@ -1056,6 +822,7 @@
   border-radius: 22px;
   padding: 17px 18px;
   box-shadow: 0 10px 24px rgba(20, 83, 45, 0.055);
+  min-width: 0;
 }
 
 .timeline-content h5 {
@@ -1063,6 +830,7 @@
   font-weight: 900;
   margin-bottom: 8px;
   font-size: 1.04rem;
+  word-break: break-word;
 }
 
 .timeline-content p {
@@ -1070,8 +838,11 @@
   color: #596b60;
   line-height: 1.9;
   font-size: 0.96rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
+/* ── Spent card ── */
 .spent-card {
   background: linear-gradient(135deg, #10643a, #198754);
   color: #fff;
@@ -1137,6 +908,10 @@
   transition: width 0.3s ease;
 }
 
+/* ════════════════════════════════════════
+   COST CHECK CARDS — FIXED LAYOUT
+════════════════════════════════════════ */
+
 .cost-check-list {
   display: flex;
   flex-direction: column;
@@ -1144,10 +919,11 @@
 }
 
 .cost-check-card {
-  display: grid;
-  grid-template-columns: 28px 44px minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 10px;
   background: #fff;
   border: 1px solid rgba(25, 135, 84, 0.12);
   border-radius: 20px;
@@ -1168,17 +944,20 @@
   border-color: rgba(25, 135, 84, 0.32);
 }
 
-.cost-check-card input {
+.cost-check-card input[type="checkbox"] {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
+  margin-top: 3px;
   accent-color: #198754;
   cursor: pointer;
 }
 
 .custom-check {
-  width: 42px;
-  height: 42px;
-  border-radius: 15px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
   background: rgba(25, 135, 84, 0.08);
   color: transparent;
   display: flex;
@@ -1194,25 +973,35 @@
 }
 
 .cost-main {
+  flex: 1 1 0;
   min-width: 0;
+  overflow: hidden;
 }
 
 .cost-main strong {
   display: block;
   color: #14532d;
   font-weight: 900;
-  margin-bottom: 4px;
-  line-height: 1.4;
+  margin-bottom: 5px;
+  line-height: 1.45;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .cost-main small {
   display: block;
   color: #657469;
-  line-height: 1.6;
+  line-height: 1.65;
   font-size: 0.86rem;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .cost-price {
+  flex-shrink: 0;
+  align-self: center;
   white-space: nowrap;
   background: rgba(25, 135, 84, 0.09);
   color: #146c43;
@@ -1222,6 +1011,7 @@
   font-size: 0.9rem;
 }
 
+/* ── Cost note ── */
 .cost-note {
   margin-top: 16px;
   background: #fff8e5;
@@ -1242,10 +1032,24 @@
   background-color: rgba(6, 35, 20, 0.58) !important;
 }
 
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
+@media (max-width: 1200px) {
+  .premium-crop-dialog {
+    max-width: 95%;
+  }
+}
+
 @media (max-width: 992px) {
-  .premium-summary-grid,
+  .premium-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .premium-details-layout {
     grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .premium-modal-hero,
@@ -1256,6 +1060,141 @@
 
   .premium-modal-body {
     padding: 20px !important;
+  }
+
+  .timeline-content h5 {
+    font-size: 1rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.9rem;
+  }
+
+  .plants-seasons-container,
+  .seasons-plants-container {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+
+  .plants-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+
+  .plant-image {
+    height: 190px;
+  }
+
+  .plant-info {
+    padding: 1.2rem;
+  }
+
+  .plant-header-info h3 {
+    font-size: 1.5rem;
+  }
+
+  .plant-image-large {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-step {
+    grid-template-columns: 38px 1fr;
+    gap: 10px;
+  }
+
+  .timeline-number {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .timeline-content {
+    padding: 14px;
+  }
+
+  .timeline-content p {
+    line-height: 1.7;
+  }
+
+  .cost-main strong {
+    font-size: 0.9rem;
+  }
+
+  .cost-main small {
+    font-size: 0.8rem;
+  }
+
+  .spent-card {
+    padding: 18px;
+  }
+
+  .spent-card strong {
+    font-size: 1.4rem;
+  }
+
+  .seasons-filter {
+    flex-wrap: wrap;
+  }
+
+  .seasons-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .plants-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .plant-image-large {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .plant-details-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .plants-section h3 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .season-card {
+    min-height: 88px;
+    border-radius: 20px;
+    padding: 0.9rem 1rem;
+  }
+
+  .season-info h4 {
+    font-size: 1.18rem;
+  }
+
+  .season-months {
+    font-size: 0.88rem;
+  }
+
+  .season-icon {
+    font-size: 1.45rem;
   }
 }
 
@@ -1297,13 +1236,13 @@
   }
 
   .cost-check-card {
-    grid-template-columns: 24px 36px 1fr;
+    flex-wrap: wrap;
   }
 
   .cost-price {
-    grid-column: 2 / 4;
-    justify-self: start;
+    margin-right: auto;
     margin-top: 6px;
+    font-size: 0.85rem;
   }
 
   .spent-card strong {
@@ -1311,104 +1250,98 @@
   }
 }
 
-
-.timeline-content p,
-.cost-main small {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-
-.premium-details-layout {
-  align-items: stretch;
-}
-
-.timeline-content {
-  padding: 18px 20px;
-}
-
-.cost-check-card {
-  align-items: flex-start;
-}
-
-@media (max-width: 1200px) {
-  .premium-crop-dialog {
-    max-width: 95%;
-  }
-}
-
-@media (max-width: 992px) {
-
-  .premium-details-layout {
-    grid-template-columns: 1fr !important;
-    gap: 18px;
+@media (max-width: 480px) {
+  .plants-seasons-container,
+  .seasons-plants-container {
+    padding: 1rem;
+    border-radius: 18px;
   }
 
-  .premium-summary-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .seasons-section h3,
+  .plants-section h3 {
+    font-size: 1.2rem;
+    text-align: center;
   }
 
-  .timeline-content h5 {
+  .season-card {
+    min-height: 82px;
+    padding: 0.85rem 0.9rem;
+    border-radius: 18px;
+  }
+
+  .season-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .season-info h4 {
     font-size: 1rem;
+    margin-bottom: 0.2rem;
   }
 
-  .timeline-content p {
-    font-size: 0.9rem;
+  .season-months {
+    font-size: 0.8rem;
   }
-}
 
-@media (max-width: 768px) {
-
-  .premium-summary-grid {
+  .stats-grid {
     grid-template-columns: 1fr;
   }
 
-  .timeline-step {
-    grid-template-columns: 38px 1fr;
+  .stat-card {
+    padding: 1rem;
+    border-radius: 16px;
   }
 
-  .timeline-number {
-    width: 36px;
-    height: 36px;
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .plant-card {
+    border-radius: 16px;
+  }
+
+  .plant-image {
+    height: 165px;
+  }
+
+  .plant-info {
+    padding: 1rem;
+  }
+
+  .plant-info h4 {
+    font-size: 1rem;
+  }
+
+  .plant-period,
+  .plant-cost {
+    font-size: 0.85rem;
+  }
+
+  .feature {
+    font-size: 0.72rem;
+    padding: 4px 7px;
+  }
+
+  .plant-header-info h3 {
+    font-size: 1.2rem;
+  }
+
+  .plant-image-large {
+    height: 150px;
+  }
+
+  .season-tag-large {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  .detail-item h5 {
+    font-size: 1rem;
+  }
+
+  .detail-item p {
     font-size: 0.9rem;
   }
-
-  .timeline-content {
-    padding: 14px;
-  }
-
-  .timeline-content p {
-    line-height: 1.7;
-  }
-
-  .cost-check-card {
-    grid-template-columns: 24px 34px 1fr;
-    gap: 8px;
-  }
-
-  .cost-main strong {
-    font-size: 0.9rem;
-  }
-
-  .cost-main small {
-    font-size: 0.8rem;
-  }
-
-  .cost-price {
-    grid-column: 2 / 4;
-    margin-top: 6px;
-    font-size: 0.8rem;
-  }
-
-  .spent-card {
-    padding: 18px;
-  }
-
-  .spent-card strong {
-    font-size: 1.4rem;
-  }
-}
-
-@media (max-width: 480px) {
 
   .premium-hero-overlay h2 {
     font-size: 1.6rem;
