@@ -197,9 +197,13 @@ const Login = ({ setUser, language = "ar" }) => {
         };
         localStorage.setItem("user_type", savedUserType);
         localStorage.setItem("user", JSON.stringify(userData));
+        // ✅ لو ده أول login بعد تسجيل جديد، اعمل علامة لتشغيل الـ Onboarding Tour
+        if (localStorage.getItem("isNewUser") === "true") {
+          localStorage.setItem("showTour", "true");
+          localStorage.removeItem("isNewUser");
+        }
         setUser(userData);
         setFormData({ ...emptyForm });
-        // ✅ login: navigate فوري عادي (مفيش message box قبله)
         navigate("/", { replace: true });
         return;
       }
