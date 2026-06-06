@@ -8,6 +8,7 @@ import {
   FaUserTie,
   FaShoppingCart,
   FaArrowLeft,
+  FaMapSigns,
 } from "react-icons/fa";
 import styles from "../style/Welcome.module.css";
 
@@ -44,6 +45,8 @@ function Welcome({ language = "ar" }) {
       ? "ابدأ الآن واستفد من أدوات ذكية وتجربة استخدام راقية تساعدك في اتخاذ قرارات زراعية أفضل."
       : "Start now and benefit from smart tools and a refined experience that helps you make better agricultural decisions.",
     loginNow: isArabic ? "سجل الدخول الآن" : "Login Now",
+    guide: isArabic ? "🗺 دليل المنصة" : "🗺 Platform Guide",
+    guideDesc: isArabic ? "تعرف على كل ميزة بطريقة ممتعة" : "Learn every feature in a fun way",
   };
 
   const features = [
@@ -124,6 +127,17 @@ function Welcome({ language = "ar" }) {
 
   return (
     <div className={styles.container}>
+
+      {/* ===== زرار الدليل ===== */}
+      <button
+        onClick={() => navigate("/guide")}
+        className={styles.guideFloatBtn}
+        title={text.guide}
+      >
+        <FaMapSigns style={{ fontSize: "18px" }} />
+        <span>{text.guide}</span>
+      </button>
+
       <section className={styles.hero}>
         <div className={styles.heroGlowOne}></div>
         <div className={styles.heroGlowTwo}></div>
@@ -150,7 +164,7 @@ function Welcome({ language = "ar" }) {
                 </span>
               </button>
 
-              <button className={styles.secondaryBtn}>
+              <button className={styles.secondaryBtn} onClick={() => navigate("/guide")}>
                 {text.explore}
               </button>
             </div>
