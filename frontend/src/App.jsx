@@ -10,7 +10,6 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
-import OnboardingTour from "./components/OnboardingTour";
 
 const Chat = lazy(() => import("./pages/Chat"));
 const LoginRegister = lazy(() => import("./pages/LoginRegister"));
@@ -69,8 +68,6 @@ function App() {
           language={language}
           setLanguage={setLanguage}
         />
-
-        <OnboardingTour language={language} />
 
         <main className="main-content">
           <Suspense fallback={<div aria-hidden="true" style={{ minHeight: "45vh", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }} />}>
