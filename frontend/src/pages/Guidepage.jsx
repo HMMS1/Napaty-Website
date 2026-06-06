@@ -1,375 +1,246 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from '../style/Guidepage.module.css';
 
-const getGuideData = (isArabic) => [
+const getFeaturesData = (isArabic) => [
   {
-    id: 1,
-    emoji: "🔬",
-    color: "#16a34a",
-    bg: "#dcfce7",
-    title: isArabic ? "تشخيص الأمراض" : "Disease Diagnosis",
+    id: "diagnosis",
+    icon: "🔬",
+    title: isArabic ? "تشخيص الأمراض بالذكاء الاصطناعي" : "AI Disease Diagnosis",
+    subtitle: isArabic ? "اكتشف أمراض نباتاتك بدقة متناهية واحصل على خطة علاج فورية" : "Accurately discover plant diseases and get instant treatment plans.",
+    details: isArabic ? [
+      { title: "نموذج 7.1 (الدقة الفائقة)", desc: "مخصص للصور عالية الجودة الملتقطة داخل المختبرات والمعامل." },
+      { title: "نموذج 7.2 (الوضع الحقلي)", desc: "مخصص للصور الملتقطة بكاميرا الهاتف المحمول أو من الإنترنت مباشرة." },
+      { title: "خطة العلاج المتكاملة", desc: "بمجرد تحديد المرض، سيوفر لك النظام خطوات علاجية وأدوية مقترحة للقضاء عليه." }
+    ] : [
+      { title: "Model 7.1 (High Precision)", desc: "For high-quality images taken in laboratories." },
+      { title: "Model 7.2 (Field Mode)", desc: "For images captured via mobile camera or internet." },
+      { title: "Comprehensive Treatment", desc: "Provides effective treatment steps and recommended medications once diagnosed." }
+    ],
     route: "/diagnosis",
-    lines: isArabic
-      ? [
-          "ارفع صورة نباتك...",
-          "الذكاء الاصطناعي بيحللها على طول!",
-          "وبيقولك اسم المرض والعلاج المناسب.",
-          "جرّبها دلوقتي، سهلة جداً! 🌿",
-        ]
-      : [
-          "Upload a photo of your plant...",
-          "Our AI analyzes it instantly!",
-          "It tells you the disease and treatment.",
-          "Try it now, it's super easy! 🌿",
-        ],
+    btnText: isArabic ? "ابدأ التشخيص الآن" : "Start Diagnosis"
   },
   {
-    id: 2,
-    emoji: "🤖",
-    color: "#7c3aed",
-    bg: "#ede9fe",
-    title: isArabic ? "AgriChat" : "AgriChat",
-    route: "/agri-chat",
-    lines: isArabic
-      ? [
-          "عندك سؤال زراعي؟",
-          "اسأل AgriChat في أي وقت!",
-          "بيرد بدقة وبسرعة على أي سؤال.",
-          "زي ما يكون خبير زراعي جنبك دايماً 🤖",
-        ]
-      : [
-          "Got an agricultural question?",
-          "Ask AgriChat anytime!",
-          "It answers accurately and instantly.",
-          "Like having an expert by your side 🤖",
-        ],
+    id: "soil-crops",
+    icon: "🌱",
+    title: isArabic ? "أنواع التربة والمحاصيل" : "Soil Types & Crops",
+    subtitle: isArabic ? "دليلك الشامل لمعرفة المحاصيل التي تزدهر في أرضك" : "Your guide to knowing which crops thrive in your land.",
+    details: isArabic ? [
+      { title: "المحاصيل المناسبة", desc: "تعرف على أفضل المحاصيل التي تناسب طبيعة تربتك لضمان أعلى إنتاجية." },
+      { title: "برامج التسميد", desc: "اكتشف أنواع الأسمدة المناسبة لكل تربة والكميات الموصى بها." }
+    ] : [
+      { title: "Suitable Crops", desc: "Find the best crops suited for your soil nature for maximum yield." },
+      { title: "Fertilization Programs", desc: "Discover appropriate fertilizers and recommended quantities." }
+    ],
+    route: "/soil-analysis", // يمكنك تغيير المسار حسب الرابط الفعلي
+    btnText: isArabic ? "اكتشف أرضك" : "Discover Your Land"
   },
   {
-    id: 3,
-    emoji: "🌱",
-    color: "#059669",
-    bg: "#d1fae5",
-    title: isArabic ? "توصية المحاصيل" : "Crop Recommendation",
-    route: "/crop-recommendation",
-    lines: isArabic
-      ? [
-          "أدخل بيانات تربتك والمنطقة...",
-          "النظام بيحلل كل العوامل!",
-          "وبيقولك أنسب المحاصيل لأرضك.",
-          "قرارات زراعية أذكى بخطوة واحدة 🌾",
-        ]
-      : [
-          "Enter your soil data and region...",
-          "The system analyzes all factors!",
-          "It recommends the best crops for you.",
-          "Smarter farming decisions in one step 🌾",
-        ],
-  },
-  {
-    id: 4,
-    emoji: "🪨",
-    color: "#b45309",
-    bg: "#fef3c7",
-    title: isArabic ? "تحليل التربة" : "Soil Analysis",
-    route: "/soil-analysis",
-    lines: isArabic
-      ? [
-          "عندك نتايج تحليل تربة؟",
-          "أدخلها هنا وهنفسرها ليك!",
-          "pH، معادن، رطوبة... كل حاجة.",
-          "وبنديك توصيات التسميد الصح 🪨",
-        ]
-      : [
-          "Got soil analysis results?",
-          "Enter them here and we'll interpret them!",
-          "pH, minerals, moisture... everything.",
-          "We give you the right fertilization tips 🪨",
-        ],
-  },
-  {
-    id: 5,
-    emoji: "📅",
-    color: "#0284c7",
-    bg: "#e0f2fe",
-    title: isArabic ? "مواسم النباتات" : "Plant Seasons",
+    id: "seasons",
+    icon: "📅",
+    title: isArabic ? "النباتات والفصول (دراسة الجدوى)" : "Plant Seasons & Feasibility",
+    subtitle: isArabic ? "دليل الزراعة الموسمي مع حساب دقيق لتكاليفك" : "Seasonal planting guide with accurate cost breakdown.",
+    details: isArabic ? [
+      { title: "طريقة الزراعة", desc: "خطوات تفصيلية لزراعة كل نبات من البذرة وحتى الحصاد." },
+      { title: "تكلفة زراعة الفدان", desc: "حساب شامل لإجمالي التكلفة المتوقعة لزراعة مساحة فدان كامل." },
+      { title: "التكلفة التفصيلية", desc: "تسعير دقيق لكل خطوة يقوم بها المزارع (حرث، بذور، عمالة، أسمدة)." }
+    ] : [
+      { title: "Planting Method", desc: "Detailed steps from seed to harvest for each plant." },
+      { title: "Cost per Feddan", desc: "Comprehensive calculation of the expected total cost per feddan." },
+      { title: "Detailed Cost Breakdown", desc: "Precise pricing for every farming step (plowing, seeds, labor, etc.)." }
+    ],
     route: "/plants-seasons",
-    lines: isArabic
-      ? [
-          "تقويم زراعي شامل...",
-          "بيقولك إمتى تزرع وإمتى تحصد!",
-          "لكل نبات موسمه الصح.",
-          "مفيش حاجة تتزرع في غير وقتها 📅",
-        ]
-      : [
-          "A comprehensive agricultural calendar...",
-          "Tells you when to plant and harvest!",
-          "Every plant has its right season.",
-          "Nothing planted at the wrong time 📅",
-        ],
+    btnText: isArabic ? "تصفح التقويم الزراعي" : "Browse Calendar"
   },
   {
-    id: 6,
-    emoji: "👥",
-    color: "#0f766e",
-    bg: "#ccfbf1",
-    title: isArabic ? "المجتمع والاستشارة" : "Community & Consultation",
-    route: "/community",
-    lines: isArabic
-      ? [
-          "انضم لمجتمع المزارعين!",
-          "شارك تجاربك واسأل الخبراء.",
-          "احجز استشارة مع متخصص زراعي.",
-          "مش هتحس إنك بتزرع لوحدك 👐",
-        ]
-      : [
-          "Join the farming community!",
-          "Share your experiences, ask experts.",
-          "Book a consultation with a specialist.",
-          "You'll never feel like farming alone 👐",
-        ],
-  },
-  {
-    id: 7,
-    emoji: "🛒",
-    color: "#dc2626",
-    bg: "#fee2e2",
-    title: isArabic ? "المتجر الزراعي" : "Agricultural Store",
+    id: "store",
+    icon: "🛒",
+    title: isArabic ? "المتجر الزراعي المتكامل" : "Comprehensive Agri-Store",
+    subtitle: isArabic ? "كل ما تحتاجه لزراعتك في مكان واحد وبطرق دفع متعددة" : "Everything you need for farming in one place with multiple payment methods.",
+    details: isArabic ? [
+      { title: "منتجات وأدوات", desc: "مجموعة واسعة من البذور، الأسمدة، والمعدات الزراعية عالية الجودة." },
+      { title: "طرق دفع مرنة", desc: "ادفع بكل سهولة عبر (InstaPay، ڤودافون كاش، بطاقات الفيزا، وغيرها)." },
+      { title: "توصيل سريع", desc: "شحن آمن وسريع لمنتجاتك حتى باب مزرعتك." }
+    ] : [
+      { title: "Products & Tools", desc: "A wide range of seeds, fertilizers, and high-quality equipment." },
+      { title: "Flexible Payments", desc: "Pay easily via InstaPay, Vodafone Cash, Visa, and more." },
+      { title: "Fast Delivery", desc: "Safe and fast shipping directly to your farm." }
+    ],
     route: "/store",
-    lines: isArabic
-      ? [
-          "كل اللي محتاجه في مكان واحد!",
-          "بذور، أسمدة، أدوات زراعية...",
-          "بسعر مناسب وتوصيل سريع.",
-          "المتجر الزراعي اللي هيفرق معاك 🛒",
-        ]
-      : [
-          "Everything you need in one place!",
-          "Seeds, fertilizers, farming tools...",
-          "Great prices and fast delivery.",
-          "The agricultural store that makes a difference 🛒",
-        ],
+    btnText: isArabic ? "تسوق الآن" : "Shop Now"
   },
+  {
+    id: "consultation",
+    icon: "👨‍🌾",
+    title: isArabic ? "استشارات الخبراء" : "Expert Consultations",
+    subtitle: isArabic ? "تواصل مباشرة مع نخبة من المهندسين الزراعيين" : "Communicate directly with top agricultural engineers.",
+    details: isArabic ? [
+      { title: "حجز المواعيد", desc: "اختر الوقت المناسب لك لإجراء الجلسة الاستشارية." },
+      { title: "نظام الطلبات", desc: "أرسل طلبك للمستشار وانتظر الموافقة للبدء." },
+      { title: "محادثة مباشرة", desc: "تواصل في بيئة دردشة (Chat) احترافية داخل المنصة مدعومة بإرسال الصور." }
+    ] : [
+      { title: "Book Appointments", desc: "Choose a suitable time for your consultation session." },
+      { title: "Request System", desc: "Send your request to the expert and wait for approval." },
+      { title: "Live Chat", desc: "Communicate in a professional chat environment within the platform." }
+    ],
+    route: "/consultation",
+    btnText: isArabic ? "احجز استشارتك" : "Book Consultation"
+  },
+  {
+    id: "agri-chat",
+    icon: "🤖",
+    title: isArabic ? "المساعد الذكي (AgriChat)" : "AgriChat Assistant",
+    subtitle: isArabic ? "مستشارك الزراعي الآلي المتاح على مدار الساعة" : "Your automated agricultural advisor available 24/7.",
+    details: isArabic ? [
+      { title: "إجابات فورية", desc: "احصل على ردود دقيقة وسريعة لأي استفسار زراعي يخطر ببالك." },
+      { title: "متوفر 24/7", desc: "لا توجد أوقات عمل محددة، نحن هنا لمساعدتك في أي وقت، ليلاً أو نهاراً." }
+    ] : [
+      { title: "Instant Answers", desc: "Get fast and accurate replies to any agricultural question." },
+      { title: "Available 24/7", desc: "No specific working hours; we are here to help anytime." }
+    ],
+    route: "/agri-chat",
+    btnText: isArabic ? "اسأل AgriChat" : "Ask AgriChat"
+  },
+  {
+    id: "smart-soil",
+    icon: "🪨",
+    title: isArabic ? "التحليل المتقدم للتربة" : "Advanced Soil Analysis",
+    subtitle: isArabic ? "حلول ذكية للمزارعين البُسطاء والخبراء المتخصصين" : "Smart solutions for both simple farmers and specialized experts.",
+    details: isArabic ? [
+      { title: "طريقة المزارع البسيط", desc: "أدخل (المحافظة، نوع التربة، الفصل الطقسي) وسيرشح لك الذكاء الاصطناعي أفضل محصول." },
+      { title: "طريقة الخبير الزراعي", desc: "تحليل دقيق يعتمد على إدخال نسب (النيتروجين، الفوسفور، البوتاسيوم - NPK) لنتائج شديدة الدقة." }
+    ] : [
+      { title: "Simple Farmer Mode", desc: "Input (Governorate, Soil Type, Season) to get AI crop recommendations." },
+      { title: "Expert Mode", desc: "Accurate analysis based on NPK element ratios for highly precise results." }
+    ],
+    route: "/crop-recommendation",
+    btnText: isArabic ? "ابدأ التحليل" : "Start Analysis"
+  },
+  {
+    id: "community",
+    icon: "👥",
+    title: isArabic ? "مجتمع نباتي (Community)" : "Nabaty Community",
+    subtitle: isArabic ? "منصتك الاجتماعية للتواصل وتبادل الخبرات الزراعية" : "Your social platform to connect and share farming experiences.",
+    details: isArabic ? [
+      { title: "مشاركة التجارب", desc: "انشر صور محاصيلك وشارك نجاحاتك وتحدياتك مع الآخرين." },
+      { title: "تفاعل مستمر", desc: "تفاعل مع منشورات المزارعين الآخرين بالإعجابات والتعليقات." },
+      { title: "تبادل المعرفة", desc: "تعلم من خبرات مجتمع كامل يسعى للارتقاء بالزراعة." }
+    ] : [
+      { title: "Share Experiences", desc: "Post photos of your crops and share your successes and challenges." },
+      { title: "Continuous Interaction", desc: "Interact with other farmers' posts through likes and comments." },
+      { title: "Knowledge Exchange", desc: "Learn from the experiences of a community striving to elevate agriculture." }
+    ],
+    route: "/community",
+    btnText: isArabic ? "انضم للمجتمع" : "Join Community"
+  }
 ];
 
-function TypingText({ lines, color, onDone }) {
-  const [displayed, setDisplayed] = useState([""]);
-  const [lineIdx, setLineIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [done, setDone] = useState(false);
-  const timerRef = useRef(null);
-
-  useEffect(() => {
-    setDisplayed([""]);
-    setLineIdx(0);
-    setCharIdx(0);
-    setDone(false);
-  }, [lines]);
-
-  useEffect(() => {
-    if (done) return;
-    const currentLine = lines[lineIdx] || "";
-
-    if (charIdx < currentLine.length) {
-      timerRef.current = setTimeout(() => {
-        setDisplayed((prev) => {
-          const copy = [...prev];
-          copy[lineIdx] = currentLine.slice(0, charIdx + 1);
-          return copy;
-        });
-        setCharIdx((c) => c + 1);
-      }, 28);
-    } else {
-      if (lineIdx < lines.length - 1) {
-        timerRef.current = setTimeout(() => {
-          setLineIdx((l) => l + 1);
-          setCharIdx(0);
-          setDisplayed((prev) => [...prev, ""]);
-        }, 420);
-      } else {
-        setDone(true);
-        onDone && setTimeout(onDone, 600);
-      }
-    }
-    return () => clearTimeout(timerRef.current);
-  }, [charIdx, lineIdx, lines, done, onDone]);
-
-  return (
-    <div className={styles.typingBox}>
-      {displayed.map((line, i) => (
-        <p key={i} className={styles.typingLine} style={{ color: i === displayed.length - 1 && !done ? color : "#1e293b" }}>
-          {line}
-          {i === displayed.length - 1 && !done && (
-            <span className={styles.cursor} style={{ background: color }} />
-          )}
-        </p>
-      ))}
-    </div>
-  );
-}
-
-export default function GuidePage({ language = "ar" }) {
+export default function Guidepage({ language = "ar" }) {
   const navigate = useNavigate();
   const isArabic = language === "ar";
-  const guide = getGuideData(isArabic);
+  const features = getFeaturesData(isArabic);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [fade, setFade] = useState(false);
 
-  const [active, setActive] = useState(0);
-  const [typing, setTyping] = useState(true);
-  const [autoPlay, setAutoPlay] = useState(true);
-  const autoRef = useRef(null);
-  const current = guide[active];
+  const activeFeature = features[activeIdx];
 
-  const goTo = (idx) => {
-    setActive(idx);
-    setTyping(true);
-    setAutoPlay(false);
-    clearTimeout(autoRef.current);
-  };
-
-  const handleDone = () => {
-    if (!autoPlay) return;
-    autoRef.current = setTimeout(() => {
-      setActive((a) => {
-        const next = (a + 1) % guide.length;
-        setTyping(true);
-        return next;
-      });
-    }, 1200);
+  // تأثير لتغيير المحتوى بنعومة
+  const handleTabChange = (idx) => {
+    if (idx === activeIdx) return;
+    setFade(true);
+    setTimeout(() => {
+      setActiveIdx(idx);
+      setFade(false);
+    }, 250);
   };
 
   useEffect(() => {
-    return () => clearTimeout(autoRef.current);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  useEffect(() => {
-    setTyping(true);
-  }, [active]);
-
   return (
-    <div className={styles.page}>
-      {/* هيدر */}
-      <div className={styles.topBar}>
-        <button className={styles.backBtn} onClick={() => navigate(-1)}>
-          {isArabic ? "→ رجوع" : "← Back"}
-        </button>
-        <h1 className={styles.pageTitle}>
-          {isArabic ? "دليل المنصة" : "Platform Guide"}
-        </h1>
-        <span />
+    <div className={styles.guideWrapper}>
+      {/* الهيدر العلوي */}
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <button className={styles.backBtn} onClick={() => navigate(-1)}>
+            {isArabic ? "→ العودة" : "← Back"}
+          </button>
+          <div className={styles.titleArea}>
+            <span className={styles.logoLeaf}>🌿</span>
+            <h1 className={styles.mainTitle}>
+              {isArabic ? "دليل منصة نباتي" : "Nabaty Platform Guide"}
+            </h1>
+          </div>
+          <div className={styles.spacer}></div>
+        </div>
       </div>
 
-      <div className={styles.layout}>
-        {/* قائمة جانبية */}
-        <div className={styles.sidebar}>
-          {guide.map((item, i) => (
-            <button
-              key={item.id}
-              className={`${styles.sideItem} ${i === active ? styles.sideItemActive : ""}`}
-              style={i === active ? { borderColor: item.color, background: item.bg } : {}}
-              onClick={() => goTo(i)}
-            >
-              <span className={styles.sideEmoji}>{item.emoji}</span>
-              <span className={styles.sideTitle}>{item.title}</span>
-              {i === active && <span className={styles.activeDot} style={{ background: item.color }} />}
-            </button>
-          ))}
-        </div>
-
-        {/* المحتوى الرئيسي */}
-        <div className={styles.main}>
-          {/* الشخصية */}
-          <div className={styles.characterArea} style={{ "--accent": current.color }}>
-            <div className={styles.characterWrap}>
-              {/* جسم الشخصية */}
-              <div className={styles.character}>
-                <div className={styles.charHead} style={{ background: current.bg, borderColor: current.color }}>
-                  <span className={styles.charEmoji}>{current.emoji}</span>
-                </div>
-                <div className={styles.charBody} style={{ background: current.color }}>
-                  <div className={styles.charArm} style={{ background: current.color }} />
-                  <div className={`${styles.charArm} ${styles.charArmRight}`} style={{ background: current.color }} />
-                </div>
-                <div className={styles.charLegs}>
-                  <div className={styles.charLeg} style={{ background: current.color }} />
-                  <div className={styles.charLeg} style={{ background: current.color }} />
-                </div>
-              </div>
-
-              {/* فقاعة الكلام */}
-              <div className={styles.bubble} style={{ borderColor: current.color }}>
-                <div className={styles.bubbleTail} style={{ borderTopColor: current.color }} />
-                {typing && (
-                  <TypingText
-                    key={active}
-                    lines={current.lines}
-                    color={current.color}
-                    onDone={handleDone}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* اسم الميزة */}
-            <div className={styles.featureName} style={{ color: current.color, background: current.bg }}>
-              {current.title}
-            </div>
-
-            {/* أزرار */}
-            <div className={styles.btnRow}>
+      {/* المحتوى الرئيسي */}
+      <div className={styles.container}>
+        {/* القائمة الجانبية */}
+        <aside className={styles.sidebar}>
+          <h3 className={styles.sidebarTitle}>
+            {isArabic ? "المميزات والخدمات" : "Features & Services"}
+          </h3>
+          <nav className={styles.navList}>
+            {features.map((feature, idx) => (
               <button
-                className={styles.tryBtn}
-                style={{ background: current.color }}
-                onClick={() => navigate(current.route)}
+                key={feature.id}
+                onClick={() => handleTabChange(idx)}
+                className={`${styles.navItem} ${idx === activeIdx ? styles.navItemActive : ""}`}
               >
-                {isArabic ? "جرّبها دلوقتي ←" : "Try it now →"}
+                <span className={styles.navIcon}>{feature.icon}</span>
+                <span className={styles.navText}>{feature.title}</span>
               </button>
-              <button
-                className={styles.autoBtn}
-                onClick={() => {
-                  setAutoPlay((p) => !p);
-                  if (!autoPlay) setTyping(true);
-                }}
-                style={{ borderColor: current.color, color: current.color }}
-              >
-                {autoPlay
-                  ? isArabic ? "⏸ إيقاف التشغيل التلقائي" : "⏸ Pause auto"
-                  : isArabic ? "▶ تشغيل تلقائي" : "▶ Auto play"}
-              </button>
-            </div>
-          </div>
-
-          {/* نقاط التنقل */}
-          <div className={styles.dots}>
-            {guide.map((item, i) => (
-              <button
-                key={i}
-                className={`${styles.dot} ${i === active ? styles.dotActive : ""}`}
-                style={i === active ? { background: item.color, width: "28px" } : {}}
-                onClick={() => goTo(i)}
-              />
             ))}
-          </div>
+          </nav>
+        </aside>
 
-          {/* التالي / السابق */}
-          <div className={styles.navRow}>
-            <button
-              className={styles.navBtn}
-              onClick={() => goTo((active - 1 + guide.length) % guide.length)}
-            >
-              {isArabic ? "→ السابق" : "← Prev"}
-            </button>
-            <span className={styles.counter}>
-              {active + 1} / {guide.length}
-            </span>
-            <button
-              className={styles.navBtn}
-              style={{ background: current.color, color: "#fff", border: "none" }}
-              onClick={() => goTo((active + 1) % guide.length)}
-            >
-              {isArabic ? "← التالي" : "Next →"}
-            </button>
+        {/* مساحة العرض الرئيسية */}
+        <main className={styles.contentArea}>
+          <div className={`${styles.displayCard} ${fade ? styles.fadeOut : styles.fadeIn}`}>
+            
+            {/* عنوان البطاقة */}
+            <div className={styles.cardHeader}>
+              <div className={styles.cardIconBox}>{activeFeature.icon}</div>
+              <div>
+                <h2 className={styles.cardTitle}>{activeFeature.title}</h2>
+                <p className={styles.cardSubtitle}>{activeFeature.subtitle}</p>
+              </div>
+            </div>
+
+            {/* تفاصيل الميزة */}
+            <div className={styles.cardBody}>
+              <h4 className={styles.detailsHeading}>
+                {isArabic ? "كيف تعمل هذه الميزة؟" : "How does it work?"}
+              </h4>
+              <div className={styles.detailsGrid}>
+                {activeFeature.details.map((detail, i) => (
+                  <div key={i} className={styles.detailBox}>
+                    <div className={styles.detailBoxHeader}>
+                      <span className={styles.checkIcon}>✓</span>
+                      <h5 className={styles.detailTitle}>{detail.title}</h5>
+                    </div>
+                    <p className={styles.detailDesc}>{detail.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* زر التوجيه */}
+            <div className={styles.cardFooter}>
+              <button 
+                className={styles.actionBtn}
+                onClick={() => navigate(activeFeature.route)}
+              >
+                {activeFeature.btnText}
+                <span className={styles.actionIcon}>{isArabic ? "←" : "→"}</span>
+              </button>
+            </div>
+            
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
