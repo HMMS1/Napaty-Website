@@ -71,7 +71,20 @@ function App() {
         />
 
         <main className="main-content">
-          <Suspense fallback={<div aria-hidden="true" style={{ minHeight: "45vh", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }} />}>
+          <Suspense
+            fallback={
+              <div
+                aria-hidden="true"
+                style={{
+                  minHeight: "45vh",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              />
+            }
+          >
             <Routes>
               <Route path="/" element={<Welcome language={language} />} />
               <Route path="/welcome" element={<Welcome language={language} />} />
@@ -154,7 +167,10 @@ function App() {
                 }
               />
 
-              <Route path="/guide" element={<GuidePage language={language} />} />
+              <Route
+                path="/guide"
+                element={<GuidePage language={language} />}
+              />
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
