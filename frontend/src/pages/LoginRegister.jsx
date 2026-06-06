@@ -255,6 +255,8 @@ const Login = ({ setUser, language = "ar" }) => {
           setFormData({ ...emptyForm });
           setResetRegisterStep(1);
           setRegisterOtp("");
+          // ✅ علامة إن المستخدم ده جديد — لتشغيل الـ Onboarding Tour بعد أول login
+          localStorage.setItem("isNewUser", "true");
           // ✅ حوّل التاب لـ login فوراً قبل الـ message box
           setActiveTab("login");
 
