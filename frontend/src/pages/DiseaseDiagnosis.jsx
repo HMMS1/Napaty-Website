@@ -203,18 +203,29 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
   const renderTreatmentPlan = (text) => {
     if (!text) return null;
 
-    const lines = text
+    const html = text
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/#{1,4}\s*/g, "")
+      .replace(/\|.*\|/g, "")
+      .replace(/^[-=]{3,}$/gm, "")
+      .trim();
+
+    const lines = html
       .split("\n")
       .map((l) => l.trim())
       .filter((l) => l.length > 0);
 
     return (
-      <ul style={{ paddingRight: isArabic ? "1.2rem" : 0, paddingLeft: isArabic ? 0 : "1.2rem", margin: 0 }}>
+      <ul>
         {lines.map((line, i) => {
-          const clean = line.replace(/^[-•*]\s*/, "").replace(/^\d+\.\s*/, "");
+          const clean = line.replace(/^[-•*]\s*/, "").replace(/^\d+\.\s*/, "").trim();
+          if (!clean) return null;
           return (
-            <li key={i} style={{ marginBottom: "0.5rem", color: "#374151", lineHeight: 1.7 }}>
-              {clean}
+            <li key={i}>
+              <span className="step-number">{i + 1}</span>
+              <span dangerouslySetInnerHTML={{ __html: clean }} />
             </li>
           );
         })}
@@ -405,31 +416,8 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
 
                   {/* خطة العلاج من Groq عبر الباك */}
                   {treatmentPlan && (
-                    <div
-                      style={{
-                        marginTop: "1.2rem",
-                        padding: "1.2rem",
-                        borderRadius: "16px",
-                        background: "rgba(240, 249, 243, 0.95)",
-                        border: "1px solid rgba(42, 140, 74, 0.15)",
-                        boxShadow: "0 4px 14px rgba(42, 140, 74, 0.07)",
-                        direction: isArabic ? "rtl" : "ltr",
-                        textAlign: isArabic ? "right" : "left",
-                      }}
-                    >
-                      <p
-                        style={{
-                          fontWeight: 900,
-                          color: "var(--primary-color)",
-                          marginBottom: "0.8rem",
-                          fontSize: "1.05rem",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                      >
-                        🌿 {isArabic ? "خطة العلاج:" : "Treatment Plan:"}
-                      </p>
+                    <div className="info-item steps" style={{ marginTop: "1.2rem" }}>
+                      <h5>🌿 {isArabic ? "خطة العلاج" : "Treatment Plan"}</h5>
                       {renderTreatmentPlan(treatmentPlan)}
                     </div>
                   )}
