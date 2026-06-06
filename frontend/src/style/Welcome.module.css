@@ -774,7 +774,7 @@
 
 /* ===== زر الدليل العائم (Guide Floating Button) ===== */
 
-/* 1. الشاشات الكبيرة (Desktop) */
+/* 1. التنسيق الأساسي (Desktop) */
 .guideFloatBtn {
   position: fixed;
   bottom: 40px;
@@ -796,14 +796,13 @@
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
   font-family: inherit;
-  animation: floatBtn 3s ease-in-out infinite;
+  /* حركة طفو هادئة جداً */
+  animation: floatBtn 5s ease-in-out infinite;
 }
 
-/* تأثير الطفو لأعلى وأسفل ببطء */
 @keyframes floatBtn {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
 }
 
 .guideFloatBtn:hover {
@@ -821,11 +820,7 @@
   right: 40px;
 }
 
-/* =========================================
-   التجاوب مع كل الشاشات والموبايل (Responsive)
-========================================= */
-
-/* 2. شاشات التابلت واللاب توب الصغير (Max 1024px) */
+/* 2. شاشات التابلت (Max 1024px) */
 @media (max-width: 1024px) {
   .guideFloatBtn {
     bottom: 30px;
@@ -839,7 +834,7 @@
   }
 }
 
-/* 3. شاشات التابلت الصغير والموبايل بالعرض (Max 768px) */
+/* 3. شاشات الموبايل الكبيرة (Max 768px) */
 @media (max-width: 768px) {
   .guideFloatBtn {
     bottom: 25px;
@@ -853,20 +848,21 @@
   }
 }
 
-/* 4. شاشات الموبايل القياسية (iPhone X/13/14 و Android) (Max 480px) */
+/* 4. شاشات الموبايل القياسية (Max 480px) - كبسولة أنيقة بحركة بطيئة جداً */
 @media (max-width: 480px) {
   .guideFloatBtn {
-    bottom: 20px; 
+    bottom: 20px;
     left: 20px;
     width: auto;
     height: auto;
     padding: 10px 20px;
-    border-radius: 50px; /* شكل كبسولة أنيق */
+    border-radius: 50px;
     gap: 8px;
+    animation: floatBtnMobile 8s ease-in-out infinite;
   }
 
   .guideFloatBtn span {
-    display: block; /* إظهار النص للمزارع */
+    display: block;
     font-size: 0.85rem;
     font-weight: 700;
   }
@@ -880,13 +876,15 @@
     right: 20px;
     left: auto;
   }
-  
-  .guideFloatBtn:hover {
-    transform: translateY(-4px) scale(1.03);
-  }
 }
 
-/* 5. الموبايلات الصغيرة جداً (مثل iPhone SE) (Max 360px) */
+/* حركة الموبايل بطيئة جداً لمنع الاهتزاز */
+@keyframes floatBtnMobile {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+}
+
+/* 5. الموبايلات الصغيرة جداً (Max 360px) */
 @media (max-width: 360px) {
   .guideFloatBtn {
     left: 15px;
