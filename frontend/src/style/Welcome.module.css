@@ -772,42 +772,113 @@
   }
 }
 
-/* ===== أضف السطور دي في آخر ملف Welcome.module.css ===== */
+/* ===== زر الدليل العائم (Guide Floating Button) ===== */
 
 .guideFloatBtn {
   position: fixed;
-  bottom: 90px;
-  left: 20px;
+  bottom: 40px; /* تم إنزاله ليثبت في الزاوية بأناقة بدلاً من تعلقه في المنتصف */
+  left: 40px; /* مسافة آمنة ومريحة للعين من الحافة */
   z-index: 999;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 18px;
-  background: #16a34a;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 26px; /* تكبير الحجم قليلاً لزيادة الفخامة */
+  background: linear-gradient(135deg, var(--secondary-green), var(--accent-green)); /* تدرج لوني يتماشى مع الأزرار الرئيسية */
   color: #fff;
   border: none;
   border-radius: 50px;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(22, 163, 74, 0.35);
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 25px rgba(21, 93, 59, 0.4); /* ظل عميق وناعم */
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
   font-family: inherit;
+  animation: floatBtn 3s ease-in-out infinite; /* إضافة تأثير الطفو */
+}
+
+/* تأثير الطفو لأعلى وأسفل ببطء */
+@keyframes floatBtn {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
 }
 
 .guideFloatBtn:hover {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 8px 28px rgba(22, 163, 74, 0.45);
-  background: #15803d;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(21, 93, 59, 0.5);
+  animation-play-state: paused; /* إيقاف حركة الطفو عند وقوف الماوس عليه */
 }
 
 .guideFloatBtn:active {
-  transform: scale(0.97);
+  transform: scale(0.95);
 }
 
-/* لو LTR */
+/* التوافق مع اللغة الإنجليزية (LTR) */
 :global(.ltr-app) .guideFloatBtn {
   left: auto;
-  right: 20px;
+  right: 40px;
+}
+
+/* =========================================
+   التجاوب مع الشاشات والموبايل (Responsive)
+========================================= */
+
+/* شاشات التابلت واللاب توب الصغير */
+@media (max-width: 1024px) {
+  .guideFloatBtn {
+    bottom: 30px;
+    left: 30px;
+    padding: 12px 22px;
+    font-size: 1rem;
+  }
+  :global(.ltr-app) .guideFloatBtn {
+    right: 30px;
+  }
+}
+
+/* شاشات الموبايل الأفقية والتابلت الصغير */
+@media (max-width: 768px) {
+  .guideFloatBtn {
+    bottom: 25px;
+    left: 20px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+  }
+  :global(.ltr-app) .guideFloatBtn {
+    right: 20px;
+  }
+}
+
+/* شاشات الموبايل (تحويله لزر دائري احترافي لتوفير المساحة) */
+@media (max-width: 480px) {
+  .guideFloatBtn {
+    bottom: 20px; /* قريب من أسفل الشاشة لسهولة الوصول بالخنصر */
+    left: 20px;
+    width: 60px; /* عرض ثابت لجعله دائرة مثالية */
+    height: 60px; /* طول ثابت */
+    padding: 0;
+    border-radius: 50%; /* شكل دائري 100% */
+    gap: 0;
+  }
+
+  .guideFloatBtn span {
+    display: none; /* إخفاء النص في الموبايل */
+  }
+
+  .guideFloatBtn svg {
+    font-size: 24px !important; /* تكبير الأيقونة لتملأ الدائرة */
+    margin: 0;
+  }
+
+  :global(.ltr-app) .guideFloatBtn {
+    right: 20px;
+    left: auto;
+  }
+  
+  /* الحفاظ على تأثير الهوفر في الموبايل بدون إزاحة */
+  .guideFloatBtn:hover {
+    transform: translateY(-4px) scale(1.05);
+  }
 }
