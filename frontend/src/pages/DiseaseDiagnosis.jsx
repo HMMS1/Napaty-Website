@@ -29,7 +29,6 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
       Corn: "ذرة",
       BellPepper: "فلفل",
       Pepper: "فلفل",
-
       Healthy: "سليم",
       "Late Blight": "اللفحة المتأخرة",
       "Early Blight": "اللفحة المبكرة",
@@ -150,7 +149,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
     } catch (err) {
       console.log("DIAGNOSIS ERROR:", err?.response?.data || err.message);
 
-      const status = err?.response?.status;
+      const statusCode = err?.response?.status;
       const backendError =
         err?.response?.data?.error ||
         err?.response?.data?.message ||
@@ -160,11 +159,11 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
         ? "حصل خطأ أثناء تشخيص الصورة"
         : "An error occurred while diagnosing the image";
 
-      if (status === 401) {
+      if (statusCode === 401) {
         message = isArabic
           ? "عليك تسجّل الدخول أولاً لتتمكن من رفع الصورة"
           : "You need to log in first to upload the image";
-      } else if (status === 403) {
+      } else if (statusCode === 403) {
         message = isArabic
           ? "ليس لديك صلاحية لرفع الصورة"
           : "You do not have permission to upload the image";
@@ -175,7 +174,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
       setResult({
         success: false,
         message,
-        status,
+        status: statusCode,
         data: err?.response?.data,
       });
     } finally {
@@ -196,14 +195,41 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
   const aiResult = result?.data?.ai_result;
   const topResults = aiResult?.raw_response?.top5?.slice(0, 4) || [];
 
+  // خطة العلاج بتيجي من الباك مباشرة
+  const treatmentPlan = isArabic
+    ? result?.data?.treatment_plan?.ar
+    : result?.data?.treatment_plan?.en;
+
+  const renderTreatmentPlan = (text) => {
+    if (!text) return null;
+
+    const lines = text
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0);
+
+    return (
+      <ul style={{ paddingRight: isArabic ? "1.2rem" : 0, paddingLeft: isArabic ? 0 : "1.2rem", margin: 0 }}>
+        {lines.map((line, i) => {
+          const clean = line.replace(/^[-•*]\s*/, "").replace(/^\d+\.\s*/, "");
+          return (
+            <li key={i} style={{ marginBottom: "0.5rem", color: "#374151", lineHeight: 1.7 }}>
+              {clean}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
   return (
     <div className="page-container">
       <div className="page-header">
         <h2>{isArabic ? "تشخيص أمراض النبات" : "Plant Disease Diagnosis"}</h2>
         <p>
           {isArabic
-            ? "قم برفع صورة للنبات المصاب للحصول على تشخيص دقيق وعلاج مناسب"
-            : "Upload an image of the infected plant to get an accurate diagnosis and suitable treatment"}
+            ? "قم برفع صورة للنبات المصاب للحصول على تشخيص دقيق وخطة علاج مناسبة"
+            : "Upload an image of the infected plant to get an accurate diagnosis and treatment plan"}
         </p>
       </div>
 
@@ -370,23 +396,42 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     {prediction.disease}
                   </p>
 
-                  <p>
-                    <b>{isArabic ? "التشخيص:" : "Diagnosis:"}</b>{" "}
-                    {prediction.diagnosis}
-                  </p>
-
-                  {prediction.treatment && (
-                    <p>
-                      <b>{isArabic ? "العلاج:" : "Treatment:"}</b>{" "}
-                      {prediction.treatment}
-                    </p>
-                  )}
-
                   {selectedModel === "7.2" && aiResult?.confidence_percent && (
                     <p>
                       <b>{isArabic ? "نسبة الثقة:" : "Confidence:"}</b>{" "}
                       {aiResult.confidence_percent}%
                     </p>
+                  )}
+
+                  {/* خطة العلاج من Groq عبر الباك */}
+                  {treatmentPlan && (
+                    <div
+                      style={{
+                        marginTop: "1.2rem",
+                        padding: "1.2rem",
+                        borderRadius: "16px",
+                        background: "rgba(240, 249, 243, 0.95)",
+                        border: "1px solid rgba(42, 140, 74, 0.15)",
+                        boxShadow: "0 4px 14px rgba(42, 140, 74, 0.07)",
+                        direction: isArabic ? "rtl" : "ltr",
+                        textAlign: isArabic ? "right" : "left",
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: 900,
+                          color: "var(--primary-color)",
+                          marginBottom: "0.8rem",
+                          fontSize: "1.05rem",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        🌿 {isArabic ? "خطة العلاج:" : "Treatment Plan:"}
+                      </p>
+                      {renderTreatmentPlan(treatmentPlan)}
+                    </div>
                   )}
 
                   {selectedModel === "7.2" && topResults.length > 0 && (
