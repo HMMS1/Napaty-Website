@@ -203,33 +203,42 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
   const renderTreatmentPlan = (text) => {
     if (!text) return null;
 
-    const html = text
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    const cleaned = text
+      .replace(/\*\*(.+?)\*\*/g, "$1")
+      .replace(/\*(.+?)\*/g, "$1")
       .replace(/<br\s*\/?>/gi, "\n")
       .replace(/#{1,4}\s*/g, "")
       .replace(/\|.*\|/g, "")
       .replace(/^[-=]{3,}$/gm, "")
       .trim();
 
-    const lines = html
+    const steps = cleaned
       .split("\n")
-      .map((l) => l.trim())
+      .map((l) => l.replace(/^[-•*]\s*/, "").replace(/^\d+\.\s*/, "").trim())
       .filter((l) => l.length > 0);
 
     return (
-      <ul>
-        {lines.map((line, i) => {
-          const clean = line.replace(/^[-•*]\s*/, "").replace(/^\d+\.\s*/, "").trim();
-          if (!clean) return null;
-          return (
-            <li key={i}>
-              <span className="step-number">{i + 1}</span>
-              <span dangerouslySetInnerHTML={{ __html: clean }} />
-            </li>
-          );
-        })}
-      </ul>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)",
+        gap: "0.8rem",
+        marginTop: "0.5rem",
+      }}>
+        {steps.map((step, i) => (
+          <div key={i} style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: "10px",
+            background: "#f7faf7",
+            borderRadius: "12px",
+            padding: "0.9rem",
+            border: "1px solid rgba(42,140,74,0.08)",
+          }}>
+            <span className="step-number" style={{ flexShrink: 0 }}>{i + 1}</span>
+            <span style={{ color: "#374151", lineHeight: 1.7, fontSize: "0.93rem" }}>{step}</span>
+          </div>
+        ))}
+      </div>
     );
   };
 
