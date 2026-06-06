@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../style/GuidePage.module.css";
+import styles from '../style/Guidepage.module.css';
 
 const getGuideData = (isArabic) => [
   {
