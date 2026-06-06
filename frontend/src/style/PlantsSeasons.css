@@ -912,16 +912,9 @@
    COST CHECK CARDS — FIXED LAYOUT
 ════════════════════════════════════════ */
 
-.cost-check-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .cost-check-card {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
   align-items: flex-start;
   gap: 10px;
   background: #fff;
@@ -931,17 +924,7 @@
   cursor: pointer;
   transition: 0.25s ease;
   box-shadow: 0 10px 22px rgba(20, 83, 45, 0.055);
-}
-
-.cost-check-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(25, 135, 84, 0.26);
-  box-shadow: 0 14px 28px rgba(20, 83, 45, 0.095);
-}
-
-.cost-check-card.checked {
-  background: linear-gradient(135deg, #f0fbf4, #ffffff);
-  border-color: rgba(25, 135, 84, 0.32);
+  direction: rtl;
 }
 
 .cost-check-card input[type="checkbox"] {
@@ -975,7 +958,7 @@
 .cost-main {
   flex: 1 1 0;
   min-width: 0;
-  overflow: hidden;
+  text-align: right;
 }
 
 .cost-main strong {
@@ -983,8 +966,7 @@
   color: #14532d;
   font-weight: 900;
   margin-bottom: 5px;
-  line-height: 1.45;
-  white-space: normal;
+  line-height: 1.5;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
@@ -992,9 +974,8 @@
 .cost-main small {
   display: block;
   color: #657469;
-  line-height: 1.65;
+  line-height: 1.7;
   font-size: 0.86rem;
-  white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
