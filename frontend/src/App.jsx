@@ -23,7 +23,9 @@ const CropRecommendation = lazy(() => import("./pages/CropRecommendation"));
 const AgriChat = lazy(() => import("./pages/AgriChat"));
 const CommunicationRedirect = lazy(() => import("./pages/Communication"));
 const Community = lazy(() => import("./pages/Community"));
-const GuidePage = lazy(() => import("./pages/GuidePage")); // ✅ إضافة المسار الجديد هنا
+
+// ✅ تم تعديل حرف الـ p ليصبح صغيراً (Guidepage) ليتطابق تماماً مع اسم الملف في المجلد
+const GuidePage = lazy(() => import("./pages/Guidepage")); 
 
 // ✅ دالة مساعدة لقراءة الـ user من localStorage بشكل آمن
 function getUserFromStorage() {
