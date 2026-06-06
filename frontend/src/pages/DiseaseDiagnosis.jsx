@@ -218,24 +218,11 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
       .filter((l) => l.length > 0);
 
     return (
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
-        gap: "0.8rem",
-        marginTop: "0.5rem",
-      }}>
+      <div className="treatment-grid">
         {steps.map((step, i) => (
-          <div key={i} style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: "10px",
-            background: "#f7faf7",
-            borderRadius: "12px",
-            padding: "0.9rem",
-            border: "1px solid rgba(42,140,74,0.08)",
-          }}>
+          <div key={i} className="treatment-step">
             <span className="step-number" style={{ flexShrink: 0 }}>{i + 1}</span>
-            <span style={{ color: "#374151", lineHeight: 1.7, fontSize: "0.93rem" }}>{step}</span>
+            <span className="treatment-step-text">{step}</span>
           </div>
         ))}
       </div>
