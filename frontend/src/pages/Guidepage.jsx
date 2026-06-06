@@ -152,25 +152,26 @@ const getGuideSteps = (isArabic) => [
   }
 ];
 
-// دالة تأثير الآلة الكاتبة بأسلوب احترافي
+// دالة تأثير الآلة الكاتبة بأسلوب احترافي ومستقر (بدون تخطي حروف)
 function Typewriter({ text, speed = 30 }) {
-  const [displayedText, setDisplayedText] = useState("");
+  const [index, setIndex] = useState(0);
+
+  // إعادة التصفير عند تغير النص لضمان بداية نظيفة
+  useEffect(() => {
+    setIndex(0);
+  }, [text]);
 
   useEffect(() => {
-    setDisplayedText("");
-    let i = 0;
-    const timer = setInterval(() => {
-      if (i < text.length) {
-        setDisplayedText((prev) => prev + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(timer);
-      }
-    }, speed);
-    return () => clearInterval(timer);
-  }, [text, speed]);
+    if (index < text.length) {
+      const timer = setTimeout(() => {
+        setIndex((prev) => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    }
+  }, [index, text, speed]);
 
-  return <p className={styles.typewriterText}>{displayedText}</p>;
+  // استخدام substring يضمن عرض النص من المصدر الأصلي مباشرة، مما يمنع سقوط أي حرف
+  return <p className={styles.typewriterText}>{text.substring(0, index)}</p>;
 }
 
 export default function Guidepage({ language = "ar" }) {
@@ -223,7 +224,7 @@ export default function Guidepage({ language = "ar" }) {
           <div className={styles.speechBubble}>
             <div className={styles.speechTail}></div>
             <h3 className={styles.guideName}>
-              {isArabic ? "المهندس نباتي يوضح:" : "Eng. Nabaty Explains:"}
+              {isArabic ? "المهندس زعتر يوضح:" : "Eng. Zaatar Explains:"}
             </h3>
             {/* استخدام مفتاح فريد يعيد تحميل الـ Typewriter عند تغيير الخطوة */}
             <Typewriter key={currentStep.id} text={currentStep.guideText} />
