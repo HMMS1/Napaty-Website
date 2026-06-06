@@ -22,7 +22,8 @@ const Welcome = lazy(() => import("./pages/Welcome"));
 const CropRecommendation = lazy(() => import("./pages/CropRecommendation"));
 const AgriChat = lazy(() => import("./pages/AgriChat"));
 const CommunicationRedirect = lazy(() => import("./pages/Communication"));
-const Community = lazy(() => import("./pages/Community")); // ✅ إضافة المسار الجديد هنا
+const Community = lazy(() => import("./pages/Community"));
+const GuidePage = lazy(() => import("./pages/GuidePage")); // ✅ إضافة المسار الجديد هنا
 
 // ✅ دالة مساعدة لقراءة الـ user من localStorage بشكل آمن
 function getUserFromStorage() {
@@ -152,6 +153,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route path="/guide" element={<GuidePage language={language} />} />
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
