@@ -1,12 +1,10 @@
-/* ================= GLOBAL & BASE ================= */
 .guidePage {
   min-height: 100vh;
-  background-color: #f4fbf6; /* خلفية خضراء فاتحة جداً مريحة */
+  background-color: #f4fbf6; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  direction: rtl; /* عربي افتراضي */
+  direction: rtl;
   display: flex;
   flex-direction: column;
-  /* دعم حواف أجهزة الآيفون الحديثة مثل iPhone X وما بعدها */
   padding-bottom: env(safe-area-inset-bottom); 
   box-sizing: border-box;
 }
@@ -15,7 +13,6 @@
   direction: ltr;
 }
 
-/* ================= HEADER ================= */
 .header {
   background-color: #ffffff;
   box-shadow: 0 4px 15px rgba(22, 163, 74, 0.08);
@@ -23,7 +20,7 @@
   top: 0;
   z-index: 100;
   border-bottom: 2px solid #dcfce7;
-  padding-top: env(safe-area-inset-top); /* حماية من الكاميرا الأمامية (Notch) */
+  padding-top: env(safe-area-inset-top); 
 }
 
 .headerContent {
@@ -80,7 +77,6 @@
   letter-spacing: 2px;
 }
 
-/* ================= CONTAINER ================= */
 .container {
   max-width: 800px;
   margin: 2rem auto;
@@ -93,7 +89,6 @@
   box-sizing: border-box;
 }
 
-/* ================= GUIDE AVATAR & BUBBLE ================= */
 .guideCharacterSection {
   display: flex;
   align-items: flex-start;
@@ -189,7 +184,6 @@
   min-height: 75px;
 }
 
-/* ================= FEATURE CARD ================= */
 .featureCard {
   background: #ffffff;
   border-radius: 24px;
@@ -236,7 +230,6 @@
   margin: 0;
 }
 
-/* ================= DETAILS ================= */
 .featureDetails {
   display: flex;
   flex-direction: column;
@@ -294,7 +287,6 @@
   line-height: 1.5;
 }
 
-/* ================= TIMELINE DOTS ================= */
 .timeline {
   display: flex;
   justify-content: center;
@@ -322,7 +314,6 @@
   border-radius: 10px;
 }
 
-/* ================= FOOTER & BUTTONS ================= */
 .cardFooter {
   display: flex;
   justify-content: space-between;
@@ -390,16 +381,13 @@
 }
 
 
-/* ================= RESPONSIVE ================= */
 
-/* التابلت والشاشات المتوسطة */
 @media (max-width: 900px) {
   .container {
     padding: 0 1.2rem;
   }
 }
 
-/* الموبايلات الكبيرة (Max 768px) */
 @media (max-width: 768px) {
   .headerContent {
     flex-direction: column;
@@ -410,7 +398,7 @@
   .stepCounter {
     position: absolute;
     top: 15px;
-    left: 15px; /* بالعربي */
+    left: 15px; 
   }
   :global(.ltr-app) .stepCounter {
     left: auto;
@@ -424,11 +412,11 @@
   }
 
   .speechTail {
-    display: none; /* إخفاء ذيل الفقاعة في الموبايل ليكون الكارت مستقلاً */
+    display: none; 
   }
 
   .speechBubble {
-    border-radius: 20px !important; /* شكل موحد في الموبايل */
+    border-radius: 20px !important; 
   }
 
   .cardFooter {
@@ -446,7 +434,6 @@
   }
 }
 
-/* الموبايلات القياسية (iPhone X / 13 / 14 / Pro Max) (Max 480px) */
 @media (max-width: 480px) {
   .headerContent {
     padding: 1rem 0.8rem;
@@ -459,7 +446,7 @@
   }
 
   .mainTitle {
-    font-size: 1.2rem; /* تصغير العنوان لتفادي التمدد */
+    font-size: 1.2rem; 
   }
 
   .logoLeaf {
@@ -471,7 +458,6 @@
     padding: 0.4rem 0.8rem;
   }
 
-  /* تعديل مكان وحجم عداد الخطوات ليناسب شاشة الموبايل */
   .stepCounter {
     font-size: 0.8rem;
     padding: 4px 12px;
@@ -499,10 +485,9 @@
 
   .typewriterText {
     font-size: 0.95rem;
-    min-height: 85px; /* تثبيت ارتفاع يمنع الشاشة من الارتجاج أثناء الكتابة */
+    min-height: 85px; 
   }
 
-  /* تصغير الـ Paddings للكارت ليعطي مساحة أكبر للمحتوى في الآيفون */
   .featureCard {
     padding: 1.5rem 1.2rem;
     border-radius: 20px;
@@ -555,7 +540,6 @@
   }
 }
 
-/* الموبايلات الصغيرة جداً (مثل iPhone SE الأول - Max 360px) */
 @media (max-width: 360px) {
   .mainTitle {
     font-size: 1.05rem;
