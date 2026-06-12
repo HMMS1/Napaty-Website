@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from '../style/Guidepage.module.css';
 
-// بيانات الدليل مدمج فيها الشرح المبسط للمرشد + التفاصيل التقنية الفخمة
 const getGuideSteps = (isArabic) => [
   {
     id: 1,
@@ -152,11 +151,9 @@ const getGuideSteps = (isArabic) => [
   }
 ];
 
-// دالة تأثير الآلة الكاتبة بأسلوب احترافي ومستقر (بدون تخطي حروف)
 function Typewriter({ text, speed = 30 }) {
   const [index, setIndex] = useState(0);
 
-  // إعادة التصفير عند تغير النص لضمان بداية نظيفة
   useEffect(() => {
     setIndex(0);
   }, [text]);
@@ -170,7 +167,6 @@ function Typewriter({ text, speed = 30 }) {
     }
   }, [index, text, speed]);
 
-  // استخدام substring يضمن عرض النص من المصدر الأصلي مباشرة، مما يمنع سقوط أي حرف
   return <p className={styles.typewriterText}>{text.substring(0, index)}</p>;
 }
 
@@ -196,7 +192,6 @@ export default function Guidepage({ language = "ar" }) {
 
   return (
     <div className={styles.guidePage}>
-      {/* الهيدر العلوي */}
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <button className={styles.backBtn} onClick={() => navigate(-1)}>
@@ -216,7 +211,6 @@ export default function Guidepage({ language = "ar" }) {
 
       <div className={styles.container}>
         
-        {/* قسم المرشد الزراعي (الأفاتار + فقاعة الكلام) */}
         <div className={styles.guideCharacterSection}>
           <div className={styles.avatarCircle}>
             👨‍🌾
@@ -226,12 +220,10 @@ export default function Guidepage({ language = "ar" }) {
             <h3 className={styles.guideName}>
               {isArabic ? "المهندس زعتر يوضح:" : "Eng. Zaatar Explains:"}
             </h3>
-            {/* استخدام مفتاح فريد يعيد تحميل الـ Typewriter عند تغيير الخطوة */}
             <Typewriter key={currentStep.id} text={currentStep.guideText} />
           </div>
         </div>
 
-        {/* الكارت الاحترافي لتفاصيل الميزة */}
         <div className={styles.featureCard}>
           <div className={styles.featureHeader}>
             <span className={styles.featureIcon}>{currentStep.icon}</span>
@@ -250,7 +242,6 @@ export default function Guidepage({ language = "ar" }) {
             ))}
           </div>
 
-          {/* خط الزمن للتنقل بين الخطوات */}
           <div className={styles.timeline}>
             {steps.map((step, idx) => (
               <div 
