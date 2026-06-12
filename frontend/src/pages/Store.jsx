@@ -6,7 +6,6 @@ import '../style/Store.css';
 const ShoppingPage = ({ language = 'ar' }) => {
   const isArabic = language === 'ar';
 
-  // بيانات المنتجات
   const productsData = useMemo(() => ([
    
 {
@@ -423,7 +422,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     
   ]), [isArabic]);
 
-  // States
   const [filter, setFilter] = useState('all');
   const [cartItems, setCartItems] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -431,13 +429,11 @@ const ShoppingPage = ({ language = 'ar' }) => {
   const [showMobileCart, setShowMobileCart] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(productsData);
 
-  // message box states
   const [showMessageBox, setShowMessageBox] = useState(false);
   const [messageBoxType, setMessageBoxType] = useState('success');
   const [messageBoxTitle, setMessageBoxTitle] = useState('');
   const [messageBoxText, setMessageBoxText] = useState('');
 
-  // الفلاتر
   const filters = useMemo(() => ([
     { key: 'all',   icon: 'far fa-calendar', text: isArabic ? 'الكل'       : 'All' },
     { key: 'fert',  icon: 'fas fa-seedling', text: isArabic ? 'أسمدة'      : 'Fertilizers' },
@@ -447,7 +443,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     { key: 'water', icon: 'fas fa-tint',     text: isArabic ? 'أنظمة ري'   : 'Irrigation Systems' }
   ]), [isArabic]);
 
-  // طرق الدفع
   const paymentMethods = useMemo(() => ([
     { id: 'vodafone', namee: 'Vodafone Cash', image: '/images/vodafone.png',  color: 'text-danger' },
     { id: 'We',       namee: 'WePay',         image: '/images/we.png',        color: 'text-danger' },
@@ -477,7 +472,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
   const getCartCount = () =>
     cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  // فتح message box
   const openMessageBox = (type, title, text) => {
     setMessageBoxType(type);
     setMessageBoxTitle(title);
@@ -485,10 +479,8 @@ const ShoppingPage = ({ language = 'ar' }) => {
     setShowMessageBox(true);
   };
 
-  // غلق message box
   const closeMessageBox = () => setShowMessageBox(false);
 
-  // تحديث الفلتر
   const handleFilterChange = (filterKey) => {
     setFilter(filterKey);
     if (filterKey === 'all') {
@@ -498,7 +490,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     }
   };
 
-  // إضافة منتج للسلة
   const addToCart = (product) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
@@ -514,17 +505,14 @@ const ShoppingPage = ({ language = 'ar' }) => {
       return [...prevItems, { ...product, quantity: 1 }];
     });
 
-    // On mobile/tablet we keep only the floating cart icon visible.
-    // The cart drawer opens only when the user taps the cart icon.
+    
     setShowMobileCart(false);
   };
 
-  // إزالة منتج من السلة
   const removeFromCart = (productId) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
   };
 
-  // تحديث الكمية
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) {
       removeFromCart(productId);
@@ -538,17 +526,14 @@ const ShoppingPage = ({ language = 'ar' }) => {
     );
   };
 
-  // إفراغ السلة
   const clearCart = () => {
     setCartItems([]);
     setShowMobileCart(false);
   };
 
-  // حساب الإجمالي
   const calculateTotal = () =>
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  // معالجة الدفع
   const handlePayment = () => {
     if (!selectedPaymentMethod) {
       openMessageBox(
@@ -574,9 +559,7 @@ const ShoppingPage = ({ language = 'ar' }) => {
     setSelectedPaymentMethod('');
   };
 
-  // ══════════════════════════════════════════
-  // مكون البطاقة
-  // ══════════════════════════════════════════
+
   const ProductCard = ({ product }) => (
     <div className="col-12 col-sm-6 col-md-4 col-lg-3">
       <div className="card shopCard pb-4 h-100">
@@ -608,7 +591,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     </div>
   );
 
-  // مكون السلة
   const ShoppingCart = ({ isMobileDrawer = false, onClose } = {}) => {
     if (cartItems.length === 0) {
       return (
@@ -725,7 +707,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     );
   };
 
-  // مكون مودال الدفع
   const PaymentModal = () => {
     if (!showPaymentModal) return null;
 
@@ -817,7 +798,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
       </div>
     );
   };
-  // مكون Message Box
   const MessageBox = () => {
     if (!showMessageBox) return null;
 
@@ -849,7 +829,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
   };
 
 
-  // زر السلة العائم للموبايل والتابلت
   const MobileCartButton = () => (
     <button
       type="button"
@@ -866,7 +845,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     </button>
   );
 
-  // درج السلة للموبايل والتابلت
   const MobileCartDrawer = () => {
     if (!showMobileCart) return null;
 
@@ -888,7 +866,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
     );
   };
 
-  // التصميم الرئيسي
   return (
     <div className={`shopping-page ${isArabic ? 'rtl' : 'ltr'}`}>
       <div className="container py-5 text-center">
@@ -901,7 +878,6 @@ const ShoppingPage = ({ language = 'ar' }) => {
             : 'Shop the best fertilizers, pesticides, seeds, and agricultural tools'}
         </h5>
 
-        {/* ── فلاتر المتجر ── */}
         <div className="shopFilterGroup d-flex flex-wrap justify-content-center gap-3 mb-5">
           {filters.map(filterItem => (
             <button
