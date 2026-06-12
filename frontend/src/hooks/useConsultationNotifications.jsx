@@ -1,4 +1,3 @@
-// src/hooks/useConsultationNotifications.js
 import { useState, useEffect, useCallback, useRef } from "react";
 import { fetchMyRequests, fetchExpertRequests } from "../api/consultation";
 
