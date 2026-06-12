@@ -24,10 +24,8 @@ const AgriChat = lazy(() => import("./pages/AgriChat"));
 const CommunicationRedirect = lazy(() => import("./pages/Communication"));
 const Community = lazy(() => import("./pages/Community"));
 
-// ✅ تم تعديل حرف الـ p ليصبح صغيراً (Guidepage) ليتطابق تماماً مع اسم الملف في المجلد
 const GuidePage = lazy(() => import("./pages/Guidepage")); 
 
-// ✅ دالة مساعدة لقراءة الـ user من localStorage بشكل آمن
 function getUserFromStorage() {
   try {
     const savedUser = localStorage.getItem("user");
@@ -39,14 +37,12 @@ function getUserFromStorage() {
 }
 
 function App() {
-  // ✅ ابدأ بقراءة الـ user من localStorage فورًا
   const [user, setUser] = useState(() => getUserFromStorage());
 
   const [language, setLanguage] = useState(
     localStorage.getItem("language") || "ar"
   );
 
-  // ✅ setUser معدّلة: لما تستدعى تحدّث localStorage تلقائيًا
   const handleSetUser = (newUser) => {
     if (newUser) {
       localStorage.setItem("user", JSON.stringify(newUser));
@@ -159,7 +155,6 @@ function App() {
                 }
               />
 
-              {/* ✅ شاشة الـ Community التفاعلية الجديدة المحمية من الدخول العشوائي */}
               <Route
                 path="/community"
                 element={
