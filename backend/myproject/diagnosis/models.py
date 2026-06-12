@@ -24,8 +24,8 @@ class SoilAnalysis(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name="soil_analyses",
-        null=True,   # ✅ مهم
-        blank=True   # ✅ مهم
+        null=True,   
+        blank=True   
     )
 
     soil_type = models.CharField(max_length=20, choices=SOIL_TYPES)
