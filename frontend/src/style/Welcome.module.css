@@ -202,7 +202,6 @@
   margin: 0;
 }
 
-/* Hero Visual */
 .heroVisual {
   display: flex;
   justify-content: center;
@@ -628,10 +627,7 @@
   }
 }
 
-/* =========================================
-   WELCOME SAFE MOBILE PERFORMANCE ONLY
-   Desktop stays exactly the same
-========================================= */
+
 
 @media (max-width: 1024px) {
   .heroGlowOne,
@@ -772,9 +768,7 @@
   }
 }
 
-/* ===== زر الدليل العائم (Guide Floating Button) ===== */
 
-/* 1. التنسيق الأساسي (Desktop) */
 .guideFloatBtn {
   position: fixed;
   bottom: 40px;
@@ -796,7 +790,6 @@
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
   font-family: inherit;
-  /* حركة طفو هادئة جداً */
   animation: floatBtn 5s ease-in-out infinite;
 }
 
@@ -820,7 +813,6 @@
   right: 40px;
 }
 
-/* 2. شاشات التابلت (Max 1024px) */
 @media (max-width: 1024px) {
   .guideFloatBtn {
     bottom: 30px;
@@ -834,7 +826,6 @@
   }
 }
 
-/* 3. شاشات الموبايل الكبيرة (Max 768px) */
 @media (max-width: 768px) {
   .guideFloatBtn {
     bottom: 25px;
@@ -848,7 +839,6 @@
   }
 }
 
-/* 4. شاشات الموبايل القياسية (Max 480px) - كبسولة أنيقة بحركة بطيئة جداً */
 @media (max-width: 480px) {
   .guideFloatBtn {
     bottom: 20px;
@@ -878,13 +868,11 @@
   }
 }
 
-/* حركة الموبايل بطيئة جداً لمنع الاهتزاز */
 @keyframes floatBtnMobile {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-2px); }
 }
 
-/* 5. الموبايلات الصغيرة جداً (Max 360px) */
 @media (max-width: 360px) {
   .guideFloatBtn {
     left: 15px;
