@@ -503,10 +503,7 @@ h6 {
   }
 }
 
-/* =========================================
-   MOBILE CART DRAWER + STORE PERFORMANCE
-   Desktop layout stays untouched
-========================================= */
+
 
 .mobile-cart-floating,
 .mobile-cart-overlay {
@@ -722,11 +719,6 @@ h6 {
   }
 }
 
-/* =========================================
-   FINAL MOBILE STORE UX + PERFORMANCE
-   Icon-only cart button + compact mobile cards
-   Desktop stays untouched
-========================================= */
 
 @media (max-width: 1200px) {
   .shopping-page .container.py-5 {
@@ -808,7 +800,6 @@ h6 {
     line-height: 1.7 !important;
   }
 
-  /* Icon-only floating cart */
   .mobile-cart-floating {
     right: 16px !important;
     bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
