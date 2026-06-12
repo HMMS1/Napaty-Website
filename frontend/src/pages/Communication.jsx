@@ -20,7 +20,6 @@ export default function CommunicationRedirect() {
     if (requestId) {
       navigate(`/chat/${requestId}`, { replace: true });
     } else {
-      // fallback
       navigate("/consultation", { replace: true });
     }
   }, [location.state, navigate]);
