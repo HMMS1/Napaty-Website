@@ -1,55 +1,16 @@
-import os
-import joblib
-import numpy as np
-import pandas as pd
 import requests
 from decouple import config
 
-from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
 
-MODEL_DIR = os.path.join(settings.BASE_DIR, "crop_recommendation", "ml_models")
+CROP_AI_API_URL = "https://katyy20-newai.hf.space"
 
 
-# =========================
-# Basic Model Loader
-# =========================
-def load_basic_ml_files():
-    model = joblib.load(os.path.join(MODEL_DIR, "crop_model.pkl"))
-    soil_encoder = joblib.load(os.path.join(MODEL_DIR, "soil_encoder.pkl"))
-    season_encoder = joblib.load(os.path.join(MODEL_DIR, "season_encoder.pkl"))
-    crop_encoder = joblib.load(os.path.join(MODEL_DIR, "crop_encoder.pkl"))
-    return model, soil_encoder, season_encoder, crop_encoder
 
-
-# =========================
-# Advanced Model Loader
-# =========================
-advanced_model = None
-advanced_encoder = None
-
-
-def load_advanced_model():
-    global advanced_model, advanced_encoder
-
-    if advanced_model is None:
-        advanced_model = joblib.load(
-            os.path.join(MODEL_DIR, "crop_model_egypt.pkl")
-        )
-        advanced_encoder = joblib.load(
-            os.path.join(MODEL_DIR, "crop_encoder_egypt.pkl")
-        )
-
-    return advanced_model, advanced_encoder
-
-
-# =========================
-# Weather API
-# =========================
 def get_weather_data(governorate):
     api_key = config("WEATHER_API_KEY", default="")
 
@@ -90,15 +51,13 @@ def get_weather_data(governorate):
     if not query:
         raise ValueError("Invalid governorate")
 
-    url = "http://api.weatherapi.com/v1/current.json"
-    params = {
-        "key": api_key,
-        "q": query,
-        "aqi": "no",
-    }
-
-    response = requests.get(url, params=params, timeout=10)
+    response = requests.get(
+        "http://api.weatherapi.com/v1/current.json",
+        params={"key": api_key, "q": query, "aqi": "no"},
+        timeout=10,
+    )
     response.raise_for_status()
+
     data = response.json()
 
     if "error" in data:
@@ -111,28 +70,7 @@ def get_weather_data(governorate):
     return temperature, humidity, rainfall
 
 
-# =========================
-# Shared Helper
-# =========================
-def get_top_predictions(model, encoder, features, top_n=3):
-    probabilities = model.predict_proba(features)[0]
-    sorted_indices = np.argsort(probabilities)[::-1][:top_n]
 
-    results = []
-    for idx in sorted_indices:
-        crop_name = encoder.inverse_transform([idx])[0]
-        probability = round(float(probabilities[idx]) * 100, 2)
-        results.append({
-            "crop": crop_name,
-            "probability": probability
-        })
-
-    return results
-
-
-# =========================
-# Basic Input Builder
-# =========================
 def build_model_input(governorate, soil_type, season):
     governorate_defaults = {
         "cairo": {"sunlight": 10},
@@ -187,33 +125,23 @@ def build_model_input(governorate, soil_type, season):
     if soil_type not in soil_ph_defaults:
         raise ValueError("Invalid soil type")
 
-    gov_data = governorate_defaults[governorate]
-    season_data = season_adjustments[season]
-
     temperature, humidity, rainfall = get_weather_data(governorate)
 
-    sunlight = gov_data["sunlight"] + season_data["sunlight"]
+    sunlight = governorate_defaults[governorate]["sunlight"] + season_adjustments[season]["sunlight"]
     ph = soil_ph_defaults[soil_type]
-
-    temperature = max(5, min(45, int(temperature)))
-    humidity = max(10, min(95, int(humidity)))
-    rainfall = max(0, min(200, float(rainfall)))
-    sunlight = max(4, min(12, int(sunlight)))
 
     return {
         "soil_type": soil_type,
         "season": season,
-        "temperature": temperature,
-        "humidity": humidity,
-        "rainfall": rainfall,
+        "temperature": max(5, min(45, int(temperature))),
+        "humidity": max(10, min(95, int(humidity))),
+        "rainfall": max(0, min(200, float(rainfall))),
         "ph": ph,
-        "sunlight": sunlight,
+        "sunlight": max(4, min(12, int(sunlight))),
     }
 
 
-# =========================
-# Basic API
-# =========================
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def crop_recommendation_view(request):
@@ -230,28 +158,19 @@ def crop_recommendation_view(request):
 
         model_input = build_model_input(governorate, soil_type, season)
 
-        model, soil_encoder, season_encoder, crop_encoder = load_basic_ml_files()
+        ai_response = requests.post(
+            f"{CROP_AI_API_URL}/predict-basic",
+            json=model_input,
+            timeout=60,
+        )
 
-        soil_encoded = soil_encoder.transform([model_input["soil_type"]])[0]
-        season_encoded = season_encoder.transform([model_input["season"]])[0]
-
-        features = np.array([[
-            soil_encoded,
-            season_encoded,
-            model_input["temperature"],
-            model_input["humidity"],
-            model_input["rainfall"],
-            model_input["ph"],
-            model_input["sunlight"],
-        ]], dtype=float)
-
-        top_predictions = get_top_predictions(model, crop_encoder, features, top_n=3)
-        best_crop = top_predictions[0]["crop"] if top_predictions else None
+        ai_response.raise_for_status()
+        ai_result = ai_response.json()
 
         return Response(
             {
-                "recommended_crop": best_crop,
-                "recommended_crops": top_predictions,
+                "recommended_crop": ai_result.get("recommended_crop"),
+                "recommended_crops": ai_result.get("recommended_crops", []),
                 "input_used": model_input,
             },
             status=status.HTTP_200_OK,
@@ -259,7 +178,7 @@ def crop_recommendation_view(request):
 
     except requests.exceptions.RequestException as e:
         return Response(
-            {"error": f"Weather API connection error: {str(e)}"},
+            {"error": f"Crop AI API connection error: {str(e)}"},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
@@ -270,14 +189,11 @@ def crop_recommendation_view(request):
         )
 
 
-# =========================
-# Advanced API
-# =========================
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def crop_recommendation_advanced(request):
     try:
-        model, encoder = load_advanced_model()
         data = request.data
 
         required_fields = ["N", "P", "K", "temperature", "humidity", "rainfall", "ph"]
@@ -289,57 +205,30 @@ def crop_recommendation_advanced(request):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-        N = float(data.get("N"))
-        P = float(data.get("P"))
-        K = float(data.get("K"))
-        temperature = float(data.get("temperature"))
-        humidity = float(data.get("humidity"))
-        rainfall = float(data.get("rainfall"))
-        ph = float(data.get("ph"))
+        payload = {
+            "N": float(data.get("N")),
+            "P": float(data.get("P")),
+            "K": float(data.get("K")),
+            "temperature": float(data.get("temperature")),
+            "humidity": float(data.get("humidity")),
+            "rainfall": float(data.get("rainfall")),
+            "ph": float(data.get("ph")),
+        }
 
-        # =========================
-        # Feature Engineering زي التدريب
-        # =========================
-        temp_hum = temperature * humidity / 100
-        np_ratio = N / (P + 1)
-        nk_ratio = N / (K + 1)
-        rain_temp = rainfall * temperature / 100
+        ai_response = requests.post(
+            f"{CROP_AI_API_URL}/predict-advanced",
+            json=payload,
+            timeout=60,
+        )
 
-        # نفس ترتيب وأسماء الـ features اللي اتدرب عليها الموديل
-        features = pd.DataFrame([{
-            "N": N,
-            "P": P,
-            "K": K,
-            "temperature": temperature,
-            "humidity": humidity,
-            "rainfall": rainfall,
-            "ph": ph,
-            "temp_hum": temp_hum,
-            "np_ratio": np_ratio,
-            "nk_ratio": nk_ratio,
-            "rain_temp": rain_temp,
-        }])
-
-        top_predictions = get_top_predictions(model, encoder, features, top_n=3)
-        best_crop = top_predictions[0]["crop"] if top_predictions else None
+        ai_response.raise_for_status()
+        ai_result = ai_response.json()
 
         return Response(
             {
-                "recommended_crop": best_crop,
-                "recommended_crops": top_predictions,
-                "input_used": {
-                    "N": N,
-                    "P": P,
-                    "K": K,
-                    "temperature": temperature,
-                    "humidity": humidity,
-                    "rainfall": rainfall,
-                    "ph": ph,
-                    "temp_hum": round(temp_hum, 4),
-                    "np_ratio": round(np_ratio, 4),
-                    "nk_ratio": round(nk_ratio, 4),
-                    "rain_temp": round(rain_temp, 4),
-                },
+                "recommended_crop": ai_result.get("recommended_crop"),
+                "recommended_crops": ai_result.get("recommended_crops", []),
+                "input_used": payload,
             },
             status=status.HTTP_200_OK,
         )
@@ -350,6 +239,12 @@ def crop_recommendation_advanced(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    except requests.exceptions.RequestException as e:
+        return Response(
+            {"error": f"Crop AI API connection error: {str(e)}"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     except Exception as e:
         return Response(
             {"error": str(e)},
@@ -357,9 +252,7 @@ def crop_recommendation_advanced(request):
         )
 
 
-# =========================
-# Agri Chat API
-# =========================
+
 AGRI_KEYWORDS = [
     "زراعة", "ازرع", "أزرع", "محصول", "محاصيل", "تربة", "ري", "سماد", "تسميد",
     "نبات", "نباتات", "بذور", "بذرة", "حصاد", "آفات", "حشرات", "فطريات",
@@ -381,9 +274,7 @@ def is_agriculture_question(message):
         return False
 
     text = str(message).strip().lower()
-
-    agriculture_terms = AGRI_KEYWORDS
-    return any(term.lower() in text for term in agriculture_terms)
+    return any(term.lower() in text for term in AGRI_KEYWORDS)
 
 
 def ask_groq_agri(message, language="ar"):
