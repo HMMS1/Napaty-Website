@@ -3,3 +3,11 @@ tensorflow
 numpy
 pillow
 gunicorn
+flask
+torch
+torchvision
+timm
+pillow
+numpy
+werkzeug
+gdown==5.2.0
