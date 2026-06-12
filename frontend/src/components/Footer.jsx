@@ -31,7 +31,7 @@ const Footer = ({ language = "ar" }) => {
     consultation: isArabic ? "الاستشارات" : "Consultation",
     cropRecommend: isArabic ? "اقتراح المحصول" : "Crop Recommendation",
     agriChat: isArabic ? "الشات الزراعي" : "Agricultural Chat",
-    community: isArabic ? "المجتمع" : "Community", // ✅ تمت إضافة نص المجتمع هنا
+    community: isArabic ? "المجتمع" : "Community", ا
 
 
     contact: isArabic ? "تواصل معنا" : "Contact Us",
