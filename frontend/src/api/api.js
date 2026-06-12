@@ -1,4 +1,3 @@
-// src/api/api.js
 import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
@@ -7,9 +6,7 @@ const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// =========================
-// Request Interceptor
-// =========================
+
 api.interceptors.request.use(
   (config) => {
     const token =
@@ -22,9 +19,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// =========================
-// Response Interceptor
-// =========================
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -40,7 +35,6 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem("refresh");
 
       if (!refresh) {
-        // مفيش refresh token خالص → روح للـ login
         localStorage.removeItem("access");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -61,17 +55,14 @@ api.interceptors.response.use(
           return Promise.reject(error);
         }
 
-        // خزّن التوكن الجديد
         localStorage.setItem("access", newAccess);
         localStorage.setItem("token", newAccess);
 
-        // عدّل الهيدر وأعد الـ request
         originalRequest.headers = originalRequest.headers || {};
         originalRequest.headers.Authorization = `Bearer ${newAccess}`;
         return api(originalRequest);
 
       } catch (refreshError) {
-        // الـ refresh token انتهى → امسح كل حاجة وروح للـ login
         localStorage.removeItem("access");
         localStorage.removeItem("token");
         localStorage.removeItem("refresh");
