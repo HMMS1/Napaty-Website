@@ -22,7 +22,6 @@ class ConsultationRequestCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "status", "created_at")
 
     def validate_expert_id(self, value):
-        # ✅ ممنوع تعمل طلب لنفسك
         if self.context["request"].user.id == value:
             raise serializers.ValidationError("You can't create request to yourself")
 
