@@ -64,7 +64,7 @@ const Footer = ({ language = "ar" }) => {
   ];
 
    const quickLinks = [
-    { href: "/community", label: text.community }, // ✅ تمت إضافة رابط المجتمع هنا
+    { href: "/community", label: text.community }, 
     { href: "/crop-recommendation", label: text.cropRecommend },
     { href: "/agri-chat", label: text.agriChat },
   ];
