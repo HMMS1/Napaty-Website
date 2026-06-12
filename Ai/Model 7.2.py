@@ -19,9 +19,6 @@ import timm
 from torchvision import models
 
 
-# =============================================================================
-# CONFIG
-# =============================================================================
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_FOLDER = BASE_DIR / "uploads"
 UPLOAD_FOLDER.mkdir(exist_ok=True)
@@ -31,7 +28,7 @@ MEAN = [0.485, 0.456, 0.406]
 STD  = [0.229, 0.224, 0.225]
 
 ALLOWED_EXTENSIONS   = {"png", "jpg", "jpeg", "webp", "bmp"}
-MAX_CONTENT_LENGTH   = 16 * 1024 * 1024  # 16 MB
+MAX_CONTENT_LENGTH   = 16 * 1024 * 1024  
 
 MODEL_FILENAMES = {
     "omninet_ev": "hybrid_OmniNetEV.pth",
@@ -40,24 +37,20 @@ MODEL_FILENAMES = {
     "resnet":     "base_ResNet50.pth",
 }
 
-# Ensemble weights
 W_OMNINET_EV = 0.30
 W_OMNINET_CS = 0.30
 W_VIT        = 0.20
 W_RESNET     = 0.20
 
-# ── Speed flags ───────────────────────────────────────────────────────────────
-USE_FP16     = torch.cuda.is_available()          # half-precision on GPU only
+USE_FP16     = torch.cuda.is_available()         
 USE_COMPILE  = (
     torch.cuda.is_available()
     and hasattr(torch, "compile")
-    and int(torch.__version__.split(".")[0]) >= 2  # torch >= 2.x
+    and int(torch.__version__.split(".")[0]) >= 2  
 )
-NUM_THREADS  = min(4, len(MODEL_FILENAMES))        # parallel inference threads
+NUM_THREADS  = min(4, len(MODEL_FILENAMES))        
 
-# =============================================================================
-# LABELS
-# =============================================================================
+
 UNIFIED_CLASSES = [
     "Apple___Scab",
     "Apple___Cedar_Rust",
@@ -98,9 +91,6 @@ def format_label(raw_label: str) -> dict:
     }
 
 
-# =============================================================================
-# PREPROCESS  –  reusable compiled transform
-# =============================================================================
 transform = transforms.Compose([
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
     transforms.ToTensor(),
@@ -114,9 +104,6 @@ def preprocess_image(image_source) -> torch.Tensor:
     return transform(img).unsqueeze(0)
 
 
-# =============================================================================
-# MODEL DEFINITIONS  (unchanged architecture)
-# =============================================================================
 class CoordAtt(nn.Module):
     def __init__(self, c, r=32):
         super().__init__()
@@ -206,7 +193,6 @@ class CrossAttnGate(nn.Module):
         return ar, br
 
 
-# ── Checkpoint helpers ────────────────────────────────────────────────────────
 
 def _unwrap(ckpt):
     if isinstance(ckpt, dict):
@@ -238,7 +224,6 @@ def _load(model, ckpt):
     return model
 
 
-# ── Model classes ─────────────────────────────────────────────────────────────
 
 class OmniNetEV(nn.Module):
     def __init__(self, nc, drop=0.35, proj=512):
@@ -317,20 +302,18 @@ class ResNet50Base(nn.Module):
         return self.head(self.pool(self.backbone(x)).flatten(1))
 
 
-# ── Public loaders ────────────────────────────────────────────────────────────
 
 def _generic_load(ModelCls, path, device, name):
     print(f"  Loading {name} ← {path}")
     t0    = time.time()
-    raw   = torch.load(path, map_location="cpu")          # always load to CPU first
+    raw   = torch.load(path, map_location="cpu")         
     ckpt  = _unwrap(raw if not isinstance(raw, dict) else dict(raw))
     nc    = _get_nc(ckpt)
     print(f"    → {nc} classes | read {time.time()-t0:.1f}s")
     model = ModelCls(nc=nc)
     _load(model, ckpt)
-    del ckpt, raw                                          # free RAM early
+    del ckpt, raw                                       
 
-    # ── optional optimisations ──
     if USE_FP16:
         model = model.half()
     model = model.to(device)
@@ -354,19 +337,12 @@ def _load_model_threaded(ModelCls, path, device, name, results, key):
         print(f"  [ERROR] loading {name}: {e}")
         raise
 
-
-# =============================================================================
-# INFERENCE SETUP
-# =============================================================================
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"[inference] device: {DEVICE}  |  fp16={USE_FP16}  |  compile={USE_COMPILE}")
 
-torch.set_num_threads(os.cpu_count() or 4)   # use all CPU cores for CPU ops
+torch.set_num_threads(os.cpu_count() or 4)  
 
 
-# =============================================================================
-# RESOLVE MODEL PATHS
-# =============================================================================
 
 def get_model_path(filename: str) -> str:
     local_path = BASE_DIR / filename
@@ -378,10 +354,6 @@ def get_model_path(filename: str) -> str:
     print(f"[model] Found: {local_path} ({local_path.stat().st_size / 1024 / 1024:.1f} MB)")
     return str(local_path)
 
-
-# =============================================================================
-# PARALLEL MODEL LOADING
-# =============================================================================
 print("[inference] Loading 4 models in parallel …")
 t_load_start = time.time()
 
@@ -420,13 +392,10 @@ print(f"[inference] All models loaded in {time.time()-t_load_start:.1f}s | NC={N
 ENSEMBLE_MODELS  = [m_ev,        m_cs,        m_vit,  m_res]
 ENSEMBLE_WEIGHTS = [W_OMNINET_EV, W_OMNINET_CS, W_VIT, W_RESNET]
 
-# Thread pool reused across requests
 _executor = ThreadPoolExecutor(max_workers=NUM_THREADS)
 
 
-# =============================================================================
-# WARMUP  –  run one dummy pass so JIT / compile cache is ready
-# =============================================================================
+
 def _warmup():
     print("[warmup] Running warmup pass …")
     t0     = time.time()
@@ -443,9 +412,6 @@ _warmup_thread = threading.Thread(target=_warmup, daemon=True)
 _warmup_thread.start()
 
 
-# =============================================================================
-# PREDICT  –  parallel inference
-# =============================================================================
 
 def _run_model(args):
     """Run single model – designed for ThreadPoolExecutor."""
@@ -455,19 +421,16 @@ def _run_model(args):
 
 
 def predict_image(image_source) -> dict:
-    # Pre-process once
     tensor = preprocess_image(image_source).to(DEVICE)
     if USE_FP16:
         tensor = tensor.half()
 
-    # Run all 4 models in parallel
     futures = [
         _executor.submit(_run_model, (model, tensor))
         for model in ENSEMBLE_MODELS
     ]
     probs_list = [f.result() for f in futures]
 
-    # Weighted ensemble
     ensemble = sum(w * p for w, p in zip(ENSEMBLE_WEIGHTS, probs_list))
 
     top_prob, top_idx = torch.max(ensemble, dim=1)
@@ -489,9 +452,7 @@ def predict_image(image_source) -> dict:
     return result
 
 
-# =============================================================================
-# FLASK API
-# =============================================================================
+
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
 
@@ -553,6 +514,6 @@ def api_predict():
 
 
 if __name__ == "__main__":
-    _warmup_thread.join()   # block until warmup finishes before accepting traffic
+    _warmup_thread.join()  
     port = int(os.getenv("PORT", "7860"))
     app.run(host="0.0.0.0", port=port, debug=False)
