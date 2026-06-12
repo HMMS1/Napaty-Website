@@ -366,7 +366,6 @@
   box-shadow: 0 6px 14px rgba(42, 140, 74, 0.22);
 }
 
-/* ===== Treatment Grid ===== */
 .treatment-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -398,7 +397,6 @@
   word-break: break-word;
 }
 
-/* ===== Top Predictions ===== */
 .top-predictions-box {
   margin-top: 1.5rem;
   padding: 1.2rem;
@@ -459,7 +457,6 @@
   font-weight: 700;
 }
 
-/* ===== Model Select ===== */
 .upload-section {
   position: relative;
   padding-top: 4.8rem;
@@ -577,9 +574,7 @@
   box-shadow: 0 6px 14px rgba(42, 140, 74, 0.18);
 }
 
-/* ===== Responsive ===== */
 
-/* iPhone SE & very small (≤360px) */
 @media (max-width: 360px) {
   .diagnosis-container { padding: 0.8rem; border-radius: 16px; }
   .upload-section { padding: 0.8rem; padding-top: 4rem; border-radius: 16px; }
@@ -600,7 +595,6 @@
   .custom-model-trigger { min-width: 74px; height: 33px; font-size: 0.8rem; }
 }
 
-/* Small phones: 361–480px (iPhone SE 2nd gen, older iPhones) */
 @media (min-width: 361px) and (max-width: 480px) {
   .diagnosis-container { padding: 1rem; border-radius: 18px; }
   .upload-section { padding: 1rem; padding-top: 4.4rem; border-radius: 18px; }
@@ -623,7 +617,6 @@
   .custom-model-trigger { min-width: 80px; height: 36px; font-size: 0.85rem; }
 }
 
-/* iPhone X/11/12/13/14/15 and similar (481–768px) */
 @media (min-width: 481px) and (max-width: 768px) {
   .diagnosis-container { padding: 1.2rem; }
   .upload-section { padding: 1.5rem; padding-top: 4.6rem; }
@@ -638,7 +631,6 @@
   .upload-features { flex-direction: column; gap: 0.8rem; }
 }
 
-/* Tablet portrait (769–1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .diagnosis-container { max-width: 95%; padding: 1.5rem; }
   .upload-section { padding: 1.5rem; }
@@ -651,7 +643,6 @@
   .treatment-step-text { font-size: 0.93rem; }
 }
 
-/* Desktop (1025px+) */
 @media (min-width: 1025px) {
   .treatment-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
   .treatment-step-text { font-size: 0.97rem; }
