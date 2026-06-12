@@ -68,7 +68,6 @@ function Consultation({ language = "ar" }) {
   const isArabic = language === "ar";
   const navigate = useNavigate();
 
-  // ✅ token كـ state عشان لو اتحفظ بعد الـ mount نعرف نعيد التحميل
   const [token, setToken] = useState(
     () => localStorage.getItem("access") || localStorage.getItem("token")
   );
@@ -107,7 +106,6 @@ function Consultation({ language = "ar" }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [requestToDelete, setRequestToDelete] = useState(null);
 
-  // ✅ لو التوكن مجاش في أول render، استنى وجرب تاني (بعد التسجيل مباشرة)
   useEffect(() => {
     if (token) return;
 
