@@ -1,30 +1,25 @@
 import api from "./api";
 
-// ✅ Experts list
 export const fetchExperts = async () => {
   const res = await api.get("/api/communication/experts/");
   return res.data;
 };
 
-// ✅ Create consultation request
 export const createConsultationRequest = async (payload) => {
   const res = await api.post("/api/communication/requests/create/", payload);
   return res.data;
 };
 
-// ✅ User requests
 export const fetchMyRequests = async () => {
   const res = await api.get("/api/communication/requests/");
   return res.data;
 };
 
-// ✅ Expert requests
 export const fetchExpertRequests = async () => {
   const res = await api.get("/api/communication/expert/requests/");
   return res.data;
 };
 
-// ✅ Update request status (backend wants: action = accept|reject|close)
 export const updateRequestStatus = async (requestId, action) => {
   const url = `/api/communication/requests/${requestId}/status/`;
 
@@ -45,7 +40,6 @@ export const updateRequestStatus = async (requestId, action) => {
   }
 };
 
-// ✅ Cancel consultation request by user
 export const cancelConsultationRequest = async (requestId) => {
   const url = `/api/communication/requests/${requestId}/cancel/`;
 
@@ -61,7 +55,6 @@ export const cancelConsultationRequest = async (requestId) => {
   }
 };
 
-// ✅ Messages
 export const fetchRequestMessages = async (requestId) => {
   const res = await api.get(`/api/communication/requests/${requestId}/messages/`);
   return res.data;
