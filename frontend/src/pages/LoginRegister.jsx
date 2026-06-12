@@ -45,7 +45,6 @@ const Login = ({ setUser, language = "ar" }) => {
   const [messageBoxTitle, setMessageBoxTitle] = useState("");
   const [messageBoxText, setMessageBoxText] = useState("");
 
-  // ✅ الجديد: لو في navigate لازم يحصل بعد OK
   const [pendingNavigate, setPendingNavigate] = useState(null);
 
   const [isAnimating, setIsAnimating] = useState(false);
@@ -82,11 +81,9 @@ const Login = ({ setUser, language = "ar" }) => {
     setMessageBoxTitle(title);
     setMessageBoxText(text);
     setShowMessageBox(true);
-    // ✅ لو في navigate لازم يحصل بعد OK، احفظه
     if (navigateTo) setPendingNavigate(navigateTo);
   };
 
-  // ✅ closeMessageBox دلوقتي بتعمل navigate لو في pending
   const closeMessageBox = () => {
     setShowMessageBox(false);
     if (pendingNavigate) {
@@ -199,12 +196,10 @@ const Login = ({ setUser, language = "ar" }) => {
         localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
         setFormData({ ...emptyForm });
-        // ✅ login: navigate فوري عادي (مفيش message box قبله)
         navigate("/", { replace: true });
         return;
       }
 
-      // Register
       if (registerStep === 1) {
         if (!formData.name || !formData.email || !formData.password) {
           openMessageBox("warning", isArabic ? "تنبيه" : "Warning", isArabic ? "يرجى ملء جميع الحقول المطلوبة" : "Please fill all required fields");
@@ -251,25 +246,22 @@ const Login = ({ setUser, language = "ar" }) => {
         const data = await response.json();
 
         if (response.ok) {
-          // ✅ مش بنعمل login تلقائي — بنرجعه لتاب تسجيل الدخول
           setFormData({ ...emptyForm });
           setResetRegisterStep(1);
           setRegisterOtp("");
-          // ✅ حوّل التاب لـ login فوراً قبل الـ message box
           setActiveTab("login");
 
           openMessageBox(
             "success",
             isArabic ? "تم بنجاح" : "Success",
             isArabic ? "تم إنشاء حسابك بنجاح! سجّل دخولك الآن" : "Account created successfully! Please log in.",
-            "/login" // ← بعد OK يروح لصفحة الـ login
+            "/login" 
           );
         } else {
           openMessageBox("warning", isArabic ? "خطأ" : "Error", data.detail || (isArabic ? "الكود غير صحيح" : "Invalid code"));
         }
       }
     } catch (err) {
-      // ✅ لو السيرفر رجع رسالة خطأ واضحة (مش network error)
       const serverMsg = err?.response?.data?.detail
         || err?.response?.data?.non_field_errors?.[0]
         || err?.response?.data?.email?.[0]
@@ -277,7 +269,6 @@ const Login = ({ setUser, language = "ar" }) => {
         || null;
 
       if (serverMsg) {
-        // رسالة من السيرفر — نترجمها لرسالة واضحة للمستخدم
         const isWrongCredentials =
           serverMsg.toLowerCase().includes("invalid") ||
           serverMsg.toLowerCase().includes("incorrect") ||
@@ -292,7 +283,6 @@ const Login = ({ setUser, language = "ar" }) => {
             : serverMsg
         );
       } else {
-        // network error أو السيرفر مش شغال
         openMessageBox(
           "warning",
           isArabic ? "خطأ في الاتصال" : "Connection Error",
