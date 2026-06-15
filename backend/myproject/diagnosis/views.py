@@ -51,46 +51,45 @@ def translate_to_ar(text):
 
 
 GROQ_API_KEY = ""
+
+GROQ_API_KEY_CAUSES = ""
+
 GROQ_API_URL = ""
 GROQ_MODEL = ""
-
-
-def call_groq(prompt, max_tokens=700):
-    """Helper to call Groq API with a given prompt."""
-    response = requests.post(
-        GROQ_API_URL,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {GROQ_API_KEY}",
-        },
-        json={
-            "model": GROQ_MODEL,
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": max_tokens,
-            "temperature": 0.5,
-        },
-        timeout=30,
-    )
-    response.raise_for_status()
-    return response.json()["choices"][0]["message"]["content"].strip()
 
 
 def get_treatment_plan(plant, disease):
     """Call Groq API to get a treatment plan in both Arabic and English."""
     try:
+        def call_groq(prompt):
+            response = requests.post(
+                GROQ_API_URL,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {GROQ_API_KEY}",
+                },
+                json={
+                    "model": GROQ_MODEL,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": 700,
+                    "temperature": 0.5,
+                },
+                timeout=30,
+            )
+            response.raise_for_status()
+            return response.json()["choices"][0]["message"]["content"].strip()
+
         plan_ar = call_groq(
             f"أنت خبير زراعي يتحدث مع مزارع بسيط. النبات: {plant}، المرض: {disease}. "
             f"اكتب بالعربية فقط 10 خطوات علاج عملية ومفصلة وسهلة الفهم. "
             f"كل خطوة تبدأ بـ '-' وتكون جملة كاملة واضحة تشرح ماذا يفعل المزارع بالتحديد. "
-            f"لا تكتب عناوين أو أقساماً أو ترقيماً. فقط 10 أسطر كل سطر خطوة.",
-            max_tokens=700,
+            f"لا تكتب عناوين أو أقساماً أو ترقيماً. فقط 10 أسطر كل سطر خطوة."
         )
         plan_en = call_groq(
             f"You are an agricultural expert talking to a simple farmer. Plant: {plant}, Disease: {disease}. "
             f"Write exactly 10 practical, detailed, easy-to-understand treatment steps in English only. "
             f"Each step starts with '-' and is a complete sentence explaining exactly what the farmer should do. "
-            f"No headings, no sections, no numbering. Only 10 lines, each line one step.",
-            max_tokens=700,
+            f"No headings, no sections, no numbering. Only 10 lines, each line one step."
         )
 
         return {"ar": plan_ar, "en": plan_en}
@@ -104,20 +103,41 @@ def get_treatment_plan(plant, disease):
 
 
 def get_disease_causes(plant, disease):
-    """Call Groq API to get 2 possible causes of the disease in Arabic and English."""
+    """Call Groq API to get the possible causes behind the disease, in both Arabic and English."""
     try:
+        def call_groq(prompt):
+            response = requests.post(
+                GROQ_API_URL,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {GROQ_API_KEY_CAUSES}",
+                },
+                json={
+                    "model": GROQ_MODEL,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": 500,
+                    "temperature": 0.5,
+                },
+                timeout=30,
+            )
+            response.raise_for_status()
+            return response.json()["choices"][0]["message"]["content"].strip()
+
         causes_ar = call_groq(
-            f"أنت خبير زراعي. النبات: {plant}، المرض: {disease}. "
-            f"اكتب باللغة العربية سببين رئيسيين ومباشرين لظهور هذا المرض. "
-            f"ابدأ كل سبب بعلامة '-' واكتبهما مباشرة بدون أي مقدمات أو ترحيب.",
-            max_tokens=200,
-    )
+            f"أنت خبير زراعي يتحدث مع مزارع بسيط. النبات: {plant}، المرض: {disease}. "
+            f"اكتب بالعربية فقط من 5 إلى 7 أسباب محتملة لظهور هذا المرض على هذا النبات "
+            f"(مثل: الرطوبة الزائدة، نوع التربة، طريقة الزراعة أو الري، الإصابة بفطريات أو بكتيريا أو فيروسات، "
+            f"نقص عناصر غذائية معينة، الإصابة الحشرية، التهوية الضعيفة، إلخ). "
+            f"كل سبب يبدأ بـ '-' ويكون جملة واضحة ومختصرة. "
+            f"لا تكتب عناوين أو مقدمات أو ترقيماً. فقط الأسطر."
+        )
         causes_en = call_groq(
-            f"You are an agricultural expert. Plant: {plant}, Disease: {disease}. "
-            f"Write exactly 2 possible causes of this disease in English only. "
-            f"Each cause starts with '-' and is one clear, concise sentence. "
-            f"No headings, no numbering. Only 2 lines.",
-            max_tokens=200,
+            f"You are an agricultural expert talking to a simple farmer. Plant: {plant}, Disease: {disease}. "
+            f"Write in English only 5 to 7 possible causes that lead to this disease appearing on this plant "
+            f"(e.g. excess humidity, soil type, irrigation or farming practices, fungal/bacterial/viral infection, "
+            f"specific nutrient deficiencies, insect infestation, poor air circulation, etc.). "
+            f"Each cause starts with '-' and is a clear, short sentence. "
+            f"No headings, no introductions, no numbering. Only the lines."
         )
 
         return {"ar": causes_ar, "en": causes_en}
