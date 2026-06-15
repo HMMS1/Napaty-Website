@@ -248,11 +248,11 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
       .filter((l) => l.length > 0);
 
     return (
-      <div className="treatment-grid">
+      <div className="causes-list">
         {causes.map((cause, i) => (
-          <div key={i} className="treatment-step causes-step">
-            <span className="step-number causes-step-number" style={{ flexShrink: 0 }}>{i + 1}</span>
-            <span className="treatment-step-text">{cause}</span>
+          <div key={i} className="causes-item">
+            <span className="causes-bullet" />
+            <span className="causes-item-text">{cause}</span>
           </div>
         ))}
       </div>
