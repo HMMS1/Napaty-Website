@@ -428,24 +428,27 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     {prediction.plant}
                   </p>
 
-                  <p>
-                    <b>{isArabic ? "المرض:" : "Disease:"}</b>{" "}
-                    {prediction.disease}
-                  </p>
+                 <div className="disease-result">
+  <div className="disease-title">
+    {isArabic ? " المرض المكتشف" : " Detected Disease"}
+  </div>
 
-                  {/* ✅ نسبة الثقة - منقولة فوق أسباب المرض */}
-                  {selectedModel === "7.2" && aiResult?.confidence_percent && (
-                    <div className="confidence-badge-wrapper">
-                      <span className="confidence-label">
-                        {isArabic ? "نسبة الثقة:" : "Confidence:"}
-                      </span>
-                      <span className="confidence-badge">
-                        {aiResult.confidence_percent}%
-                      </span>
-                    </div>
-                  )}
+  <span className="disease-name">
+    {prediction.disease}
+  </span>
 
-                  {/* أسباب المرض المحتملة */}
+  <span className="confidence-pill">
+    {isArabic ? "نسبة الثقة" : "Confidence"}
+
+    <span className="confidence-value">
+      {selectedModel === "7.2"
+        ? aiResult?.confidence_percent
+        : prediction?.confidence}
+      %
+    </span>
+  </span>
+</div>
+
                   {diseaseCauses && (
                     <div className="info-item causes-section" style={{ marginTop: "1.2rem" }}>
                       <h5>🔍 {isArabic ? "أسباب المرض المحتملة" : "Possible Disease Causes"}</h5>
@@ -453,7 +456,6 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     </div>
                   )}
 
-                  {/* خطة العلاج من Groq عبر الباك */}
                   {treatmentPlan && (
                     <div className="info-item steps" style={{ marginTop: "1.2rem" }}>
                       <h5>🌿 {isArabic ? "خطة العلاج" : "Treatment Plan"}</h5>
