@@ -250,8 +250,8 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
     return (
       <div className="treatment-grid">
         {causes.map((cause, i) => (
-          <div key={i} className="treatment-step">
-            <span className="step-number" style={{ flexShrink: 0 }}>{i + 1}</span>
+          <div key={i} className="treatment-step causes-step">
+            <span className="step-number causes-step-number" style={{ flexShrink: 0 }}>{i + 1}</span>
             <span className="treatment-step-text">{cause}</span>
           </div>
         ))}
@@ -433,19 +433,24 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     {prediction.disease}
                   </p>
 
-                  {/* أسباب المرض المحتملة */}
-                  {diseaseCauses && (
-                    <div className="info-item steps" style={{ marginTop: "1.2rem" }}>
-                      <h5>🔍 {isArabic ? "أسباب المرض المحتملة" : "Possible Disease Causes"}</h5>
-                      {renderCauses(diseaseCauses)}
+                  {/* ✅ نسبة الثقة - منقولة فوق أسباب المرض */}
+                  {selectedModel === "7.2" && aiResult?.confidence_percent && (
+                    <div className="confidence-badge-wrapper">
+                      <span className="confidence-label">
+                        {isArabic ? "نسبة الثقة:" : "Confidence:"}
+                      </span>
+                      <span className="confidence-badge">
+                        {aiResult.confidence_percent}%
+                      </span>
                     </div>
                   )}
 
-                  {selectedModel === "7.2" && aiResult?.confidence_percent && (
-                    <p style={{ marginTop: "1rem" }}>
-                      <b>{isArabic ? "نسبة الثقة:" : "Confidence:"}</b>{" "}
-                      {aiResult.confidence_percent}%
-                    </p>
+                  {/* أسباب المرض المحتملة */}
+                  {diseaseCauses && (
+                    <div className="info-item causes-section" style={{ marginTop: "1.2rem" }}>
+                      <h5>🔍 {isArabic ? "أسباب المرض المحتملة" : "Possible Disease Causes"}</h5>
+                      {renderCauses(diseaseCauses)}
+                    </div>
                   )}
 
                   {/* خطة العلاج من Groq عبر الباك */}
