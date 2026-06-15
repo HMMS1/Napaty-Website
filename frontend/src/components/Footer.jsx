@@ -31,8 +31,7 @@ const Footer = ({ language = "ar" }) => {
     consultation: isArabic ? "الاستشارات" : "Consultation",
     cropRecommend: isArabic ? "اقتراح المحصول" : "Crop Recommendation",
     agriChat: isArabic ? "الشات الزراعي" : "Agricultural Chat",
-    community: isArabic ? "المجتمع" : "Community", ا
-
+    community: isArabic ? "المجتمع" : "Community",
 
     contact: isArabic ? "تواصل معنا" : "Contact Us",
     email: isArabic ? "البريد الإلكتروني" : "Email",
@@ -54,8 +53,6 @@ const Footer = ({ language = "ar" }) => {
   const arrowIcon = isArabic
     ? <FaArrowLeft size={12} />
     : <FaArrowRight size={12} />;
-
-  
 
   const services = [
     { icon: <FaSeedling />, label: text.service1 },
@@ -124,7 +121,6 @@ const Footer = ({ language = "ar" }) => {
                   <span className="footer-contact-label">{text.email}</span>
                   <a href="mailto:napatywebsite@gmail.com">
                     napatywebsite@gmail.com
-
                   </a>
                 </div>
               </div>
