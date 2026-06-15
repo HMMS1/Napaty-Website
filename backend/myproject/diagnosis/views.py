@@ -51,42 +51,46 @@ def translate_to_ar(text):
 
 
 GROQ_API_KEY = ""
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = "openai/gpt-oss-20b"
+GROQ_API_URL = ""
+GROQ_MODEL = ""
+
+
+def call_groq(prompt, max_tokens=700):
+    """Helper to call Groq API with a given prompt."""
+    response = requests.post(
+        GROQ_API_URL,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+        },
+        json={
+            "model": GROQ_MODEL,
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_tokens,
+            "temperature": 0.5,
+        },
+        timeout=30,
+    )
+    response.raise_for_status()
+    return response.json()["choices"][0]["message"]["content"].strip()
 
 
 def get_treatment_plan(plant, disease):
     """Call Groq API to get a treatment plan in both Arabic and English."""
     try:
-        def call_groq(prompt):
-            response = requests.post(
-                GROQ_API_URL,
-                headers={
-                    "Content-Type": "application/json",
-                    "Authorization": f"Bearer {GROQ_API_KEY}",
-                },
-                json={
-                    "model": GROQ_MODEL,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 700,
-                    "temperature": 0.5,
-                },
-                timeout=30,
-            )
-            response.raise_for_status()
-            return response.json()["choices"][0]["message"]["content"].strip()
-
         plan_ar = call_groq(
             f"أنت خبير زراعي يتحدث مع مزارع بسيط. النبات: {plant}، المرض: {disease}. "
             f"اكتب بالعربية فقط 10 خطوات علاج عملية ومفصلة وسهلة الفهم. "
             f"كل خطوة تبدأ بـ '-' وتكون جملة كاملة واضحة تشرح ماذا يفعل المزارع بالتحديد. "
-            f"لا تكتب عناوين أو أقساماً أو ترقيماً. فقط 10 أسطر كل سطر خطوة."
+            f"لا تكتب عناوين أو أقساماً أو ترقيماً. فقط 10 أسطر كل سطر خطوة.",
+            max_tokens=700,
         )
         plan_en = call_groq(
             f"You are an agricultural expert talking to a simple farmer. Plant: {plant}, Disease: {disease}. "
             f"Write exactly 10 practical, detailed, easy-to-understand treatment steps in English only. "
             f"Each step starts with '-' and is a complete sentence explaining exactly what the farmer should do. "
-            f"No headings, no sections, no numbering. Only 10 lines, each line one step."
+            f"No headings, no sections, no numbering. Only 10 lines, each line one step.",
+            max_tokens=700,
         )
 
         return {"ar": plan_ar, "en": plan_en}
@@ -95,6 +99,33 @@ def get_treatment_plan(plant, disease):
         return {
             "ar": "تعذّر جلب خطة العلاج.",
             "en": "Failed to fetch treatment plan.",
+            "error": str(e),
+        }
+
+
+def get_disease_causes(plant, disease):
+    """Call Groq API to get 2 possible causes of the disease in Arabic and English."""
+    try:
+        causes_ar = call_groq(
+            f"أنت خبير زراعي. النبات: {plant}، المرض: {disease}. "
+            f"اكتب باللغة العربية سببين رئيسيين ومباشرين لظهور هذا المرض. "
+            f"ابدأ كل سبب بعلامة '-' واكتبهما مباشرة بدون أي مقدمات أو ترحيب.",
+            max_tokens=200,
+    )
+        causes_en = call_groq(
+            f"You are an agricultural expert. Plant: {plant}, Disease: {disease}. "
+            f"Write exactly 2 possible causes of this disease in English only. "
+            f"Each cause starts with '-' and is one clear, concise sentence. "
+            f"No headings, no numbering. Only 2 lines.",
+            max_tokens=200,
+        )
+
+        return {"ar": causes_ar, "en": causes_en}
+
+    except Exception as e:
+        return {
+            "ar": "تعذّر جلب أسباب المرض.",
+            "en": "Failed to fetch disease causes.",
             "error": str(e),
         }
 
@@ -201,6 +232,7 @@ def upload_plant_image(request):
         is_healthy = disease_en.strip().lower() in healthy_keywords
 
         treatment_plan = None if is_healthy else get_treatment_plan(plant_en, disease_en)
+        disease_causes = None if is_healthy else get_disease_causes(plant_en, disease_en)
 
         return Response({
             "success": True,
@@ -211,6 +243,7 @@ def upload_plant_image(request):
             "image": PlantImageUploadSerializer(plant_image).data,
             "prediction": translated_prediction,
             "treatment_plan": treatment_plan,
+            "disease_causes": disease_causes,
             "ai_result": {
                 "class_name": clean_ai_text(predicted_class),
                 "confidence": confidence,
