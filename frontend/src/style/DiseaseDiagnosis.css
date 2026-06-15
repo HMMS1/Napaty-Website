@@ -292,34 +292,43 @@
 }
 
 
-/* ✅ نسبة الثقة - ستايل جديد */
-.confidence-badge-wrapper {
-  display: flex;
+.disease-result {
+  margin-top: 12px;
+  margin-bottom: 20px;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(67, 160, 71, 0.08),
+    rgba(76, 175, 80, 0.12)
+  );
+  border: 1px solid rgba(67, 160, 71, 0.15);
+}
+
+.disease-name {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.confidence-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 1rem;
-  padding: 0.75rem 1.2rem;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
-  border: 1px solid rgba(99, 102, 241, 0.18);
-  border-radius: 14px;
-  width: fit-content;
-}
-
-.confidence-label {
-  color: #4f46e5;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-
-.confidence-badge {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-  font-weight: 900;
-  font-size: 1rem;
-  padding: 4px 14px;
+  gap: 8px;
+  padding: 8px 18px;
   border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 800;
+  box-shadow: 0 8px 18px rgba(67, 160, 71, 0.25);
+}
+
+.confidence-value {
+  font-size: 1rem;
+  font-weight: 900;
 }
 
 
@@ -359,7 +368,6 @@
 }
 
 
-/* ✅ قسم أسباب المرض - لون مختلف (برتقالي/عنبري) */
 .causes-section {
   border-right: 4px solid #f59e0b !important;
   background: rgba(255, 251, 235, 0.95) !important;
@@ -369,7 +377,6 @@
   color: #b45309 !important;
 }
 
-/* ✅ شكل جديد لعرض أسباب المرض - قائمة عمودية بعلامات معينية */
 .causes-list {
   display: flex;
   flex-direction: column;
