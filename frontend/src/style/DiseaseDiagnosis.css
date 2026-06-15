@@ -292,6 +292,37 @@
 }
 
 
+/* ✅ نسبة الثقة - ستايل جديد */
+.confidence-badge-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1rem;
+  padding: 0.75rem 1.2rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  border-radius: 14px;
+  width: fit-content;
+}
+
+.confidence-label {
+  color: #4f46e5;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.confidence-badge {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  font-weight: 900;
+  font-size: 1rem;
+  padding: 4px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  letter-spacing: 0.5px;
+}
+
+
 .info-grid {
   display: grid;
   gap: 1.2rem;
@@ -325,6 +356,32 @@
   color: #555;
   line-height: 1.75;
   margin: 0;
+}
+
+
+/* ✅ قسم أسباب المرض - لون مختلف (برتقالي/عنبري) */
+.causes-section {
+  border-right: 4px solid #f59e0b !important;
+  background: rgba(255, 251, 235, 0.95) !important;
+}
+
+.causes-section h5 {
+  color: #b45309 !important;
+}
+
+.causes-step {
+  background: #fffbeb !important;
+  border: 1px solid rgba(245, 158, 11, 0.18) !important;
+}
+
+.causes-step:hover {
+  background: #fef3c7 !important;
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.12) !important;
+}
+
+.causes-step-number {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  box-shadow: 0 6px 14px rgba(245, 158, 11, 0.3) !important;
 }
 
 
@@ -593,6 +650,8 @@
   .treatment-step-text { font-size: 0.84rem; }
   .model-select-wrapper { top: 12px; left: 10px; padding: 6px 8px 6px 12px; }
   .custom-model-trigger { min-width: 74px; height: 33px; font-size: 0.8rem; }
+  .confidence-badge-wrapper { padding: 0.6rem 1rem; }
+  .confidence-badge { font-size: 0.88rem; padding: 3px 10px; }
 }
 
 @media (min-width: 361px) and (max-width: 480px) {
@@ -615,6 +674,8 @@
   .model-select-wrapper { top: 12px; left: 12px; padding: 7px 8px 7px 13px; }
   .model-select-label { font-size: 0.82rem; }
   .custom-model-trigger { min-width: 80px; height: 36px; font-size: 0.85rem; }
+  .confidence-badge-wrapper { padding: 0.65rem 1rem; }
+  .confidence-badge { font-size: 0.9rem; }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
