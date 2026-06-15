@@ -195,10 +195,13 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
   const aiResult = result?.data?.ai_result;
   const topResults = aiResult?.raw_response?.top5?.slice(0, 4) || [];
 
-  // خطة العلاج بتيجي من الباك مباشرة
   const treatmentPlan = isArabic
     ? result?.data?.treatment_plan?.ar
     : result?.data?.treatment_plan?.en;
+
+  const diseaseCauses = isArabic
+    ? result?.data?.disease_causes?.ar
+    : result?.data?.disease_causes?.en;
 
   const renderTreatmentPlan = (text) => {
     if (!text) return null;
@@ -223,6 +226,33 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
           <div key={i} className="treatment-step">
             <span className="step-number" style={{ flexShrink: 0 }}>{i + 1}</span>
             <span className="treatment-step-text">{step}</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderCauses = (text) => {
+    if (!text) return null;
+
+    const cleaned = text
+      .replace(/\*\*(.+?)\*\*/g, "$1")
+      .replace(/\*(.+?)\*/g, "$1")
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/#{1,4}\s*/g, "")
+      .trim();
+
+    const causes = cleaned
+      .split("\n")
+      .map((l) => l.replace(/^[-•*]\s*/, "").replace(/^\d+\.\s*/, "").trim())
+      .filter((l) => l.length > 0);
+
+    return (
+      <div className="treatment-grid">
+        {causes.map((cause, i) => (
+          <div key={i} className="treatment-step">
+            <span className="step-number" style={{ flexShrink: 0 }}>{i + 1}</span>
+            <span className="treatment-step-text">{cause}</span>
           </div>
         ))}
       </div>
@@ -403,8 +433,16 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     {prediction.disease}
                   </p>
 
+                  {/* أسباب المرض المحتملة */}
+                  {diseaseCauses && (
+                    <div className="info-item steps" style={{ marginTop: "1.2rem" }}>
+                      <h5>🔍 {isArabic ? "أسباب المرض المحتملة" : "Possible Disease Causes"}</h5>
+                      {renderCauses(diseaseCauses)}
+                    </div>
+                  )}
+
                   {selectedModel === "7.2" && aiResult?.confidence_percent && (
-                    <p>
+                    <p style={{ marginTop: "1rem" }}>
                       <b>{isArabic ? "نسبة الثقة:" : "Confidence:"}</b>{" "}
                       {aiResult.confidence_percent}%
                     </p>
