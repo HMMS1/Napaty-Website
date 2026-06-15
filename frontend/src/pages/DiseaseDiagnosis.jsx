@@ -428,7 +428,7 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
                     {prediction.plant}
                   </p>
 
-                 <div className="disease-result">
+<div className="disease-result">
   <div className="disease-title">
     {isArabic ? " المرض المكتشف" : " Detected Disease"}
   </div>
@@ -437,16 +437,15 @@ const DiseaseDiagnosis = ({ language = "ar" }) => {
     {prediction.disease}
   </span>
 
-  <span className="confidence-pill">
-    {isArabic ? "نسبة الثقة" : "Confidence"}
+  {selectedModel === "7.2" && (
+    <span className="confidence-pill">
+      {isArabic ? "نسبة الثقة" : "Confidence"}
 
-    <span className="confidence-value">
-      {selectedModel === "7.2"
-        ? aiResult?.confidence_percent
-        : prediction?.confidence}
-      %
+      <span className="confidence-value">
+        {aiResult?.confidence_percent}%
+      </span>
     </span>
-  </span>
+  )}
 </div>
 
                   {diseaseCauses && (
