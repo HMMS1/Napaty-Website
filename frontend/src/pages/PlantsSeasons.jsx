@@ -1974,11 +1974,13 @@ const CropsPage = ({ language = 'ar' }) => {
     { key: 'Winter', label: isArabic ? 'الشتاء' : 'Winter', icon: 'far fa-snowflake', subText: isArabic ? 'ديسمبر - فبراير' : 'December - February' }
   ];
 
-  const monthMap = useMemo(() => ({
-    "يناير": 1, "فبراير": 2, "مارس": 3, "أبريل": 4, "ابريل": 4, "مايو": 5, "يونيو": 6,
-    "يوليو": 7, "أغسطس": 8, "اغسطس": 8, "سبتمبر": 9, "أكتوبر": 10, "اكتوبر": 10,
-    "نوفمبر": 11, "ديسمبر": 12,
-  }), []);
+const monthMap = useMemo(() => ({
+  "يناير": 1, "فبراير": 2, "مارس": 3, "أبريل": 4, "ابريل": 4, "مايو": 5, "يونيو": 6,
+  "يوليو": 7, "أغسطس": 8, "اغسطس": 8, "سبتمبر": 9, "أكتوبر": 10, "اكتوبر": 10,
+  "نوفمبر": 11, "ديسمبر": 12,
+  "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
+  "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12,
+}), []);
 
   const getSeasonFromMonth = useCallback((month) => {
     if ([3, 4, 5].includes(month)) return "Spring";
