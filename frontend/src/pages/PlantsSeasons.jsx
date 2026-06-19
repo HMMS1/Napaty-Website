@@ -107,7 +107,7 @@ const CropsPage = ({ language = 'ar' }) => {
       id: 4,
       name: isArabic ? "الخس" : "Lettuce",
       img: "/images/lettuce3.jpg",
-      season: "Spring",
+      season: "Winter",
       seasonText: isArabic ? "سبتمبر إلى فبراير" : "September to February",
       modalImg: "/images/lettuce3.jpg",
       growth: isArabic ? "45 - 60 يوم" : "45 - 60 days",
@@ -136,7 +136,7 @@ const CropsPage = ({ language = 'ar' }) => {
       id: 5,
       name: isArabic ? "السبانخ" : "Spinach",
       img: "/images/Spinach.jpg",
-      season: "Autumn",
+      season: "Winter",
       seasonText: isArabic ? "سبتمبر إلى فبراير" : "September to February",
       modalImg: "/images/Spinach.jpg",
       growth: isArabic ? "40 - 50 يوم" : "40 - 50 days",
@@ -223,7 +223,7 @@ const CropsPage = ({ language = 'ar' }) => {
       id: 8,
       name: isArabic ? "الباذنجان" : "Eggplant",
       img: "/images/باذنجان.jpg",
-      season: "Autumn",
+      season: "Summer",
       seasonText: isArabic ? "فبراير إلى أكتوبر" : "February to October",
       modalImg: "/images/باذنجان.jpg",
       growth: isArabic ? "70 - 90 يوم" : "70 - 90 days",
@@ -252,7 +252,7 @@ const CropsPage = ({ language = 'ar' }) => {
       id: 9,
       name: isArabic ? "الكوسة" : "Zucchini",
       img: "/images/كوسة.jpg",
-      season: "Autumn",
+      season: "Summer",
       seasonText: isArabic ? "فبراير إلى أكتوبر" : "February to October",
       modalImg: "/images/كوسة.jpg",
       growth: isArabic ? "40 - 60 يوم" : "40 - 60 days",
@@ -281,7 +281,7 @@ const CropsPage = ({ language = 'ar' }) => {
       id: 10,
       name: isArabic ? "الجزر" : "Carrot",
       img: "/images/carrot3.jpg",
-      season: "Autumn",
+      season: "Winter",
       seasonText: isArabic ? "سبتمبر إلى فبراير" : "September to February",
       modalImg: "/images/carrot3.jpg",
       growth: isArabic ? "70 - 90 يوم" : "70 - 90 days",
@@ -310,7 +310,7 @@ const CropsPage = ({ language = 'ar' }) => {
       id: 11,
       name: isArabic ? "البروكلي" : "Broccoli",
       img: "/images/broccoli.jpg",
-      season: "Autumn",
+      season: "Winter",
       seasonText: isArabic ? "سبتمبر إلى فبراير" : "September to February",
       modalImg: "/images/broccoli.jpg",
       growth: isArabic ? "70 - 90 يوم" : "70 - 90 days",
@@ -368,7 +368,7 @@ const CropsPage = ({ language = 'ar' }) => {
       id: 13,
       name: isArabic ? "البصل" : "Onion",
       img: "/images/onions.jpg",
-      season: "Autumn",
+      season: "Winter",
       seasonText: isArabic ? "سبتمبر - يناير" : "September - January",
       modalImg: "/images/onions.jpg",
       growth: isArabic ? "120 - 150 يوم" : "120 - 150 days",
@@ -760,7 +760,7 @@ const CropsPage = ({ language = 'ar' }) => {
   id: 18,
   name: isArabic ? "الفراولة" : "Strawberry",
   img: "images/strawberry.jpg",
-  season: "Autumn",
+  season: "Winter",
   seasonText: isArabic ? "سبتمبر - أكتوبر" : "September - October",
   modalImg: "images/strawberry.jpg",
 
@@ -895,7 +895,7 @@ const CropsPage = ({ language = 'ar' }) => {
   id: 19,
   name: isArabic ? "البنجر" : "Beetroot",
   img: "images/beetroot.png",
-  season: "Autumn",
+  season: "Winter",
   seasonText: isArabic ? "أغسطس - نوفمبر" : "August - November",
   modalImg: "images/beetroot.png",
 
@@ -1691,7 +1691,7 @@ const CropsPage = ({ language = 'ar' }) => {
   id: 25,
   name: isArabic ? "الكرنب" : "Cabbage",
   img: "images/Cabbage.jpg",
-  season: "Autumn",
+  season: "Winter",
   seasonText: isArabic ? "أغسطس - أكتوبر" : "August - October",
   modalImg: "images/Cabbage.jpg",
 
@@ -1974,13 +1974,11 @@ const CropsPage = ({ language = 'ar' }) => {
     { key: 'Winter', label: isArabic ? 'الشتاء' : 'Winter', icon: 'far fa-snowflake', subText: isArabic ? 'ديسمبر - فبراير' : 'December - February' }
   ];
 
-const monthMap = useMemo(() => ({
-  "يناير": 1, "فبراير": 2, "مارس": 3, "أبريل": 4, "ابريل": 4, "مايو": 5, "يونيو": 6,
-  "يوليو": 7, "أغسطس": 8, "اغسطس": 8, "سبتمبر": 9, "أكتوبر": 10, "اكتوبر": 10,
-  "نوفمبر": 11, "ديسمبر": 12,
-  "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
-  "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12,
-}), []);
+  const monthMap = useMemo(() => ({
+    "يناير": 1, "فبراير": 2, "مارس": 3, "أبريل": 4, "ابريل": 4, "مايو": 5, "يونيو": 6,
+    "يوليو": 7, "أغسطس": 8, "اغسطس": 8, "سبتمبر": 9, "أكتوبر": 10, "اكتوبر": 10,
+    "نوفمبر": 11, "ديسمبر": 12,
+  }), []);
 
   const getSeasonFromMonth = useCallback((month) => {
     if ([3, 4, 5].includes(month)) return "Spring";
