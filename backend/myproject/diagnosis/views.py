@@ -1,3 +1,4 @@
+import time
 import requests
 from deep_translator import GoogleTranslator
 
@@ -50,16 +51,15 @@ def translate_to_ar(text):
         return clean_ai_text(text)
 
 
-GROQ_API_KEY = ""
+GROQ_API_KEY = getattr(settings, "GROQ_API_KEY", "")
 
-GROQ_API_KEY_CAUSES = ""
+GROQ_API_KEY_CAUSES = getattr(settings, "GROQ_API_KEY_CAUSES", "")
 
-GROQ_API_URL = ""
-GROQ_MODEL = ""
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_MODEL = "openai/gpt-oss-20b"
 
 
 def get_treatment_plan(plant, disease):
-    """Call Groq API to get a treatment plan in both Arabic and English."""
     try:
         def call_groq(prompt):
             response = requests.post(
@@ -189,20 +189,32 @@ def upload_plant_image(request):
     try:
         image_file = plant_image.image
         image_file.open("rb")
+        image_bytes = image_file.read()
 
-        files = {
-            "file": (
-                image_file.name,
-                image_file.read(),
-                "image/jpeg",
-            )
-        }
+        MAX_RETRIES = 4
+        RETRY_TIMEOUTS = [60, 90, 120, 150]   
+        BACKOFF_SECONDS = [2, 4, 6, 8]        
 
-        ai_response = requests.post(
-            AI_PREDICT_URL_SELECTED,
-            files=files,
-            timeout=120,
-        )
+        ai_response = None
+
+        for attempt in range(MAX_RETRIES):
+            files = {
+                "file": (image_file.name, image_bytes, "image/jpeg"),
+            }
+            try:
+                ai_response = requests.post(
+                    AI_PREDICT_URL_SELECTED,
+                    files=files,
+                    timeout=RETRY_TIMEOUTS[attempt],
+                )
+               
+                break
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+                if attempt == MAX_RETRIES - 1:
+                   
+                    raise
+                time.sleep(BACKOFF_SECONDS[attempt])
+                continue
 
         if ai_response.status_code != 200:
             return Response({
@@ -278,8 +290,8 @@ def upload_plant_image(request):
         return Response({
             "success": False,
             "message": {
-                "en": "AI service took too long to respond",
-                "ar": "خدمة الذكاء الاصطناعي تأخرت في الرد",
+                "en": "AI service took too long to respond after multiple attempts",
+                "ar": "خدمة الذكاء الاصطناعي تأخرت في الرد بعد عدة محاولات",
             },
             "image": PlantImageUploadSerializer(plant_image).data,
             "error": "AI request timeout",
